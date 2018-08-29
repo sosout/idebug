@@ -3,6 +3,7 @@ const Bundles = require('./bundles');
 const chalk = require('chalk');
 const argv = require('minimist')(process.argv.slice(2));
 const Packaging = require('./packaging');
+const fs = require('fs');
 
 // Errors in promises should be fatal.
 let loggedErrors = new Set();
@@ -19,6 +20,16 @@ const {
 	UMD_PROD,
 	NODE_DEV,
 	NODE_PROD,
+	NODE_PROFILING,
+	FB_WWW_DEV,
+	FB_WWW_PROD,
+	FB_WWW_PROFILING,
+	RN_OSS_DEV,
+	RN_OSS_PROD,
+	RN_OSS_PROFILING,
+	RN_FB_DEV,
+	RN_FB_PROD,
+	RN_FB_PROFILING,
 } = Bundles.bundleTypes;
 
 const requestedBundleTypes = (argv.type || '')
@@ -110,15 +121,15 @@ async function createBundle(bundle, bundleType) {
 
 	const filename = getFilename(bundle.entry, bundle.global, bundleType);
 	const logKey =
-    chalk.white.bold(filename) + chalk.dim(` (${bundleType.toLowerCase()})`);
+	chalk.white.bold(filename) + chalk.dim(` (${bundleType.toLowerCase()})`);
+	console.log(logKey);
 	const format = getFormat(bundleType);
+	console.log(format);
 	const packageName = Packaging.getPackageName(bundle.entry);
-
+	console.log(packageName);
 	let resolvedEntry = require.resolve(bundle.entry);
 	if (
-		bundleType === FB_WWW_DEV ||
-    bundleType === FB_WWW_PROD ||
-    bundleType === FB_WWW_PROFILING
+		bundleType === FB_WWW_DEV || bundleType === FB_WWW_PROD || bundleType === FB_WWW_PROFILING
 	) {
 		const resolvedFBEntry = resolvedEntry.replace('.js', '.fb.js');
 		if (fs.existsSync(resolvedFBEntry)) {

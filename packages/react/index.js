@@ -1,5 +1,5 @@
 'use strict';
 
-import React from './src/React';
+const React = require('./src/React');
 
-export default React;
+module.exports = React.default || React;
