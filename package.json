@@ -1,0 +1,64 @@
+{
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "rollup -w -c scripts/config.js --environment TARGET:web-mnte-umd-dev",
+    "dev:cjs": "rollup -w -c scripts/config.js --environment TARGET:web-mnte-cjs",
+    "dev:esm": "rollup -w -c scripts/config.js --environment TARGET:web-mnte-esm",
+    "build": "node scripts/rollup/build.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -w -r 0",
+    "lint": "eslint --fix packages",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pub": "npm run changelog && npm run build && npm publish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sosout/idebug.git"
+  },
+  "author": "Weich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sosout/idebug/issues"
+  },
+  "homepage": "https://github.com/sosout/idebug#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix packages",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^7.0.0",
+    "@commitlint/config-conventional": "^7.0.1",
+    "babel-eslint": "^9.0.0",
+    "chalk": "^2.4.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^5.3.0",
+    "husky": "^1.0.0-rc.13",
+    "lerna": "^3.2.1",
+    "lint-staged": "^7.2.0",
+    "minimist": "^1.2.0",
+    "rollup": "^0.63.5",
+    "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-buble": "^0.19.2",
+    "rollup-plugin-commonjs": "^9.1.4",
+    "rollup-plugin-eslint": "^5.0.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-replace": "^2.0.0",
+    "uglify-js": "^3.4.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "name": "idebug"
+}
