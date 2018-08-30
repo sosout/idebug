@@ -7,34 +7,34 @@
 'use strict';
 
 module.exports = [
-	{
-		shortName: 'dom',
-		entryPoints: ['react-dom'],
-		isFlowTyped: true,
-	},
-	{
-		shortName: 'art',
-		entryPoints: ['react-art'],
-		isFlowTyped: false, // TODO: type it.
-	},
-	{
-		shortName: 'native',
-		entryPoints: ['react-native-renderer'],
-		isFlowTyped: true,
-	},
-	{
-		shortName: 'fabric',
-		entryPoints: ['react-native-renderer/fabric'],
-		isFlowTyped: true,
-	},
-	{
-		shortName: 'test',
-		entryPoints: ['react-test-renderer'],
-		isFlowTyped: true,
-	},
-	{
-		shortName: 'custom',
-		entryPoints: ['react-reconciler', 'react-reconciler/persistent'],
-		isFlowTyped: true,
-	},
+  {
+    shortName: 'dom',
+    entryPoints: ['react-dom'],
+    isFlowTyped: true,
+  },
+  {
+    shortName: 'art',
+    entryPoints: ['react-art'],
+    isFlowTyped: false, // TODO: type it.
+  },
+  {
+    shortName: 'native',
+    entryPoints: ['react-native-renderer'],
+    isFlowTyped: true,
+  },
+  {
+    shortName: 'fabric',
+    entryPoints: ['react-native-renderer/fabric'],
+    isFlowTyped: true,
+  },
+  {
+    shortName: 'test',
+    entryPoints: ['react-test-renderer'],
+    isFlowTyped: true,
+  },
+  {
+    shortName: 'custom',
+    entryPoints: ['react-reconciler', 'react-reconciler/persistent'],
+    isFlowTyped: true,
+  },
 ];

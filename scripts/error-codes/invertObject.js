@@ -17,17 +17,17 @@
  *   { 0: 'MUCH ERROR', 1: 'SUCH WRONG' }
  */
 function invertObject(targetObj /* : ErrorMap */) /* : ErrorMap */ {
-	const result = {};
-	const mapKeys = Object.keys(targetObj);
+  const result = {};
+  const mapKeys = Object.keys(targetObj);
 
-	// eslint-disable-next-line no-for-of-loops/no-for-of-loops
-	for (const originalKey of mapKeys) {
-		const originalVal = targetObj[originalKey];
+  // eslint-disable-next-line no-for-of-loops/no-for-of-loops
+  for (const originalKey of mapKeys) {
+    const originalVal = targetObj[originalKey];
 
-		result[originalVal] = originalKey;
-	}
+    result[originalVal] = originalKey;
+  }
 
-	return result;
+  return result;
 }
 
 module.exports = invertObject;

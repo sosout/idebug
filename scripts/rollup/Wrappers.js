@@ -26,9 +26,9 @@ const license = ` * Copyright (c) 2013-present, Facebook, Inc.
  * LICENSE file in the root directory of this source tree.`;
 
 const wrappers = {
-	/***************** UMD_DEV *****************/
-	[UMD_DEV](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** UMD_DEV *****************/
+  [UMD_DEV](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
@@ -37,21 +37,21 @@ ${license}
 'use strict';
 
 ${source}`;
-	},
+  },
 
-	/***************** UMD_PROD *****************/
-	[UMD_PROD](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** UMD_PROD *****************/
+  [UMD_PROD](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
  */
 ${source}`;
-	},
+  },
 
-	/***************** NODE_DEV *****************/
-	[NODE_DEV](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** NODE_DEV *****************/
+  [NODE_DEV](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
@@ -60,63 +60,63 @@ ${license}
 'use strict';
 
 ${
-	globalName === 'ReactNoopRenderer' ||
+      globalName === 'ReactNoopRenderer' ||
       globalName === 'ReactNoopRendererPersistent'
-		? // React Noop needs regenerator runtime because it uses
-	// generators but GCC doesn't handle them in the output.
-	// So we use Babel for them.
-		'const regeneratorRuntime = require("regenerator-runtime");'
-		: ''
-}
+        ? // React Noop needs regenerator runtime because it uses
+          // generators but GCC doesn't handle them in the output.
+          // So we use Babel for them.
+          `const regeneratorRuntime = require("regenerator-runtime");`
+        : ``
+    }
 
 if (process.env.NODE_ENV !== "production") {
   (function() {
 ${source}
   })();
 }`;
-	},
+  },
 
-	/***************** NODE_PROD *****************/
-	[NODE_PROD](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** NODE_PROD *****************/
+  [NODE_PROD](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
  */
 ${
-	globalName === 'ReactNoopRenderer' ||
+      globalName === 'ReactNoopRenderer' ||
       globalName === 'ReactNoopRendererPersistent'
-		? // React Noop needs regenerator runtime because it uses
-	// generators but GCC doesn't handle them in the output.
-	// So we use Babel for them.
-		'const regeneratorRuntime = require("regenerator-runtime");'
-		: ''
-}
+        ? // React Noop needs regenerator runtime because it uses
+          // generators but GCC doesn't handle them in the output.
+          // So we use Babel for them.
+          `const regeneratorRuntime = require("regenerator-runtime");`
+        : ``
+    }
 ${source}`;
-	},
+  },
 
-	/***************** NODE_PROFILING *****************/
-	[NODE_PROFILING](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** NODE_PROFILING *****************/
+  [NODE_PROFILING](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
  */
 ${
-	globalName === 'ReactNoopRenderer' ||
+      globalName === 'ReactNoopRenderer' ||
       globalName === 'ReactNoopRendererPersistent'
-		? // React Noop needs regenerator runtime because it uses
-	// generators but GCC doesn't handle them in the output.
-	// So we use Babel for them.
-		'const regeneratorRuntime = require("regenerator-runtime");'
-		: ''
-}
+        ? // React Noop needs regenerator runtime because it uses
+          // generators but GCC doesn't handle them in the output.
+          // So we use Babel for them.
+          `const regeneratorRuntime = require("regenerator-runtime");`
+        : ``
+    }
 ${source}`;
-	},
+  },
 
-	/****************** FB_WWW_DEV ******************/
-	[FB_WWW_DEV](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** FB_WWW_DEV ******************/
+  [FB_WWW_DEV](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -131,11 +131,11 @@ if (__DEV__) {
 ${source}
   })();
 }`;
-	},
+  },
 
-	/****************** FB_WWW_PROD ******************/
-	[FB_WWW_PROD](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** FB_WWW_PROD ******************/
+  [FB_WWW_PROD](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -144,11 +144,11 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 
-	/****************** FB_WWW_PROFILING ******************/
-	[FB_WWW_PROFILING](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** FB_WWW_PROFILING ******************/
+  [FB_WWW_PROFILING](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -157,11 +157,11 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 
-	/****************** RN_OSS_DEV ******************/
-	[RN_OSS_DEV](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_OSS_DEV ******************/
+  [RN_OSS_DEV](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -177,11 +177,11 @@ if (__DEV__) {
 ${source}
   })();
 }`;
-	},
+  },
 
-	/****************** RN_OSS_PROD ******************/
-	[RN_OSS_PROD](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_OSS_PROD ******************/
+  [RN_OSS_PROD](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -191,11 +191,11 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 
-	/****************** RN_OSS_PROFILING ******************/
-	[RN_OSS_PROFILING](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_OSS_PROFILING ******************/
+  [RN_OSS_PROFILING](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -205,11 +205,11 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 
-	/****************** RN_FB_DEV ******************/
-	[RN_FB_DEV](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_FB_DEV ******************/
+  [RN_FB_DEV](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -224,11 +224,11 @@ if (__DEV__) {
 ${source}
   })();
 }`;
-	},
+  },
 
-	/****************** RN_FB_PROD ******************/
-	[RN_FB_PROD](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_FB_PROD ******************/
+  [RN_FB_PROD](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -237,11 +237,11 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 
-	/****************** RN_FB_PROFILING ******************/
-	[RN_FB_PROFILING](source, globalName, filename, moduleType) {
-		return `/**
+  /****************** RN_FB_PROFILING ******************/
+  [RN_FB_PROFILING](source, globalName, filename, moduleType) {
+    return `/**
 ${license}
  *
  * @noflow
@@ -250,13 +250,13 @@ ${license}
  */
 
 ${source}`;
-	},
+  },
 };
 
 const reconcilerWrappers = {
-	/***************** NODE_DEV (reconciler only) *****************/
-	[NODE_DEV](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** NODE_DEV (reconciler only) *****************/
+  [NODE_DEV](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
@@ -272,11 +272,11 @@ ${source}
     return $$$renderer;
   };
 }`;
-	},
+  },
 
-	/***************** NODE_PROD (reconciler only) *****************/
-	[NODE_PROD](source, globalName, filename, moduleType) {
-		return `/** @license React v${reactVersion}
+  /***************** NODE_PROD (reconciler only) *****************/
+  [NODE_PROD](source, globalName, filename, moduleType) {
+    return `/** @license React v${reactVersion}
  * ${filename}
  *
 ${license}
@@ -287,29 +287,29 @@ ${source}
     module.exports = $$$reconciler;
     return $$$renderer;
 };`;
-	},
+  },
 };
 
 function wrapBundle(source, bundleType, globalName, filename, moduleType) {
-	if (moduleType === RECONCILER) {
-		// Standalone reconciler is only used by third-party renderers.
-		// It is handled separately.
-		const wrapper = reconcilerWrappers[bundleType];
-		if (typeof wrapper !== 'function') {
-			throw new Error(
-				`Unsupported build type for the reconciler package: ${bundleType}.`
-			);
-		}
-		return wrapper(source, globalName, filename, moduleType);
-	}
-	// All the other packages.
-	const wrapper = wrappers[bundleType];
-	if (typeof wrapper !== 'function') {
-		throw new Error(`Unsupported build type: ${bundleType}.`);
-	}
-	return wrapper(source, globalName, filename, moduleType);
+  if (moduleType === RECONCILER) {
+    // Standalone reconciler is only used by third-party renderers.
+    // It is handled separately.
+    const wrapper = reconcilerWrappers[bundleType];
+    if (typeof wrapper !== 'function') {
+      throw new Error(
+        `Unsupported build type for the reconciler package: ${bundleType}.`
+      );
+    }
+    return wrapper(source, globalName, filename, moduleType);
+  }
+  // All the other packages.
+  const wrapper = wrappers[bundleType];
+  if (typeof wrapper !== 'function') {
+    throw new Error(`Unsupported build type: ${bundleType}.`);
+  }
+  return wrapper(source, globalName, filename, moduleType);
 }
 
 module.exports = {
-	wrapBundle,
+  wrapBundle,
 };
