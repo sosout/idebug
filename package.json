@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "16.4.3-alpha.0",
   "workspaces": [
     "packages/*"
   ],
@@ -9,7 +10,7 @@
     "dev:esm": "rollup -w -c scripts/config.js --environment TARGET:web-mnte-esm",
     "build": "node ./scripts/rollup/build.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -w -r 0",
-    "lint": "eslint --fix packages",
+    "lint": "eslint --fix scripts/rollup/utils.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "pub": "npm run changelog && npm run build && npm publish"
   },
@@ -31,33 +32,72 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix packages",
+      "eslint --fix scripts/rollup/utils.js",
       "git add"
     ]
   },
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
-    "babel-eslint": "^9.0.0",
+    "babel-cli": "^6.6.5",
+    "babel-code-frame": "^6.26.0",
+    "babel-core": "^6.0.0",
+    "babel-eslint": "^8.0.0",
+    "babel-jest": "^23.0.1",
+    "babel-plugin-check-es2015-constants": "^6.5.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-syntax-trailing-function-commas": "^6.5.0",
+    "babel-plugin-transform-async-to-generator": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.11.5",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.5.2",
+    "babel-plugin-transform-es2015-block-scoped-functions": "^6.5.0",
+    "babel-plugin-transform-es2015-block-scoping": "^6.23.0",
+    "babel-plugin-transform-es2015-classes": "^6.5.2",
+    "babel-plugin-transform-es2015-computed-properties": "^6.5.2",
+    "babel-plugin-transform-es2015-destructuring": "^6.5.0",
+    "babel-plugin-transform-es2015-for-of": "^6.5.2",
+    "babel-plugin-transform-es2015-literals": "^6.5.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.5.2",
+    "babel-plugin-transform-es2015-object-super": "^6.5.0",
+    "babel-plugin-transform-es2015-parameters": "^6.5.0",
+    "babel-plugin-transform-es2015-shorthand-properties": "^6.5.0",
+    "babel-plugin-transform-es2015-spread": "^6.5.2",
+    "babel-plugin-transform-es2015-template-literals": "^6.5.2",
+    "babel-plugin-transform-object-rest-spread": "^6.6.5",
+    "babel-plugin-transform-react-jsx-source": "^6.8.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-traverse": "^6.9.0",
+    "babylon": "^6.18.0",
     "chalk": "^2.4.1",
+    "cli-table": "^0.3.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.3.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "filesize": "^3.6.1",
+    "flow-bin": "^0.79.1",
+    "google-closure-compiler": "^20180805.0.0",
+    "gzip-size": "^5.0.0",
     "husky": "^1.0.0-rc.13",
     "lint-staged": "^7.2.0",
     "minimist": "^1.2.0",
+    "ncp": "^2.0.0",
     "rollup": "^0.63.5",
     "rollup-plugin-alias": "^1.4.0",
+    "rollup-plugin-babel": "^3.0.1",
     "rollup-plugin-buble": "^0.19.2",
-    "rollup-plugin-commonjs": "^9.1.4",
+    "rollup-plugin-commonjs": "^9.1.6",
     "rollup-plugin-eslint": "^5.0.0",
     "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-prettier": "^0.4.0",
     "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-strip-banner": "^0.2.0",
+    "targz": "^1.0.1",
     "uglify-js": "^3.4.6"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "name": "idebug"
+  }
 }
