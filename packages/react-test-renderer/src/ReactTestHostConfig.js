@@ -42,152 +42,152 @@ export * from 'shared/HostConfigWithNoHydration';
 const NO_CONTEXT = {};
 const UPDATE_SIGNAL = {};
 if (__DEV__) {
-	Object.freeze(NO_CONTEXT);
-	Object.freeze(UPDATE_SIGNAL);
+  Object.freeze(NO_CONTEXT);
+  Object.freeze(UPDATE_SIGNAL);
 }
 
 export function getPublicInstance(inst: Instance | TextInstance): * {
-	switch (inst.tag) {
-	case 'INSTANCE':
-		const createNodeMock = inst.rootContainerInstance.createNodeMock;
-		return createNodeMock({
-			type: inst.type,
-			props: inst.props,
-		});
-	default:
-		return inst;
-	}
+  switch (inst.tag) {
+    case 'INSTANCE':
+      const createNodeMock = inst.rootContainerInstance.createNodeMock;
+      return createNodeMock({
+        type: inst.type,
+        props: inst.props,
+      });
+    default:
+      return inst;
+  }
 }
 
 export function appendChild(
-	parentInstance: Instance | Container,
-	child: Instance | TextInstance,
+  parentInstance: Instance | Container,
+  child: Instance | TextInstance,
 ): void {
-	if (__DEV__) {
-		warning(
-			Array.isArray(parentInstance.children),
-			'An invalid container has been provided. ' +
+  if (__DEV__) {
+    warning(
+      Array.isArray(parentInstance.children),
+      'An invalid container has been provided. ' +
         'This may indicate that another renderer is being used in addition to the test renderer. ' +
         '(For example, ReactDOM.createPortal inside of a ReactTestRenderer tree.) ' +
         'This is not supported.',
-		);
-	}
-	const index = parentInstance.children.indexOf(child);
-	if (index !== -1) {
-		parentInstance.children.splice(index, 1);
-	}
-	parentInstance.children.push(child);
+    );
+  }
+  const index = parentInstance.children.indexOf(child);
+  if (index !== -1) {
+    parentInstance.children.splice(index, 1);
+  }
+  parentInstance.children.push(child);
 }
 
 export function insertBefore(
-	parentInstance: Instance | Container,
-	child: Instance | TextInstance,
-	beforeChild: Instance | TextInstance,
+  parentInstance: Instance | Container,
+  child: Instance | TextInstance,
+  beforeChild: Instance | TextInstance,
 ): void {
-	const index = parentInstance.children.indexOf(child);
-	if (index !== -1) {
-		parentInstance.children.splice(index, 1);
-	}
-	const beforeIndex = parentInstance.children.indexOf(beforeChild);
-	parentInstance.children.splice(beforeIndex, 0, child);
+  const index = parentInstance.children.indexOf(child);
+  if (index !== -1) {
+    parentInstance.children.splice(index, 1);
+  }
+  const beforeIndex = parentInstance.children.indexOf(beforeChild);
+  parentInstance.children.splice(beforeIndex, 0, child);
 }
 
 export function removeChild(
-	parentInstance: Instance | Container,
-	child: Instance | TextInstance,
+  parentInstance: Instance | Container,
+  child: Instance | TextInstance,
 ): void {
-	const index = parentInstance.children.indexOf(child);
-	parentInstance.children.splice(index, 1);
+  const index = parentInstance.children.indexOf(child);
+  parentInstance.children.splice(index, 1);
 }
 
 export function getRootHostContext(
-	rootContainerInstance: Container,
+  rootContainerInstance: Container,
 ): HostContext {
-	return NO_CONTEXT;
+  return NO_CONTEXT;
 }
 
 export function getChildHostContext(
-	parentHostContext: HostContext,
-	type: string,
-	rootContainerInstance: Container,
+  parentHostContext: HostContext,
+  type: string,
+  rootContainerInstance: Container,
 ): HostContext {
-	return NO_CONTEXT;
+  return NO_CONTEXT;
 }
 
 export function prepareForCommit(containerInfo: Container): void {
-	// noop
+  // noop
 }
 
 export function resetAfterCommit(containerInfo: Container): void {
-	// noop
+  // noop
 }
 
 export function createInstance(
-	type: string,
-	props: Props,
-	rootContainerInstance: Container,
-	hostContext: Object,
-	internalInstanceHandle: Object,
+  type: string,
+  props: Props,
+  rootContainerInstance: Container,
+  hostContext: Object,
+  internalInstanceHandle: Object,
 ): Instance {
-	return {
-		type,
-		props,
-		children: [],
-		rootContainerInstance,
-		tag: 'INSTANCE',
-	};
+  return {
+    type,
+    props,
+    children: [],
+    rootContainerInstance,
+    tag: 'INSTANCE',
+  };
 }
 
 export function appendInitialChild(
-	parentInstance: Instance,
-	child: Instance | TextInstance,
+  parentInstance: Instance,
+  child: Instance | TextInstance,
 ): void {
-	const index = parentInstance.children.indexOf(child);
-	if (index !== -1) {
-		parentInstance.children.splice(index, 1);
-	}
-	parentInstance.children.push(child);
+  const index = parentInstance.children.indexOf(child);
+  if (index !== -1) {
+    parentInstance.children.splice(index, 1);
+  }
+  parentInstance.children.push(child);
 }
 
 export function finalizeInitialChildren(
-	testElement: Instance,
-	type: string,
-	props: Props,
-	rootContainerInstance: Container,
-	hostContext: Object,
+  testElement: Instance,
+  type: string,
+  props: Props,
+  rootContainerInstance: Container,
+  hostContext: Object,
 ): boolean {
-	return false;
+  return false;
 }
 
 export function prepareUpdate(
-	testElement: Instance,
-	type: string,
-	oldProps: Props,
-	newProps: Props,
-	rootContainerInstance: Container,
-	hostContext: Object,
+  testElement: Instance,
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  rootContainerInstance: Container,
+  hostContext: Object,
 ): null | {} {
-	return UPDATE_SIGNAL;
+  return UPDATE_SIGNAL;
 }
 
 export function shouldSetTextContent(type: string, props: Props): boolean {
-	return false;
+  return false;
 }
 
 export function shouldDeprioritizeSubtree(type: string, props: Props): boolean {
-	return false;
+  return false;
 }
 
 export function createTextInstance(
-	text: string,
-	rootContainerInstance: Container,
-	hostContext: Object,
-	internalInstanceHandle: Object,
+  text: string,
+  rootContainerInstance: Container,
+  hostContext: Object,
+  internalInstanceHandle: Object,
 ): TextInstance {
-	return {
-		text,
-		tag: 'TEXT',
-	};
+  return {
+    text,
+    tag: 'TEXT',
+  };
 }
 
 export const isPrimaryRenderer = false;
@@ -210,36 +210,36 @@ export const noTimeout = -1;
 export const supportsMutation = true;
 
 export function commitUpdate(
-	instance: Instance,
-	updatePayload: {},
-	type: string,
-	oldProps: Props,
-	newProps: Props,
-	internalInstanceHandle: Object,
+  instance: Instance,
+  updatePayload: {},
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  internalInstanceHandle: Object,
 ): void {
-	instance.type = type;
-	instance.props = newProps;
+  instance.type = type;
+  instance.props = newProps;
 }
 
 export function commitMount(
-	instance: Instance,
-	type: string,
-	newProps: Props,
-	internalInstanceHandle: Object,
+  instance: Instance,
+  type: string,
+  newProps: Props,
+  internalInstanceHandle: Object,
 ): void {
-	// noop
+  // noop
 }
 
 export function commitTextUpdate(
-	textInstance: TextInstance,
-	oldText: string,
-	newText: string,
+  textInstance: TextInstance,
+  oldText: string,
+  newText: string,
 ): void {
-	textInstance.text = newText;
+  textInstance.text = newText;
 }
 
 export function resetTextContent(testElement: Instance): void {
-	// noop
+  // noop
 }
 
 export const appendChildToContainer = appendChild;

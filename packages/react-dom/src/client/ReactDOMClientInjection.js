@@ -9,9 +9,9 @@ import * as EventPluginHub from 'events/EventPluginHub';
 import * as EventPluginUtils from 'events/EventPluginUtils';
 
 import {
-	getFiberCurrentPropsFromNode,
-	getInstanceFromNode,
-	getNodeFromInstance,
+  getFiberCurrentPropsFromNode,
+  getInstanceFromNode,
+  getNodeFromInstance,
 } from './ReactDOMComponentTree';
 import BeforeInputEventPlugin from '../events/BeforeInputEventPlugin';
 import ChangeEventPlugin from '../events/ChangeEventPlugin';
@@ -25,9 +25,9 @@ import SimpleEventPlugin from '../events/SimpleEventPlugin';
  */
 EventPluginHub.injection.injectEventPluginOrder(DOMEventPluginOrder);
 EventPluginUtils.setComponentTree(
-	getFiberCurrentPropsFromNode,
-	getInstanceFromNode,
-	getNodeFromInstance,
+  getFiberCurrentPropsFromNode,
+  getInstanceFromNode,
+  getNodeFromInstance,
 );
 
 /**
@@ -35,9 +35,9 @@ EventPluginUtils.setComponentTree(
  * them).
  */
 EventPluginHub.injection.injectEventPluginsByName({
-	SimpleEventPlugin: SimpleEventPlugin,
-	EnterLeaveEventPlugin: EnterLeaveEventPlugin,
-	ChangeEventPlugin: ChangeEventPlugin,
-	SelectEventPlugin: SelectEventPlugin,
-	BeforeInputEventPlugin: BeforeInputEventPlugin,
+  SimpleEventPlugin: SimpleEventPlugin,
+  EnterLeaveEventPlugin: EnterLeaveEventPlugin,
+  ChangeEventPlugin: ChangeEventPlugin,
+  SelectEventPlugin: SelectEventPlugin,
+  BeforeInputEventPlugin: BeforeInputEventPlugin,
 });

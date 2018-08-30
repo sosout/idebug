@@ -14,10 +14,10 @@ import {TEXT_NODE} from '../shared/HTMLNodeType';
  * @return {DOMElement|DOMTextNode}
  */
 function getLeafNode(node) {
-	while (node && node.firstChild) {
-		node = node.firstChild;
-	}
-	return node;
+  while (node && node.firstChild) {
+    node = node.firstChild;
+  }
+  return node;
 }
 
 /**
@@ -28,12 +28,12 @@ function getLeafNode(node) {
  * @return {?DOMElement|DOMTextNode}
  */
 function getSiblingNode(node) {
-	while (node) {
-		if (node.nextSibling) {
-			return node.nextSibling;
-		}
-		node = node.parentNode;
-	}
+  while (node) {
+    if (node.nextSibling) {
+      return node.nextSibling;
+    }
+    node = node.parentNode;
+  }
 }
 
 /**
@@ -44,26 +44,26 @@ function getSiblingNode(node) {
  * @return {?object}
  */
 function getNodeForCharacterOffset(root, offset) {
-	let node = getLeafNode(root);
-	let nodeStart = 0;
-	let nodeEnd = 0;
+  let node = getLeafNode(root);
+  let nodeStart = 0;
+  let nodeEnd = 0;
 
-	while (node) {
-		if (node.nodeType === TEXT_NODE) {
-			nodeEnd = nodeStart + node.textContent.length;
+  while (node) {
+    if (node.nodeType === TEXT_NODE) {
+      nodeEnd = nodeStart + node.textContent.length;
 
-			if (nodeStart <= offset && nodeEnd >= offset) {
-				return {
-					node: node,
-					offset: offset - nodeStart,
-				};
-			}
+      if (nodeStart <= offset && nodeEnd >= offset) {
+        return {
+          node: node,
+          offset: offset - nodeStart,
+        };
+      }
 
-			nodeStart = nodeEnd;
-		}
+      nodeStart = nodeEnd;
+    }
 
-		node = getLeafNode(getSiblingNode(node));
-	}
+    node = getLeafNode(getSiblingNode(node));
+  }
 }
 
 export default getNodeForCharacterOffset;

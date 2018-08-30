@@ -62,18 +62,26 @@ function getIteratorFn(maybeIterable) {
 // Re-export dynamic flags from the www version.
 var _require = require("ReactFeatureFlags");
 
-var enableSuspense = _require.enableSuspense,
-  debugRenderPhaseSideEffects = _require.debugRenderPhaseSideEffects,
-  debugRenderPhaseSideEffectsForStrictMode =
-    _require.debugRenderPhaseSideEffectsForStrictMode,
-  enableGetDerivedStateFromCatch = _require.enableGetDerivedStateFromCatch,
-  replayFailedUnitOfWorkWithInvokeGuardedCallback =
-    _require.replayFailedUnitOfWorkWithInvokeGuardedCallback,
-  warnAboutDeprecatedLifecycles = _require.warnAboutDeprecatedLifecycles;
+var enableSuspense = _require.enableSuspense;
+var debugRenderPhaseSideEffects = _require.debugRenderPhaseSideEffects;
+var debugRenderPhaseSideEffectsForStrictMode =
+  _require.debugRenderPhaseSideEffectsForStrictMode;
+var enableGetDerivedStateFromCatch = _require.enableGetDerivedStateFromCatch;
+var replayFailedUnitOfWorkWithInvokeGuardedCallback =
+  _require.replayFailedUnitOfWorkWithInvokeGuardedCallback;
+var warnAboutDeprecatedLifecycles = _require.warnAboutDeprecatedLifecycles;
+
+// In www, we have experimental support for gathering data
+// from User Timing API calls in production. By default, we
+// only emit performance.mark/measure calls in true. But if
+// somebody calls addUserTimingListener() which is exposed as an
+// experimental FB-only export, we call performance.mark/measure
+// as long as there is more than a single listener.
 
 var invariant = require("invariant");
 
 // Relying on the `invariant()` implementation lets us
+// preserve the format and params in the www builds.
 
 var lowPriorityWarning = require("lowPriorityWarning");
 
@@ -522,8 +530,8 @@ var RESERVED_PROPS = {
   __source: true
 };
 
-var specialPropKeyWarningShown = void 0,
-  specialPropRefWarningShown = void 0;
+var specialPropKeyWarningShown = void 0;
+var specialPropRefWarningShown = void 0;
 
 function hasValidRef(config) {
   {
@@ -759,6 +767,11 @@ function createElement(type, config, children) {
     props
   );
 }
+
+/**
+ * Return a function that produces ReactElements of a given type.
+ * See https://reactjs.org/docs/react-api.html#createfactory
+ */
 
 function cloneAndReplaceKey(oldElement, newKey) {
   var newElement = ReactElement(
@@ -1776,15 +1789,15 @@ if (enableSuspense) {
   React.lazy = lazy;
 }
 
-var React$1 = /*#__PURE__*/ Object.freeze({
+var React$2 = Object.freeze({
   default: React
 });
 
-var React$2 = (React$1 && React) || React$1;
+var React$3 = (React$2 && React) || React$2;
 
 // TODO: decide on the top-level export form.
 // This is hacky but makes it work with both Rollup and Jest.
-var react = React$2.default || React$2;
+var react = React$3.default || React$3;
 
 module.exports = react;
 

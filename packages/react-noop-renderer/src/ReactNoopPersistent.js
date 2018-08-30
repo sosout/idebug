@@ -18,8 +18,8 @@ import ReactFiberPersistentReconciler from 'react-reconciler/persistent';
 import createReactNoop from './createReactNoop';
 
 const ReactNoopPersistent = createReactNoop(
-	ReactFiberPersistentReconciler, // reconciler
-	false, // useMutation
+  ReactFiberPersistentReconciler, // reconciler
+  false, // useMutation
 );
 
 export default ReactNoopPersistent;

@@ -8,7 +8,7 @@
 'use strict';
 
 const BatchedBridge = {
-	registerCallableModule: jest.fn(),
+  registerCallableModule: jest.fn(),
 };
 
 module.exports = BatchedBridge;

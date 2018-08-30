@@ -10,50 +10,50 @@
 'use strict';
 
 import {
-	REACT_ASYNC_MODE_TYPE,
-	REACT_CONTEXT_TYPE,
-	REACT_ELEMENT_TYPE,
-	REACT_FORWARD_REF_TYPE,
-	REACT_FRAGMENT_TYPE,
-	REACT_PORTAL_TYPE,
-	REACT_PROFILER_TYPE,
-	REACT_PROVIDER_TYPE,
-	REACT_STRICT_MODE_TYPE,
+  REACT_ASYNC_MODE_TYPE,
+  REACT_CONTEXT_TYPE,
+  REACT_ELEMENT_TYPE,
+  REACT_FORWARD_REF_TYPE,
+  REACT_FRAGMENT_TYPE,
+  REACT_PORTAL_TYPE,
+  REACT_PROFILER_TYPE,
+  REACT_PROVIDER_TYPE,
+  REACT_STRICT_MODE_TYPE,
 } from 'shared/ReactSymbols';
 import isValidElementType from 'shared/isValidElementType';
 
 export function typeOf(object: any) {
-	if (typeof object === 'object' && object !== null) {
-		const $$typeof = object.$$typeof;
+  if (typeof object === 'object' && object !== null) {
+    const $$typeof = object.$$typeof;
 
-		switch ($$typeof) {
-		case REACT_ELEMENT_TYPE:
-			const type = object.type;
+    switch ($$typeof) {
+      case REACT_ELEMENT_TYPE:
+        const type = object.type;
 
-			switch (type) {
-			case REACT_ASYNC_MODE_TYPE:
-			case REACT_FRAGMENT_TYPE:
-			case REACT_PROFILER_TYPE:
-			case REACT_STRICT_MODE_TYPE:
-				return type;
-			default:
-				const $$typeofType = type && type.$$typeof;
+        switch (type) {
+          case REACT_ASYNC_MODE_TYPE:
+          case REACT_FRAGMENT_TYPE:
+          case REACT_PROFILER_TYPE:
+          case REACT_STRICT_MODE_TYPE:
+            return type;
+          default:
+            const $$typeofType = type && type.$$typeof;
 
-				switch ($$typeofType) {
-				case REACT_CONTEXT_TYPE:
-				case REACT_FORWARD_REF_TYPE:
-				case REACT_PROVIDER_TYPE:
-					return $$typeofType;
-				default:
-					return $$typeof;
-				}
-			}
-		case REACT_PORTAL_TYPE:
-			return $$typeof;
-		}
-	}
+            switch ($$typeofType) {
+              case REACT_CONTEXT_TYPE:
+              case REACT_FORWARD_REF_TYPE:
+              case REACT_PROVIDER_TYPE:
+                return $$typeofType;
+              default:
+                return $$typeof;
+            }
+        }
+      case REACT_PORTAL_TYPE:
+        return $$typeof;
+    }
+  }
 
-	return undefined;
+  return undefined;
 }
 
 export const AsyncMode = REACT_ASYNC_MODE_TYPE;
@@ -69,33 +69,33 @@ export const StrictMode = REACT_STRICT_MODE_TYPE;
 export {isValidElementType};
 
 export function isAsyncMode(object: any) {
-	return typeOf(object) === REACT_ASYNC_MODE_TYPE;
+  return typeOf(object) === REACT_ASYNC_MODE_TYPE;
 }
 export function isContextConsumer(object: any) {
-	return typeOf(object) === REACT_CONTEXT_TYPE;
+  return typeOf(object) === REACT_CONTEXT_TYPE;
 }
 export function isContextProvider(object: any) {
-	return typeOf(object) === REACT_PROVIDER_TYPE;
+  return typeOf(object) === REACT_PROVIDER_TYPE;
 }
 export function isElement(object: any) {
-	return (
-		typeof object === 'object' &&
+  return (
+    typeof object === 'object' &&
     object !== null &&
     object.$$typeof === REACT_ELEMENT_TYPE
-	);
+  );
 }
 export function isForwardRef(object: any) {
-	return typeOf(object) === REACT_FORWARD_REF_TYPE;
+  return typeOf(object) === REACT_FORWARD_REF_TYPE;
 }
 export function isFragment(object: any) {
-	return typeOf(object) === REACT_FRAGMENT_TYPE;
+  return typeOf(object) === REACT_FRAGMENT_TYPE;
 }
 export function isProfiler(object: any) {
-	return typeOf(object) === REACT_PROFILER_TYPE;
+  return typeOf(object) === REACT_PROFILER_TYPE;
 }
 export function isPortal(object: any) {
-	return typeOf(object) === REACT_PORTAL_TYPE;
+  return typeOf(object) === REACT_PORTAL_TYPE;
 }
 export function isStrictMode(object: any) {
-	return typeOf(object) === REACT_STRICT_MODE_TYPE;
+  return typeOf(object) === REACT_STRICT_MODE_TYPE;
 }

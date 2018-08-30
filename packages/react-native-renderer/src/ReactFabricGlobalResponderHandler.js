@@ -11,14 +11,14 @@
 import UIManager from 'UIManager';
 
 const ReactFabricGlobalResponderHandler = {
-	onChange: function(from: any, to: any, blockNativeResponder: boolean) {
-		if (to !== null) {
-			const tag = to.stateNode.canonical._nativeTag;
-			UIManager.setJSResponder(tag, blockNativeResponder);
-		} else {
-			UIManager.clearJSResponder();
-		}
-	},
+  onChange: function(from: any, to: any, blockNativeResponder: boolean) {
+    if (to !== null) {
+      const tag = to.stateNode.canonical._nativeTag;
+      UIManager.setJSResponder(tag, blockNativeResponder);
+    } else {
+      UIManager.clearJSResponder();
+    }
+  },
 };
 
 export default ReactFabricGlobalResponderHandler;

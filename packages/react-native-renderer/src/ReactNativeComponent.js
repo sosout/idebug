@@ -9,11 +9,11 @@
  */
 
 import type {
-	MeasureInWindowOnSuccessCallback,
-	MeasureLayoutOnSuccessCallback,
-	MeasureOnSuccessCallback,
-	NativeMethodsMixinType,
-	ReactNativeBaseComponentViewConfig,
+  MeasureInWindowOnSuccessCallback,
+  MeasureLayoutOnSuccessCallback,
+  MeasureOnSuccessCallback,
+  NativeMethodsMixinType,
+  ReactNativeBaseComponentViewConfig,
 } from './ReactNativeTypes';
 
 import React from 'react';
@@ -25,10 +25,10 @@ import * as ReactNativeAttributePayload from './ReactNativeAttributePayload';
 import {mountSafeCallback} from './NativeMethodsMixinUtils';
 
 export default function(
-	findNodeHandle: any => ?number,
-	findHostInstance: any => any,
+  findNodeHandle: any => ?number,
+  findHostInstance: any => any,
 ) {
-	/**
+  /**
    * Superclass that provides methods to access the underlying native component.
    * This can be useful when you want to focus a view or measure its dimensions.
    *
@@ -39,7 +39,7 @@ export default function(
    *
    * @abstract
    */
-	class ReactNativeComponent<Props, State = void> extends React.Component<
+  class ReactNativeComponent<Props, State = void> extends React.Component<
     Props,
     State,
   > {
@@ -54,14 +54,14 @@ export default function(
      * Removes focus. This is the opposite of `focus()`.
      */
     blur(): void {
-    	TextInputState.blurTextInput(findNodeHandle(this));
+      TextInputState.blurTextInput(findNodeHandle(this));
     }
 
     /**
      * Requests focus. The exact behavior depends on the platform and view.
      */
     focus(): void {
-    	TextInputState.focusTextInput(findNodeHandle(this));
+      TextInputState.focusTextInput(findNodeHandle(this));
     }
 
     /**
@@ -80,10 +80,10 @@ export default function(
      * [`onLayout` prop](docs/view.html#onlayout) instead.
      */
     measure(callback: MeasureOnSuccessCallback): void {
-    	UIManager.measure(
-    		findNodeHandle(this),
-    		mountSafeCallback(this, callback),
-    	);
+      UIManager.measure(
+        findNodeHandle(this),
+        mountSafeCallback(this, callback),
+      );
     }
 
     /**
@@ -100,10 +100,10 @@ export default function(
      * These values are not available until after natives rendering completes.
      */
     measureInWindow(callback: MeasureInWindowOnSuccessCallback): void {
-    	UIManager.measureInWindow(
-    		findNodeHandle(this),
-    		mountSafeCallback(this, callback),
-    	);
+      UIManager.measureInWindow(
+        findNodeHandle(this),
+        mountSafeCallback(this, callback),
+      );
     }
 
     /**
@@ -113,16 +113,16 @@ export default function(
      * Obtain a native node handle with `ReactNative.findNodeHandle(component)`.
      */
     measureLayout(
-    	relativeToNativeNode: number,
-    	onSuccess: MeasureLayoutOnSuccessCallback,
-    	onFail: () => void /* currently unused */,
+      relativeToNativeNode: number,
+      onSuccess: MeasureLayoutOnSuccessCallback,
+      onFail: () => void /* currently unused */,
     ): void {
-    	UIManager.measureLayout(
-    		findNodeHandle(this),
-    		relativeToNativeNode,
-    		mountSafeCallback(this, onFail),
-    		mountSafeCallback(this, onSuccess),
-    	);
+      UIManager.measureLayout(
+        findNodeHandle(this),
+        relativeToNativeNode,
+        mountSafeCallback(this, onFail),
+        mountSafeCallback(this, onSuccess),
+      );
     }
 
     /**
@@ -132,50 +132,50 @@ export default function(
      * Manipulation](docs/direct-manipulation.html)).
      */
     setNativeProps(nativeProps: Object): void {
-    	// Class components don't have viewConfig -> validateAttributes.
-    	// Nor does it make sense to set native props on a non-native component.
-    	// Instead, find the nearest host component and set props on it.
-    	// Use findNodeHandle() rather than ReactNative.findNodeHandle() because
-    	// We want the instance/wrapper (not the native tag).
-    	let maybeInstance;
+      // Class components don't have viewConfig -> validateAttributes.
+      // Nor does it make sense to set native props on a non-native component.
+      // Instead, find the nearest host component and set props on it.
+      // Use findNodeHandle() rather than ReactNative.findNodeHandle() because
+      // We want the instance/wrapper (not the native tag).
+      let maybeInstance;
 
-    	// Fiber errors if findNodeHandle is called for an umounted component.
-    	// Tests using ReactTestRenderer will trigger this case indirectly.
-    	// Mimicking stack behavior, we should silently ignore this case.
-    	// TODO Fix ReactTestRenderer so we can remove this try/catch.
-    	try {
-    		maybeInstance = findHostInstance(this);
-    	} catch (error) {}
+      // Fiber errors if findNodeHandle is called for an umounted component.
+      // Tests using ReactTestRenderer will trigger this case indirectly.
+      // Mimicking stack behavior, we should silently ignore this case.
+      // TODO Fix ReactTestRenderer so we can remove this try/catch.
+      try {
+        maybeInstance = findHostInstance(this);
+      } catch (error) {}
 
-    	// If there is no host component beneath this we should fail silently.
-    	// This is not an error; it could mean a class component rendered null.
-    	if (maybeInstance == null) {
-    		return;
-    	}
+      // If there is no host component beneath this we should fail silently.
+      // This is not an error; it could mean a class component rendered null.
+      if (maybeInstance == null) {
+        return;
+      }
 
-    	const viewConfig: ReactNativeBaseComponentViewConfig =
+      const viewConfig: ReactNativeBaseComponentViewConfig =
         maybeInstance.viewConfig || maybeInstance.canonical.viewConfig;
 
-    	const updatePayload = ReactNativeAttributePayload.create(
-    		nativeProps,
-    		viewConfig.validAttributes,
-    	);
+      const updatePayload = ReactNativeAttributePayload.create(
+        nativeProps,
+        viewConfig.validAttributes,
+      );
 
-    	// Avoid the overhead of bridge calls if there's no update.
-    	// This is an expensive no-op for Android, and causes an unnecessary
-    	// view invalidation for certain components (eg RCTTextInput) on iOS.
-    	if (updatePayload != null) {
-    		UIManager.updateView(
-    			maybeInstance._nativeTag,
-    			viewConfig.uiViewClassName,
-    			updatePayload,
-    		);
-    	}
+      // Avoid the overhead of bridge calls if there's no update.
+      // This is an expensive no-op for Android, and causes an unnecessary
+      // view invalidation for certain components (eg RCTTextInput) on iOS.
+      if (updatePayload != null) {
+        UIManager.updateView(
+          maybeInstance._nativeTag,
+          viewConfig.uiViewClassName,
+          updatePayload,
+        );
+      }
     }
-	}
+  }
 
-	// eslint-disable-next-line no-unused-expressions
-	(ReactNativeComponent.prototype: NativeMethodsMixinType);
+  // eslint-disable-next-line no-unused-expressions
+  (ReactNativeComponent.prototype: NativeMethodsMixinType);
 
-	return ReactNativeComponent;
+  return ReactNativeComponent;
 }

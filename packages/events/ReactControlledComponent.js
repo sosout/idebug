@@ -8,8 +8,8 @@
 import invariant from 'shared/invariant';
 
 import {
-	getInstanceFromNode,
-	getFiberCurrentPropsFromNode,
+  getInstanceFromNode,
+  getFiberCurrentPropsFromNode,
 } from './EventPluginUtils';
 
 // Use to restore controlled state after a change event has fired.
@@ -19,55 +19,55 @@ let restoreTarget = null;
 let restoreQueue = null;
 
 function restoreStateOfTarget(target) {
-	// We perform this translation at the end of the event loop so that we
-	// always receive the correct fiber here
-	const internalInstance = getInstanceFromNode(target);
-	if (!internalInstance) {
-		// Unmounted
-		return;
-	}
-	invariant(
-		typeof restoreImpl === 'function',
-		'setRestoreImplementation() needs to be called to handle a target for controlled ' +
+  // We perform this translation at the end of the event loop so that we
+  // always receive the correct fiber here
+  const internalInstance = getInstanceFromNode(target);
+  if (!internalInstance) {
+    // Unmounted
+    return;
+  }
+  invariant(
+    typeof restoreImpl === 'function',
+    'setRestoreImplementation() needs to be called to handle a target for controlled ' +
       'events. This error is likely caused by a bug in React. Please file an issue.',
-	);
-	const props = getFiberCurrentPropsFromNode(internalInstance.stateNode);
-	restoreImpl(internalInstance.stateNode, internalInstance.type, props);
+  );
+  const props = getFiberCurrentPropsFromNode(internalInstance.stateNode);
+  restoreImpl(internalInstance.stateNode, internalInstance.type, props);
 }
 
 export function setRestoreImplementation(impl) {
-	restoreImpl = impl;
+  restoreImpl = impl;
 }
 
 export function enqueueStateRestore(target) {
-	if (restoreTarget) {
-		if (restoreQueue) {
-			restoreQueue.push(target);
-		} else {
-			restoreQueue = [target];
-		}
-	} else {
-		restoreTarget = target;
-	}
+  if (restoreTarget) {
+    if (restoreQueue) {
+      restoreQueue.push(target);
+    } else {
+      restoreQueue = [target];
+    }
+  } else {
+    restoreTarget = target;
+  }
 }
 
 export function needsStateRestore(): boolean {
-	return restoreTarget !== null || restoreQueue !== null;
+  return restoreTarget !== null || restoreQueue !== null;
 }
 
 export function restoreStateIfNeeded() {
-	if (!restoreTarget) {
-		return;
-	}
-	const target = restoreTarget;
-	const queuedTargets = restoreQueue;
-	restoreTarget = null;
-	restoreQueue = null;
+  if (!restoreTarget) {
+    return;
+  }
+  const target = restoreTarget;
+  const queuedTargets = restoreQueue;
+  restoreTarget = null;
+  restoreQueue = null;
 
-	restoreStateOfTarget(target);
-	if (queuedTargets) {
-		for (let i = 0; i < queuedTargets.length; i++) {
-			restoreStateOfTarget(queuedTargets[i]);
-		}
-	}
+  restoreStateOfTarget(target);
+  if (queuedTargets) {
+    for (let i = 0; i < queuedTargets.length; i++) {
+      restoreStateOfTarget(queuedTargets[i]);
+    }
+  }
 }

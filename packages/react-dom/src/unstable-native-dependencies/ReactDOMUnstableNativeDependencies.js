@@ -12,21 +12,21 @@ import ResponderTouchHistoryStore from 'events/ResponderTouchHistoryStore';
 
 // This is used by react-native-web.
 export function injectComponentTree(ComponentTree) {
-	EventPluginUtils.setComponentTree(
-		ComponentTree.getFiberCurrentPropsFromNode,
-		ComponentTree.getInstanceFromNode,
-		ComponentTree.getNodeFromInstance,
-	);
+  EventPluginUtils.setComponentTree(
+    ComponentTree.getFiberCurrentPropsFromNode,
+    ComponentTree.getInstanceFromNode,
+    ComponentTree.getNodeFromInstance,
+  );
 }
 
 export {ResponderEventPlugin, ResponderTouchHistoryStore};
 
 // Inject react-dom's ComponentTree into this module.
 const {
-	ReactDOMComponentTree,
+  ReactDOMComponentTree,
 } = ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 EventPluginUtils.setComponentTree(
-	ReactDOMComponentTree.getFiberCurrentPropsFromNode,
-	ReactDOMComponentTree.getInstanceFromNode,
-	ReactDOMComponentTree.getNodeFromInstance,
+  ReactDOMComponentTree.getFiberCurrentPropsFromNode,
+  ReactDOMComponentTree.getInstanceFromNode,
+  ReactDOMComponentTree.getNodeFromInstance,
 );

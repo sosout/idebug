@@ -25,15 +25,15 @@ export opaque type DOMTopLevelEventType = string;
 // (It is the only module that is allowed to access these methods.)
 
 export function unsafeCastStringToDOMTopLevelType(
-	topLevelType: string,
+  topLevelType: string,
 ): DOMTopLevelEventType {
-	return topLevelType;
+  return topLevelType;
 }
 
 export function unsafeCastDOMTopLevelTypeToString(
-	topLevelType: DOMTopLevelEventType,
+  topLevelType: DOMTopLevelEventType,
 ): string {
-	return topLevelType;
+  return topLevelType;
 }
 
 export type TopLevelType = DOMTopLevelEventType | RNTopLevelEventType;

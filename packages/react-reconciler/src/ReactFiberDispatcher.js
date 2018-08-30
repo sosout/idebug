@@ -10,5 +10,5 @@
 import {readContext} from './ReactFiberNewContext';
 
 export const Dispatcher = {
-	readContext,
+  readContext,
 };

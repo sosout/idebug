@@ -13,9 +13,9 @@ import SyntheticEvent from 'events/SyntheticEvent';
  * @see https://developer.mozilla.org/en-US/docs/Web/API/TransitionEvent
  */
 const SyntheticTransitionEvent = SyntheticEvent.extend({
-	propertyName: null,
-	elapsedTime: null,
-	pseudoElement: null,
+  propertyName: null,
+  elapsedTime: null,
+  pseudoElement: null,
 });
 
 export default SyntheticTransitionEvent;

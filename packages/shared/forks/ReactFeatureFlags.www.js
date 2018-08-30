@@ -12,12 +12,12 @@ import typeof * as FeatureFlagsShimType from './ReactFeatureFlags.www';
 
 // Re-export dynamic flags from the www version.
 export const {
-	enableSuspense,
-	debugRenderPhaseSideEffects,
-	debugRenderPhaseSideEffectsForStrictMode,
-	enableGetDerivedStateFromCatch,
-	replayFailedUnitOfWorkWithInvokeGuardedCallback,
-	warnAboutDeprecatedLifecycles,
+  enableSuspense,
+  debugRenderPhaseSideEffects,
+  debugRenderPhaseSideEffectsForStrictMode,
+  enableGetDerivedStateFromCatch,
+  replayFailedUnitOfWorkWithInvokeGuardedCallback,
+  warnAboutDeprecatedLifecycles,
 } = require('ReactFeatureFlags');
 
 // The rest of the flags are static for better dead code elimination.
@@ -36,16 +36,16 @@ export const enableInteractionTracking = __PROFILE__;
 
 let refCount = 0;
 export function addUserTimingListener() {
-	if (__DEV__) {
-		// Noop.
-		return () => {};
-	}
-	refCount++;
-	updateFlagOutsideOfReactCallStack();
-	return () => {
-		refCount--;
-		updateFlagOutsideOfReactCallStack();
-	};
+  if (__DEV__) {
+    // Noop.
+    return () => {};
+  }
+  refCount++;
+  updateFlagOutsideOfReactCallStack();
+  return () => {
+    refCount--;
+    updateFlagOutsideOfReactCallStack();
+  };
 }
 
 // The flag is intentionally updated in a timeout.
@@ -53,12 +53,12 @@ export function addUserTimingListener() {
 // commit since that would cause mismatching user timing API calls.
 let timeout = null;
 function updateFlagOutsideOfReactCallStack() {
-	if (!timeout) {
-		timeout = setTimeout(() => {
-			timeout = null;
-			enableUserTimingAPI = refCount > 0;
-		});
-	}
+  if (!timeout) {
+    timeout = setTimeout(() => {
+      timeout = null;
+      enableUserTimingAPI = refCount > 0;
+    });
+  }
 }
 
 // Flow magic to verify the exports of this file match the original version.

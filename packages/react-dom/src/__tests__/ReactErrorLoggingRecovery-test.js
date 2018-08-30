@@ -12,7 +12,7 @@
 // It reproduces a combination of conditions that led to a problem.
 
 if (global.window) {
-	throw new Error('This test must run in a Node environment.');
+  throw new Error('This test must run in a Node environment.');
 }
 
 // The issue only reproduced when React was loaded before JSDOM.
@@ -24,50 +24,50 @@ const ReactDOM = require('react-dom');
 const {JSDOM} = require('jsdom');
 global.requestAnimationFrame = setTimeout;
 global.cancelAnimationFrame = clearTimeout;
-const jsdom = new JSDOM('<div id="app-root"></div>');
+const jsdom = new JSDOM(`<div id="app-root"></div>`);
 global.window = jsdom.window;
 global.document = jsdom.window.document;
 global.navigator = jsdom.window.navigator;
 
 class Bad extends React.Component {
-	componentDidUpdate() {
-		throw new Error('no');
-	}
-	render() {
-		return null;
-	}
+  componentDidUpdate() {
+    throw new Error('no');
+  }
+  render() {
+    return null;
+  }
 }
 
 describe('ReactErrorLoggingRecovery', () => {
-	let originalConsoleError = console.error;
+  let originalConsoleError = console.error;
 
-	beforeEach(() => {
-		console.error = error => {
-			throw new Error('Buggy console.error');
-		};
-	});
+  beforeEach(() => {
+    console.error = error => {
+      throw new Error('Buggy console.error');
+    };
+  });
 
-	afterEach(() => {
-		console.error = originalConsoleError;
-	});
+  afterEach(() => {
+    console.error = originalConsoleError;
+  });
 
-	it('should recover from errors in console.error', function() {
-		const div = document.createElement('div');
-		let didCatch = false;
-		try {
-			ReactDOM.render(<Bad />, div);
-			ReactDOM.render(<Bad />, div);
-		} catch (e) {
-			expect(e.message).toBe('no');
-			didCatch = true;
-		}
-		expect(didCatch).toBe(true);
-		ReactDOM.render(<span>Hello</span>, div);
-		expect(div.firstChild.textContent).toBe('Hello');
+  it('should recover from errors in console.error', function() {
+    const div = document.createElement('div');
+    let didCatch = false;
+    try {
+      ReactDOM.render(<Bad />, div);
+      ReactDOM.render(<Bad />, div);
+    } catch (e) {
+      expect(e.message).toBe('no');
+      didCatch = true;
+    }
+    expect(didCatch).toBe(true);
+    ReactDOM.render(<span>Hello</span>, div);
+    expect(div.firstChild.textContent).toBe('Hello');
 
-		// Verify the console.error bug is surfaced
-		expect(() => {
-			jest.runAllTimers();
-		}).toThrow('Buggy console.error');
-	});
+    // Verify the console.error bug is surfaced
+    expect(() => {
+      jest.runAllTimers();
+    }).toThrow('Buggy console.error');
+  });
 });

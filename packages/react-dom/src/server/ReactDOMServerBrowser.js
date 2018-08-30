@@ -11,26 +11,26 @@ import invariant from 'shared/invariant';
 import {renderToString, renderToStaticMarkup} from './ReactDOMStringRenderer';
 
 function renderToNodeStream() {
-	invariant(
-		false,
-		'ReactDOMServer.renderToNodeStream(): The streaming API is not available ' +
+  invariant(
+    false,
+    'ReactDOMServer.renderToNodeStream(): The streaming API is not available ' +
       'in the browser. Use ReactDOMServer.renderToString() instead.',
-	);
+  );
 }
 
 function renderToStaticNodeStream() {
-	invariant(
-		false,
-		'ReactDOMServer.renderToStaticNodeStream(): The streaming API is not available ' +
+  invariant(
+    false,
+    'ReactDOMServer.renderToStaticNodeStream(): The streaming API is not available ' +
       'in the browser. Use ReactDOMServer.renderToStaticMarkup() instead.',
-	);
+  );
 }
 
 // Note: when changing this, also consider https://github.com/facebook/react/issues/11526
 export default {
-	renderToString,
-	renderToStaticMarkup,
-	renderToNodeStream,
-	renderToStaticNodeStream,
-	version: ReactVersion,
+  renderToString,
+  renderToStaticMarkup,
+  renderToNodeStream,
+  renderToStaticNodeStream,
+  version: ReactVersion,
 };

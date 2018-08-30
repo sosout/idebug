@@ -9,8 +9,8 @@
 
 import type {AnyNativeEvent} from 'events/PluginModuleType';
 import {
-	accumulateTwoPhaseDispatches,
-	accumulateDirectDispatches,
+  accumulateTwoPhaseDispatches,
+  accumulateDirectDispatches,
 } from 'events/EventPropagators';
 import type {TopLevelType} from 'events/TopLevelEventTypes';
 import * as ReactNativeViewConfigRegistry from 'ReactNativeViewConfigRegistry';
@@ -18,49 +18,49 @@ import SyntheticEvent from 'events/SyntheticEvent';
 import invariant from 'shared/invariant';
 
 const {
-	customBubblingEventTypes,
-	customDirectEventTypes,
-	eventTypes,
+  customBubblingEventTypes,
+  customDirectEventTypes,
+  eventTypes,
 } = ReactNativeViewConfigRegistry;
 
 const ReactNativeBridgeEventPlugin = {
-	eventTypes: eventTypes,
+  eventTypes: eventTypes,
 
-	/**
+  /**
    * @see {EventPluginHub.extractEvents}
    */
-	extractEvents: function(
-		topLevelType: TopLevelType,
-		targetInst: null | Object,
-		nativeEvent: AnyNativeEvent,
-		nativeEventTarget: Object,
-	): ?Object {
-		if (targetInst == null) {
-			// Probably a node belonging to another renderer's tree.
-			return null;
-		}
-		const bubbleDispatchConfig = customBubblingEventTypes[topLevelType];
-		const directDispatchConfig = customDirectEventTypes[topLevelType];
-		invariant(
-			bubbleDispatchConfig || directDispatchConfig,
-			'Unsupported top level event type "%s" dispatched',
-			topLevelType,
-		);
-		const event = SyntheticEvent.getPooled(
-			bubbleDispatchConfig || directDispatchConfig,
-			targetInst,
-			nativeEvent,
-			nativeEventTarget,
-		);
-		if (bubbleDispatchConfig) {
-			accumulateTwoPhaseDispatches(event);
-		} else if (directDispatchConfig) {
-			accumulateDirectDispatches(event);
-		} else {
-			return null;
-		}
-		return event;
-	},
+  extractEvents: function(
+    topLevelType: TopLevelType,
+    targetInst: null | Object,
+    nativeEvent: AnyNativeEvent,
+    nativeEventTarget: Object,
+  ): ?Object {
+    if (targetInst == null) {
+      // Probably a node belonging to another renderer's tree.
+      return null;
+    }
+    const bubbleDispatchConfig = customBubblingEventTypes[topLevelType];
+    const directDispatchConfig = customDirectEventTypes[topLevelType];
+    invariant(
+      bubbleDispatchConfig || directDispatchConfig,
+      'Unsupported top level event type "%s" dispatched',
+      topLevelType,
+    );
+    const event = SyntheticEvent.getPooled(
+      bubbleDispatchConfig || directDispatchConfig,
+      targetInst,
+      nativeEvent,
+      nativeEventTarget,
+    );
+    if (bubbleDispatchConfig) {
+      accumulateTwoPhaseDispatches(event);
+    } else if (directDispatchConfig) {
+      accumulateDirectDispatches(event);
+    } else {
+      return null;
+    }
+    return event;
+  },
 };
 
 export default ReactNativeBridgeEventPlugin;

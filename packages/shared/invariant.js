@@ -20,35 +20,35 @@
 let validateFormat = () => {};
 
 if (__DEV__) {
-	validateFormat = function(format) {
-		if (format === undefined) {
-			throw new Error('invariant requires an error message argument');
-		}
-	};
+  validateFormat = function(format) {
+    if (format === undefined) {
+      throw new Error('invariant requires an error message argument');
+    }
+  };
 }
 
 export default function invariant(condition, format, a, b, c, d, e, f) {
-	validateFormat(format);
+  validateFormat(format);
 
-	if (!condition) {
-		let error;
-		if (format === undefined) {
-			error = new Error(
-				'Minified exception occurred; use the non-minified dev environment ' +
+  if (!condition) {
+    let error;
+    if (format === undefined) {
+      error = new Error(
+        'Minified exception occurred; use the non-minified dev environment ' +
           'for the full error message and additional helpful warnings.',
-			);
-		} else {
-			const args = [a, b, c, d, e, f];
-			let argIndex = 0;
-			error = new Error(
-				format.replace(/%s/g, function() {
-					return args[argIndex++];
-				}),
-			);
-			error.name = 'Invariant Violation';
-		}
+      );
+    } else {
+      const args = [a, b, c, d, e, f];
+      let argIndex = 0;
+      error = new Error(
+        format.replace(/%s/g, function() {
+          return args[argIndex++];
+        }),
+      );
+      error.name = 'Invariant Violation';
+    }
 
-		error.framesToPop = 1; // we don't care about invariant's own frame
-		throw error;
-	}
+    error.framesToPop = 1; // we don't care about invariant's own frame
+    throw error;
+  }
 }

@@ -13,9 +13,9 @@ import SyntheticEvent from 'events/SyntheticEvent';
  * @see https://developer.mozilla.org/en-US/docs/Web/API/AnimationEvent
  */
 const SyntheticAnimationEvent = SyntheticEvent.extend({
-	animationName: null,
-	elapsedTime: null,
-	pseudoElement: null,
+  animationName: null,
+  elapsedTime: null,
+  pseudoElement: null,
 });
 
 export default SyntheticAnimationEvent;

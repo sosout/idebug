@@ -14,7 +14,7 @@ import escapeTextForBrowser from './escapeTextForBrowser';
  * @return {string} An escaped string.
  */
 function quoteAttributeValueForBrowser(value) {
-	return '"' + escapeTextForBrowser(value) + '"';
+  return '"' + escapeTextForBrowser(value) + '"';
 }
 
 export default quoteAttributeValueForBrowser;

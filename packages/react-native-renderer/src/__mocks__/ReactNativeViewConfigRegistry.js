@@ -9,8 +9,8 @@
 'use strict';
 
 import type {
-	ReactNativeBaseComponentViewConfig,
-	ViewConfigGetter,
+  ReactNativeBaseComponentViewConfig,
+  ViewConfigGetter,
 } from './ReactNativeTypes';
 
 import invariant from 'shared/invariant';
@@ -28,39 +28,39 @@ const viewConfigCallbacks = new Map();
 const viewConfigs = new Map();
 
 function processEventTypes(
-	viewConfig: ReactNativeBaseComponentViewConfig,
+  viewConfig: ReactNativeBaseComponentViewConfig,
 ): void {
-	const {bubblingEventTypes, directEventTypes} = viewConfig;
+  const {bubblingEventTypes, directEventTypes} = viewConfig;
 
-	if (__DEV__) {
-		if (bubblingEventTypes != null && directEventTypes != null) {
-			for (const topLevelType in directEventTypes) {
-				invariant(
-					bubblingEventTypes[topLevelType] == null,
-					'Event cannot be both direct and bubbling: %s',
-					topLevelType,
-				);
-			}
-		}
-	}
+  if (__DEV__) {
+    if (bubblingEventTypes != null && directEventTypes != null) {
+      for (const topLevelType in directEventTypes) {
+        invariant(
+          bubblingEventTypes[topLevelType] == null,
+          'Event cannot be both direct and bubbling: %s',
+          topLevelType,
+        );
+      }
+    }
+  }
 
-	if (bubblingEventTypes != null) {
-		for (const topLevelType in bubblingEventTypes) {
-			if (customBubblingEventTypes[topLevelType] == null) {
-				eventTypes[topLevelType] = customBubblingEventTypes[topLevelType] =
+  if (bubblingEventTypes != null) {
+    for (const topLevelType in bubblingEventTypes) {
+      if (customBubblingEventTypes[topLevelType] == null) {
+        eventTypes[topLevelType] = customBubblingEventTypes[topLevelType] =
           bubblingEventTypes[topLevelType];
-			}
-		}
-	}
+      }
+    }
+  }
 
-	if (directEventTypes != null) {
-		for (const topLevelType in directEventTypes) {
-			if (customDirectEventTypes[topLevelType] == null) {
-				eventTypes[topLevelType] = customDirectEventTypes[topLevelType] =
+  if (directEventTypes != null) {
+    for (const topLevelType in directEventTypes) {
+      if (customDirectEventTypes[topLevelType] == null) {
+        eventTypes[topLevelType] = customDirectEventTypes[topLevelType] =
           directEventTypes[topLevelType];
-			}
-		}
-	}
+      }
+    }
+  }
 }
 
 /**
@@ -70,13 +70,13 @@ function processEventTypes(
  * This is done to avoid causing Prepack deopts.
  */
 exports.register = function(name: string, callback: ViewConfigGetter): string {
-	invariant(
-		!viewConfigCallbacks.has(name),
-		'Tried to register two views with the same name %s',
-		name,
-	);
-	viewConfigCallbacks.set(name, callback);
-	return name;
+  invariant(
+    !viewConfigCallbacks.has(name),
+    'Tried to register two views with the same name %s',
+    name,
+  );
+  viewConfigCallbacks.set(name, callback);
+  return name;
 };
 
 /**
@@ -85,26 +85,26 @@ exports.register = function(name: string, callback: ViewConfigGetter): string {
  * This configuration will be lazy-loaded from UIManager.
  */
 exports.get = function(name: string): ReactNativeBaseComponentViewConfig {
-	let viewConfig;
-	if (!viewConfigs.has(name)) {
-		const callback = viewConfigCallbacks.get(name);
-		if (typeof callback !== 'function') {
-			invariant(
-				false,
-				'View config not found for name %s.%s',
-				name,
-				typeof name[0] === 'string' && /[a-z]/.test(name[0])
-					? ' Make sure to start component names with a capital letter.'
-					: '',
-			);
-		}
-		viewConfigCallbacks.set(name, null);
-		viewConfig = callback();
-		processEventTypes(viewConfig);
-		viewConfigs.set(name, viewConfig);
-	} else {
-		viewConfig = viewConfigs.get(name);
-	}
-	invariant(viewConfig, 'View config not found for name %s', name);
-	return viewConfig;
+  let viewConfig;
+  if (!viewConfigs.has(name)) {
+    const callback = viewConfigCallbacks.get(name);
+    if (typeof callback !== 'function') {
+      invariant(
+        false,
+        'View config not found for name %s.%s',
+        name,
+        typeof name[0] === 'string' && /[a-z]/.test(name[0])
+          ? ' Make sure to start component names with a capital letter.'
+          : '',
+      );
+    }
+    viewConfigCallbacks.set(name, null);
+    viewConfig = callback();
+    processEventTypes(viewConfig);
+    viewConfigs.set(name, viewConfig);
+  } else {
+    viewConfig = viewConfigs.get(name);
+  }
+  invariant(viewConfig, 'View config not found for name %s', name);
+  return viewConfig;
 };

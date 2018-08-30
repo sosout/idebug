@@ -24,13 +24,13 @@ export const Resolved = 1;
 export const Rejected = 2;
 
 export function getResultFromResolvedThenable<T>(
-	thenable: ResolvedThenable<T>,
+  thenable: ResolvedThenable<T>,
 ): T {
-	return thenable._reactResult;
+  return thenable._reactResult;
 }
 
 export function refineResolvedThenable<T>(
-	thenable: Thenable<T>,
+  thenable: Thenable<T>,
 ): ResolvedThenable<T> | null {
-	return thenable._reactStatus === Resolved ? thenable._reactResult : null;
+  return thenable._reactStatus === Resolved ? thenable._reactResult : null;
 }

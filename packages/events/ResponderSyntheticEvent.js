@@ -13,9 +13,9 @@ import SyntheticEvent from './SyntheticEvent';
  * `ResponderEventPlugin` will populate it appropriately.
  */
 const ResponderSyntheticEvent = SyntheticEvent.extend({
-	touchHistory: function(nativeEvent) {
-		return null; // Actually doesn't even look at the native event.
-	},
+  touchHistory: function(nativeEvent) {
+    return null; // Actually doesn't even look at the native event.
+  },
 });
 
 export default ResponderSyntheticEvent;

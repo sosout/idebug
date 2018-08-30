@@ -8,11 +8,11 @@
  */
 
 import type {
-	MeasureInWindowOnSuccessCallback,
-	MeasureLayoutOnSuccessCallback,
-	MeasureOnSuccessCallback,
-	NativeMethodsMixinType,
-	ReactNativeBaseComponentViewConfig,
+  MeasureInWindowOnSuccessCallback,
+  MeasureLayoutOnSuccessCallback,
+  MeasureOnSuccessCallback,
+  NativeMethodsMixinType,
+  ReactNativeBaseComponentViewConfig,
 } from './ReactNativeTypes';
 import type {Instance} from './ReactNativeHostConfig';
 
@@ -36,63 +36,63 @@ class ReactNativeFiberHostComponent {
   viewConfig: ReactNativeBaseComponentViewConfig;
 
   constructor(tag: number, viewConfig: ReactNativeBaseComponentViewConfig) {
-  	this._nativeTag = tag;
-  	this._children = [];
-  	this.viewConfig = viewConfig;
+    this._nativeTag = tag;
+    this._children = [];
+    this.viewConfig = viewConfig;
   }
 
   blur() {
-  	TextInputState.blurTextInput(this._nativeTag);
+    TextInputState.blurTextInput(this._nativeTag);
   }
 
   focus() {
-  	TextInputState.focusTextInput(this._nativeTag);
+    TextInputState.focusTextInput(this._nativeTag);
   }
 
   measure(callback: MeasureOnSuccessCallback) {
-  	UIManager.measure(this._nativeTag, mountSafeCallback(this, callback));
+    UIManager.measure(this._nativeTag, mountSafeCallback(this, callback));
   }
 
   measureInWindow(callback: MeasureInWindowOnSuccessCallback) {
-  	UIManager.measureInWindow(
-  		this._nativeTag,
-  		mountSafeCallback(this, callback),
-  	);
+    UIManager.measureInWindow(
+      this._nativeTag,
+      mountSafeCallback(this, callback),
+    );
   }
 
   measureLayout(
-  	relativeToNativeNode: number,
-  	onSuccess: MeasureLayoutOnSuccessCallback,
-  	onFail: () => void /* currently unused */,
+    relativeToNativeNode: number,
+    onSuccess: MeasureLayoutOnSuccessCallback,
+    onFail: () => void /* currently unused */,
   ) {
-  	UIManager.measureLayout(
-  		this._nativeTag,
-  		relativeToNativeNode,
-  		mountSafeCallback(this, onFail),
-  		mountSafeCallback(this, onSuccess),
-  	);
+    UIManager.measureLayout(
+      this._nativeTag,
+      relativeToNativeNode,
+      mountSafeCallback(this, onFail),
+      mountSafeCallback(this, onSuccess),
+    );
   }
 
   setNativeProps(nativeProps: Object) {
-  	if (__DEV__) {
-  		warnForStyleProps(nativeProps, this.viewConfig.validAttributes);
-  	}
+    if (__DEV__) {
+      warnForStyleProps(nativeProps, this.viewConfig.validAttributes);
+    }
 
-  	const updatePayload = ReactNativeAttributePayload.create(
-  		nativeProps,
-  		this.viewConfig.validAttributes,
-  	);
+    const updatePayload = ReactNativeAttributePayload.create(
+      nativeProps,
+      this.viewConfig.validAttributes,
+    );
 
-  	// Avoid the overhead of bridge calls if there's no update.
-  	// This is an expensive no-op for Android, and causes an unnecessary
-  	// view invalidation for certain components (eg RCTTextInput) on iOS.
-  	if (updatePayload != null) {
-  		UIManager.updateView(
-  			this._nativeTag,
-  			this.viewConfig.uiViewClassName,
-  			updatePayload,
-  		);
-  	}
+    // Avoid the overhead of bridge calls if there's no update.
+    // This is an expensive no-op for Android, and causes an unnecessary
+    // view invalidation for certain components (eg RCTTextInput) on iOS.
+    if (updatePayload != null) {
+      UIManager.updateView(
+        this._nativeTag,
+        this.viewConfig.uiViewClassName,
+        updatePayload,
+      );
+    }
   }
 }
 

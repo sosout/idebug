@@ -17,12 +17,12 @@ import typeof {Dispatcher} from 'react-reconciler/src/ReactFiberDispatcher';
  * currently being constructed.
  */
 const ReactCurrentOwner = {
-	/**
+  /**
    * @internal
    * @type {ReactComponent}
    */
-	current: (null: null | Fiber),
-	currentDispatcher: (null: null | Dispatcher),
+  current: (null: null | Fiber),
+  currentDispatcher: (null: null | Dispatcher),
 };
 
 export default ReactCurrentOwner;

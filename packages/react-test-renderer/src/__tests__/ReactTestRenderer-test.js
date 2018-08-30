@@ -16,14 +16,14 @@ jest.resetModules();
 const ReactTestRenderer = require('react-test-renderer');
 
 describe('ReactTestRenderer', () => {
-	it('should warn if used to render a ReactDOM portal', () => {
-		const container = document.createElement('div');
-		expect(() => {
-			expect(() => {
-				ReactTestRenderer.create(ReactDOM.createPortal('foo', container));
-			}).toThrow();
-		}).toWarnDev('An invalid container has been provided.', {
-			withoutStack: true,
-		});
-	});
+  it('should warn if used to render a ReactDOM portal', () => {
+    const container = document.createElement('div');
+    expect(() => {
+      expect(() => {
+        ReactTestRenderer.create(ReactDOM.createPortal('foo', container));
+      }).toThrow();
+    }).toWarnDev('An invalid container has been provided.', {
+      withoutStack: true,
+    });
+  });
 });

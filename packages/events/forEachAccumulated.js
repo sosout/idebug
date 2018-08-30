@@ -17,15 +17,15 @@
  * @param {?} [scope] Scope used as `this` in a callback.
  */
 function forEachAccumulated<T>(
-	arr: ?(Array<T> | T),
-	cb: (elem: T) => void,
-	scope: ?any,
+  arr: ?(Array<T> | T),
+  cb: (elem: T) => void,
+  scope: ?any,
 ) {
-	if (Array.isArray(arr)) {
-		arr.forEach(cb, scope);
-	} else if (arr) {
-		cb.call(scope, arr);
-	}
+  if (Array.isArray(arr)) {
+    arr.forEach(cb, scope);
+  } else if (arr) {
+    cb.call(scope, arr);
+  }
 }
 
 export default forEachAccumulated;

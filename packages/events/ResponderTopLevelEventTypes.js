@@ -15,15 +15,15 @@ export const TOP_SCROLL = 'topScroll';
 export const TOP_SELECTION_CHANGE = 'topSelectionChange';
 
 export function isStartish(topLevelType: mixed): boolean {
-	return topLevelType === TOP_TOUCH_START;
+  return topLevelType === TOP_TOUCH_START;
 }
 
 export function isMoveish(topLevelType: mixed): boolean {
-	return topLevelType === TOP_TOUCH_MOVE;
+  return topLevelType === TOP_TOUCH_MOVE;
 }
 
 export function isEndish(topLevelType: mixed): boolean {
-	return topLevelType === TOP_TOUCH_END || topLevelType === TOP_TOUCH_CANCEL;
+  return topLevelType === TOP_TOUCH_END || topLevelType === TOP_TOUCH_CANCEL;
 }
 
 export const startDependencies = [TOP_TOUCH_START];

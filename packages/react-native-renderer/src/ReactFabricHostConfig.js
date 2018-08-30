@@ -8,11 +8,11 @@
  */
 
 import type {
-	MeasureInWindowOnSuccessCallback,
-	MeasureLayoutOnSuccessCallback,
-	MeasureOnSuccessCallback,
-	NativeMethodsMixinType,
-	ReactNativeBaseComponentViewConfig,
+  MeasureInWindowOnSuccessCallback,
+  MeasureLayoutOnSuccessCallback,
+  MeasureOnSuccessCallback,
+  NativeMethodsMixinType,
+  ReactNativeBaseComponentViewConfig,
 } from './ReactNativeTypes';
 
 import {mountSafeCallback, warnForStyleProps} from './NativeMethodsMixinUtils';
@@ -28,16 +28,16 @@ import {dispatchEvent} from './ReactFabricEventEmitter';
 // Modules provided by RN:
 import TextInputState from 'TextInputState';
 import {
-	createNode,
-	cloneNode,
-	cloneNodeWithNewChildren,
-	cloneNodeWithNewChildrenAndProps,
-	cloneNodeWithNewProps,
-	createChildSet as createChildNodeSet,
-	appendChild as appendChildNode,
-	appendChildToSet as appendChildNodeToSet,
-	completeRoot,
-	registerEventHandler,
+  createNode,
+  cloneNode,
+  cloneNodeWithNewChildren,
+  cloneNodeWithNewChildrenAndProps,
+  cloneNodeWithNewProps,
+  createChildSet as createChildNodeSet,
+  appendChild as appendChildNode,
+  appendChildToSet as appendChildNodeToSet,
+  completeRoot,
+  registerEventHandler,
 } from 'FabricUIManager';
 import UIManager from 'UIManager';
 
@@ -71,10 +71,10 @@ export type NoTimeout = -1;
 
 // TODO: Remove this conditional once all changes have propagated.
 if (registerEventHandler) {
-	/**
+  /**
    * Register the event emitter with the native bridge
    */
-	registerEventHandler(dispatchEvent);
+  registerEventHandler(dispatchEvent);
 }
 
 /**
@@ -86,67 +86,67 @@ class ReactFabricHostComponent {
   currentProps: Props;
 
   constructor(
-  	tag: number,
-  	viewConfig: ReactNativeBaseComponentViewConfig,
-  	props: Props,
+    tag: number,
+    viewConfig: ReactNativeBaseComponentViewConfig,
+    props: Props,
   ) {
-  	this._nativeTag = tag;
-  	this.viewConfig = viewConfig;
-  	this.currentProps = props;
+    this._nativeTag = tag;
+    this.viewConfig = viewConfig;
+    this.currentProps = props;
   }
 
   blur() {
-  	TextInputState.blurTextInput(this._nativeTag);
+    TextInputState.blurTextInput(this._nativeTag);
   }
 
   focus() {
-  	TextInputState.focusTextInput(this._nativeTag);
+    TextInputState.focusTextInput(this._nativeTag);
   }
 
   measure(callback: MeasureOnSuccessCallback) {
-  	UIManager.measure(this._nativeTag, mountSafeCallback(this, callback));
+    UIManager.measure(this._nativeTag, mountSafeCallback(this, callback));
   }
 
   measureInWindow(callback: MeasureInWindowOnSuccessCallback) {
-  	UIManager.measureInWindow(
-  		this._nativeTag,
-  		mountSafeCallback(this, callback),
-  	);
+    UIManager.measureInWindow(
+      this._nativeTag,
+      mountSafeCallback(this, callback),
+    );
   }
 
   measureLayout(
-  	relativeToNativeNode: number,
-  	onSuccess: MeasureLayoutOnSuccessCallback,
-  	onFail: () => void /* currently unused */,
+    relativeToNativeNode: number,
+    onSuccess: MeasureLayoutOnSuccessCallback,
+    onFail: () => void /* currently unused */,
   ) {
-  	UIManager.measureLayout(
-  		this._nativeTag,
-  		relativeToNativeNode,
-  		mountSafeCallback(this, onFail),
-  		mountSafeCallback(this, onSuccess),
-  	);
+    UIManager.measureLayout(
+      this._nativeTag,
+      relativeToNativeNode,
+      mountSafeCallback(this, onFail),
+      mountSafeCallback(this, onSuccess),
+    );
   }
 
   setNativeProps(nativeProps: Object) {
-  	if (__DEV__) {
-  		warnForStyleProps(nativeProps, this.viewConfig.validAttributes);
-  	}
+    if (__DEV__) {
+      warnForStyleProps(nativeProps, this.viewConfig.validAttributes);
+    }
 
-  	const updatePayload = ReactNativeAttributePayload.create(
-  		nativeProps,
-  		this.viewConfig.validAttributes,
-  	);
+    const updatePayload = ReactNativeAttributePayload.create(
+      nativeProps,
+      this.viewConfig.validAttributes,
+    );
 
-  	// Avoid the overhead of bridge calls if there's no update.
-  	// This is an expensive no-op for Android, and causes an unnecessary
-  	// view invalidation for certain components (eg RCTTextInput) on iOS.
-  	if (updatePayload != null) {
-  		UIManager.updateView(
-  			this._nativeTag,
-  			this.viewConfig.uiViewClassName,
-  			updatePayload,
-  		);
-  	}
+    // Avoid the overhead of bridge calls if there's no update.
+    // This is an expensive no-op for Android, and causes an unnecessary
+    // view invalidation for certain components (eg RCTTextInput) on iOS.
+    if (updatePayload != null) {
+      UIManager.updateView(
+        this._nativeTag,
+        this.viewConfig.uiViewClassName,
+        updatePayload,
+      );
+    }
   }
 }
 
@@ -157,166 +157,166 @@ export * from 'shared/HostConfigWithNoMutation';
 export * from 'shared/HostConfigWithNoHydration';
 
 export function appendInitialChild(
-	parentInstance: Instance,
-	child: Instance | TextInstance,
+  parentInstance: Instance,
+  child: Instance | TextInstance,
 ): void {
-	appendChildNode(parentInstance.node, child.node);
+  appendChildNode(parentInstance.node, child.node);
 }
 
 export function createInstance(
-	type: string,
-	props: Props,
-	rootContainerInstance: Container,
-	hostContext: HostContext,
-	internalInstanceHandle: Object,
+  type: string,
+  props: Props,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
+  internalInstanceHandle: Object,
 ): Instance {
-	const tag = nextReactTag;
-	nextReactTag += 2;
+  const tag = nextReactTag;
+  nextReactTag += 2;
 
-	const viewConfig = ReactNativeViewConfigRegistry.get(type);
+  const viewConfig = ReactNativeViewConfigRegistry.get(type);
 
-	if (__DEV__) {
-		for (const key in viewConfig.validAttributes) {
-			if (props.hasOwnProperty(key)) {
-				deepFreezeAndThrowOnMutationInDev(props[key]);
-			}
-		}
-	}
+  if (__DEV__) {
+    for (const key in viewConfig.validAttributes) {
+      if (props.hasOwnProperty(key)) {
+        deepFreezeAndThrowOnMutationInDev(props[key]);
+      }
+    }
+  }
 
-	invariant(
-		type !== 'RCTView' || !hostContext.isInAParentText,
-		'Nesting of <View> within <Text> is not currently supported.',
-	);
+  invariant(
+    type !== 'RCTView' || !hostContext.isInAParentText,
+    'Nesting of <View> within <Text> is not currently supported.',
+  );
 
-	const updatePayload = ReactNativeAttributePayload.create(
-		props,
-		viewConfig.validAttributes,
-	);
+  const updatePayload = ReactNativeAttributePayload.create(
+    props,
+    viewConfig.validAttributes,
+  );
 
-	const node = createNode(
-		tag, // reactTag
-		viewConfig.uiViewClassName, // viewName
-		rootContainerInstance, // rootTag
-		updatePayload, // props
-		internalInstanceHandle, // internalInstanceHandle
-	);
+  const node = createNode(
+    tag, // reactTag
+    viewConfig.uiViewClassName, // viewName
+    rootContainerInstance, // rootTag
+    updatePayload, // props
+    internalInstanceHandle, // internalInstanceHandle
+  );
 
-	const component = new ReactFabricHostComponent(tag, viewConfig, props);
+  const component = new ReactFabricHostComponent(tag, viewConfig, props);
 
-	return {
-		node: node,
-		canonical: component,
-	};
+  return {
+    node: node,
+    canonical: component,
+  };
 }
 
 export function createTextInstance(
-	text: string,
-	rootContainerInstance: Container,
-	hostContext: HostContext,
-	internalInstanceHandle: Object,
+  text: string,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
+  internalInstanceHandle: Object,
 ): TextInstance {
-	invariant(
-		hostContext.isInAParentText,
-		'Text strings must be rendered within a <Text> component.',
-	);
+  invariant(
+    hostContext.isInAParentText,
+    'Text strings must be rendered within a <Text> component.',
+  );
 
-	const tag = nextReactTag;
-	nextReactTag += 2;
+  const tag = nextReactTag;
+  nextReactTag += 2;
 
-	const node = createNode(
-		tag, // reactTag
-		'RCTRawText', // viewName
-		rootContainerInstance, // rootTag
-		{text: text}, // props
-		internalInstanceHandle, // instance handle
-	);
+  const node = createNode(
+    tag, // reactTag
+    'RCTRawText', // viewName
+    rootContainerInstance, // rootTag
+    {text: text}, // props
+    internalInstanceHandle, // instance handle
+  );
 
-	return {
-		node: node,
-	};
+  return {
+    node: node,
+  };
 }
 
 export function finalizeInitialChildren(
-	parentInstance: Instance,
-	type: string,
-	props: Props,
-	rootContainerInstance: Container,
-	hostContext: HostContext,
+  parentInstance: Instance,
+  type: string,
+  props: Props,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
 ): boolean {
-	return false;
+  return false;
 }
 
 export function getRootHostContext(
-	rootContainerInstance: Container,
+  rootContainerInstance: Container,
 ): HostContext {
-	return {isInAParentText: false};
+  return {isInAParentText: false};
 }
 
 export function getChildHostContext(
-	parentHostContext: HostContext,
-	type: string,
-	rootContainerInstance: Container,
+  parentHostContext: HostContext,
+  type: string,
+  rootContainerInstance: Container,
 ): HostContext {
-	const prevIsInAParentText = parentHostContext.isInAParentText;
-	const isInAParentText =
+  const prevIsInAParentText = parentHostContext.isInAParentText;
+  const isInAParentText =
     type === 'AndroidTextInput' || // Android
     type === 'RCTMultilineTextInputView' || // iOS
     type === 'RCTSinglelineTextInputView' || // iOS
     type === 'RCTText' ||
     type === 'RCTVirtualText';
 
-	if (prevIsInAParentText !== isInAParentText) {
-		return {isInAParentText};
-	} else {
-		return parentHostContext;
-	}
+  if (prevIsInAParentText !== isInAParentText) {
+    return {isInAParentText};
+  } else {
+    return parentHostContext;
+  }
 }
 
 export function getPublicInstance(instance: Instance): * {
-	return instance.canonical;
+  return instance.canonical;
 }
 
 export function prepareForCommit(containerInfo: Container): void {
-	// Noop
+  // Noop
 }
 
 export function prepareUpdate(
-	instance: Instance,
-	type: string,
-	oldProps: Props,
-	newProps: Props,
-	rootContainerInstance: Container,
-	hostContext: HostContext,
+  instance: Instance,
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
 ): null | Object {
-	const viewConfig = instance.canonical.viewConfig;
-	const updatePayload = ReactNativeAttributePayload.diff(
-		oldProps,
-		newProps,
-		viewConfig.validAttributes,
-	);
-	// TODO: If the event handlers have changed, we need to update the current props
-	// in the commit phase but there is no host config hook to do it yet.
-	// So instead we hack it by updating it in the render phase.
-	instance.canonical.currentProps = newProps;
-	return updatePayload;
+  const viewConfig = instance.canonical.viewConfig;
+  const updatePayload = ReactNativeAttributePayload.diff(
+    oldProps,
+    newProps,
+    viewConfig.validAttributes,
+  );
+  // TODO: If the event handlers have changed, we need to update the current props
+  // in the commit phase but there is no host config hook to do it yet.
+  // So instead we hack it by updating it in the render phase.
+  instance.canonical.currentProps = newProps;
+  return updatePayload;
 }
 
 export function resetAfterCommit(containerInfo: Container): void {
-	// Noop
+  // Noop
 }
 
 export function shouldDeprioritizeSubtree(type: string, props: Props): boolean {
-	return false;
+  return false;
 }
 
 export function shouldSetTextContent(type: string, props: Props): boolean {
-	// TODO (bvaughn) Revisit this decision.
-	// Always returning false simplifies the createInstance() implementation,
-	// But creates an additional child Fiber for raw text children.
-	// No additional native views are created though.
-	// It's not clear to me which is better so I'm deferring for now.
-	// More context @ github.com/facebook/react/pull/8560#discussion_r92111303
-	return false;
+  // TODO (bvaughn) Revisit this decision.
+  // Always returning false simplifies the createInstance() implementation,
+  // But creates an additional child Fiber for raw text children.
+  // No additional native views are created though.
+  // It's not clear to me which is better so I'm deferring for now.
+  // More context @ github.com/facebook/react/pull/8560#discussion_r92111303
+  return false;
 }
 
 // The Fabric renderer is secondary to the existing React Native renderer.
@@ -338,55 +338,55 @@ export const noTimeout = -1;
 export const supportsPersistence = true;
 
 export function cloneInstance(
-	instance: Instance,
-	updatePayload: null | Object,
-	type: string,
-	oldProps: Props,
-	newProps: Props,
-	internalInstanceHandle: Object,
-	keepChildren: boolean,
-	recyclableInstance: null | Instance,
+  instance: Instance,
+  updatePayload: null | Object,
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  internalInstanceHandle: Object,
+  keepChildren: boolean,
+  recyclableInstance: null | Instance,
 ): Instance {
-	const node = instance.node;
-	let clone;
-	if (keepChildren) {
-		if (updatePayload !== null) {
-			clone = cloneNodeWithNewProps(node, updatePayload);
-		} else {
-			clone = cloneNode(node);
-		}
-	} else {
-		if (updatePayload !== null) {
-			clone = cloneNodeWithNewChildrenAndProps(node, updatePayload);
-		} else {
-			clone = cloneNodeWithNewChildren(node);
-		}
-	}
-	return {
-		node: clone,
-		canonical: instance.canonical,
-	};
+  const node = instance.node;
+  let clone;
+  if (keepChildren) {
+    if (updatePayload !== null) {
+      clone = cloneNodeWithNewProps(node, updatePayload);
+    } else {
+      clone = cloneNode(node);
+    }
+  } else {
+    if (updatePayload !== null) {
+      clone = cloneNodeWithNewChildrenAndProps(node, updatePayload);
+    } else {
+      clone = cloneNodeWithNewChildren(node);
+    }
+  }
+  return {
+    node: clone,
+    canonical: instance.canonical,
+  };
 }
 
 export function createContainerChildSet(container: Container): ChildSet {
-	return createChildNodeSet(container);
+  return createChildNodeSet(container);
 }
 
 export function appendChildToContainerChildSet(
-	childSet: ChildSet,
-	child: Instance | TextInstance,
+  childSet: ChildSet,
+  child: Instance | TextInstance,
 ): void {
-	appendChildNodeToSet(childSet, child.node);
+  appendChildNodeToSet(childSet, child.node);
 }
 
 export function finalizeContainerChildren(
-	container: Container,
-	newChildren: ChildSet,
+  container: Container,
+  newChildren: ChildSet,
 ): void {
-	completeRoot(container, newChildren);
+  completeRoot(container, newChildren);
 }
 
 export function replaceContainerChildren(
-	container: Container,
-	newChildren: ChildSet,
+  container: Container,
+  newChildren: ChildSet,
 ): void {}

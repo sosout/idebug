@@ -7,5 +7,5 @@
 'use strict';
 
 module.exports = {
-	OS: 'ios',
+  OS: 'ios',
 };

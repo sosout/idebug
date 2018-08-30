@@ -455,6 +455,6 @@ var React = {
 };
 enableSuspense &&
   ((React.Placeholder = REACT_PLACEHOLDER_TYPE), (React.lazy = lazy));
-var React$1 = { default: React },
-  React$2 = (React$1 && React) || React$1;
-module.exports = React$2.default || React$2;
+var React$2 = { default: React },
+  React$3 = (React$2 && React) || React$2;
+module.exports = React$3.default || React$3;

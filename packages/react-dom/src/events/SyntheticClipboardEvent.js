@@ -12,11 +12,11 @@ import SyntheticEvent from 'events/SyntheticEvent';
  * @see http://www.w3.org/TR/clipboard-apis/
  */
 const SyntheticClipboardEvent = SyntheticEvent.extend({
-	clipboardData: function(event) {
-		return 'clipboardData' in event
-			? event.clipboardData
-			: window.clipboardData;
-	},
+  clipboardData: function(event) {
+    return 'clipboardData' in event
+      ? event.clipboardData
+      : window.clipboardData;
+  },
 });
 
 export default SyntheticClipboardEvent;

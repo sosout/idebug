@@ -12,7 +12,7 @@ import SyntheticUIEvent from './SyntheticUIEvent';
  * @see http://www.w3.org/TR/DOM-Level-3-Events/
  */
 const SyntheticFocusEvent = SyntheticUIEvent.extend({
-	relatedTarget: null,
+  relatedTarget: null,
 });
 
 export default SyntheticFocusEvent;

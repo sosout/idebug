@@ -76,37 +76,37 @@ export type FiberRoot = {
 };
 
 export function createFiberRoot(
-	containerInfo: any,
-	isAsync: boolean,
-	hydrate: boolean,
+  containerInfo: any,
+  isAsync: boolean,
+  hydrate: boolean,
 ): FiberRoot {
-	// Cyclic construction. This cheats the type system right now because
-	// stateNode is any.
-	const uninitializedFiber = createHostRootFiber(isAsync);
-	const root = {
-		current: uninitializedFiber,
-		containerInfo: containerInfo,
-		pendingChildren: null,
+  // Cyclic construction. This cheats the type system right now because
+  // stateNode is any.
+  const uninitializedFiber = createHostRootFiber(isAsync);
+  const root = {
+    current: uninitializedFiber,
+    containerInfo: containerInfo,
+    pendingChildren: null,
 
-		earliestPendingTime: NoWork,
-		latestPendingTime: NoWork,
-		earliestSuspendedTime: NoWork,
-		latestSuspendedTime: NoWork,
-		latestPingedTime: NoWork,
+    earliestPendingTime: NoWork,
+    latestPendingTime: NoWork,
+    earliestSuspendedTime: NoWork,
+    latestSuspendedTime: NoWork,
+    latestPingedTime: NoWork,
 
-		didError: false,
+    didError: false,
 
-		pendingCommitExpirationTime: NoWork,
-		finishedWork: null,
-		timeoutHandle: noTimeout,
-		context: null,
-		pendingContext: null,
-		hydrate,
-		nextExpirationTimeToWorkOn: NoWork,
-		expirationTime: NoWork,
-		firstBatch: null,
-		nextScheduledRoot: null,
-	};
-	uninitializedFiber.stateNode = root;
-	return root;
+    pendingCommitExpirationTime: NoWork,
+    finishedWork: null,
+    timeoutHandle: noTimeout,
+    context: null,
+    pendingContext: null,
+    hydrate,
+    nextExpirationTimeToWorkOn: NoWork,
+    expirationTime: NoWork,
+    firstBatch: null,
+    nextScheduledRoot: null,
+  };
+  uninitializedFiber.stateNode = root;
+  return root;
 }

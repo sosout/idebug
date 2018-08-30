@@ -25,57 +25,57 @@ let commitTime: number = 0;
 let profilerStartTime: number = -1;
 
 function getCommitTime(): number {
-	return commitTime;
+  return commitTime;
 }
 
 function recordCommitTime(): void {
-	if (!enableProfilerTimer) {
-		return;
-	}
-	commitTime = now();
+  if (!enableProfilerTimer) {
+    return;
+  }
+  commitTime = now();
 }
 
 function startProfilerTimer(fiber: Fiber): void {
-	if (!enableProfilerTimer) {
-		return;
-	}
+  if (!enableProfilerTimer) {
+    return;
+  }
 
-	profilerStartTime = now();
+  profilerStartTime = now();
 
-	if (((fiber.actualStartTime: any): number) < 0) {
-		fiber.actualStartTime = now();
-	}
+  if (((fiber.actualStartTime: any): number) < 0) {
+    fiber.actualStartTime = now();
+  }
 }
 
 function stopProfilerTimerIfRunning(fiber: Fiber): void {
-	if (!enableProfilerTimer) {
-		return;
-	}
-	profilerStartTime = -1;
+  if (!enableProfilerTimer) {
+    return;
+  }
+  profilerStartTime = -1;
 }
 
 function stopProfilerTimerIfRunningAndRecordDelta(
-	fiber: Fiber,
-	overrideBaseTime: boolean,
+  fiber: Fiber,
+  overrideBaseTime: boolean,
 ): void {
-	if (!enableProfilerTimer) {
-		return;
-	}
+  if (!enableProfilerTimer) {
+    return;
+  }
 
-	if (profilerStartTime >= 0) {
-		const elapsedTime = now() - profilerStartTime;
-		fiber.actualDuration += elapsedTime;
-		if (overrideBaseTime) {
-			fiber.selfBaseDuration = elapsedTime;
-		}
-		profilerStartTime = -1;
-	}
+  if (profilerStartTime >= 0) {
+    const elapsedTime = now() - profilerStartTime;
+    fiber.actualDuration += elapsedTime;
+    if (overrideBaseTime) {
+      fiber.selfBaseDuration = elapsedTime;
+    }
+    profilerStartTime = -1;
+  }
 }
 
 export {
-	getCommitTime,
-	recordCommitTime,
-	startProfilerTimer,
-	stopProfilerTimerIfRunning,
-	stopProfilerTimerIfRunningAndRecordDelta,
+  getCommitTime,
+  recordCommitTime,
+  startProfilerTimer,
+  stopProfilerTimerIfRunning,
+  stopProfilerTimerIfRunningAndRecordDelta,
 };

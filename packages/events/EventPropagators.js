@@ -6,9 +6,9 @@
  */
 
 import {
-	getParentInstance,
-	traverseTwoPhase,
-	traverseEnterLeave,
+  getParentInstance,
+  traverseTwoPhase,
+  traverseEnterLeave,
 } from 'shared/ReactTreeTraversal';
 import warningWithoutStack from 'shared/warningWithoutStack';
 
@@ -23,9 +23,9 @@ type PropagationPhases = 'bubbled' | 'captured';
  * "phases" of propagation. This finds listeners by a given phase.
  */
 function listenerAtPhase(inst, event, propagationPhase: PropagationPhases) {
-	const registrationName =
+  const registrationName =
     event.dispatchConfig.phasedRegistrationNames[propagationPhase];
-	return getListener(inst, registrationName);
+  return getListener(inst, registrationName);
 }
 
 /**
@@ -45,17 +45,17 @@ function listenerAtPhase(inst, event, propagationPhase: PropagationPhases) {
  * "dispatch" object that pairs the event with the listener.
  */
 function accumulateDirectionalDispatches(inst, phase, event) {
-	if (__DEV__) {
-		warningWithoutStack(inst, 'Dispatching inst must not be null');
-	}
-	const listener = listenerAtPhase(inst, event, phase);
-	if (listener) {
-		event._dispatchListeners = accumulateInto(
-			event._dispatchListeners,
-			listener,
-		);
-		event._dispatchInstances = accumulateInto(event._dispatchInstances, inst);
-	}
+  if (__DEV__) {
+    warningWithoutStack(inst, 'Dispatching inst must not be null');
+  }
+  const listener = listenerAtPhase(inst, event, phase);
+  if (listener) {
+    event._dispatchListeners = accumulateInto(
+      event._dispatchListeners,
+      listener,
+    );
+    event._dispatchInstances = accumulateInto(event._dispatchInstances, inst);
+  }
 }
 
 /**
@@ -66,20 +66,20 @@ function accumulateDirectionalDispatches(inst, phase, event) {
  * have a different target.
  */
 function accumulateTwoPhaseDispatchesSingle(event) {
-	if (event && event.dispatchConfig.phasedRegistrationNames) {
-		traverseTwoPhase(event._targetInst, accumulateDirectionalDispatches, event);
-	}
+  if (event && event.dispatchConfig.phasedRegistrationNames) {
+    traverseTwoPhase(event._targetInst, accumulateDirectionalDispatches, event);
+  }
 }
 
 /**
  * Same as `accumulateTwoPhaseDispatchesSingle`, but skips over the targetID.
  */
 function accumulateTwoPhaseDispatchesSingleSkipTarget(event) {
-	if (event && event.dispatchConfig.phasedRegistrationNames) {
-		const targetInst = event._targetInst;
-		const parentInst = targetInst ? getParentInstance(targetInst) : null;
-		traverseTwoPhase(parentInst, accumulateDirectionalDispatches, event);
-	}
+  if (event && event.dispatchConfig.phasedRegistrationNames) {
+    const targetInst = event._targetInst;
+    const parentInst = targetInst ? getParentInstance(targetInst) : null;
+    traverseTwoPhase(parentInst, accumulateDirectionalDispatches, event);
+  }
 }
 
 /**
@@ -88,17 +88,17 @@ function accumulateTwoPhaseDispatchesSingleSkipTarget(event) {
  * requiring that the `dispatchMarker` be the same as the dispatched ID.
  */
 function accumulateDispatches(inst, ignoredDirection, event) {
-	if (inst && event && event.dispatchConfig.registrationName) {
-		const registrationName = event.dispatchConfig.registrationName;
-		const listener = getListener(inst, registrationName);
-		if (listener) {
-			event._dispatchListeners = accumulateInto(
-				event._dispatchListeners,
-				listener,
-			);
-			event._dispatchInstances = accumulateInto(event._dispatchInstances, inst);
-		}
-	}
+  if (inst && event && event.dispatchConfig.registrationName) {
+    const registrationName = event.dispatchConfig.registrationName;
+    const listener = getListener(inst, registrationName);
+    if (listener) {
+      event._dispatchListeners = accumulateInto(
+        event._dispatchListeners,
+        listener,
+      );
+      event._dispatchInstances = accumulateInto(event._dispatchInstances, inst);
+    }
+  }
 }
 
 /**
@@ -107,23 +107,23 @@ function accumulateDispatches(inst, ignoredDirection, event) {
  * @param {SyntheticEvent} event
  */
 function accumulateDirectDispatchesSingle(event) {
-	if (event && event.dispatchConfig.registrationName) {
-		accumulateDispatches(event._targetInst, null, event);
-	}
+  if (event && event.dispatchConfig.registrationName) {
+    accumulateDispatches(event._targetInst, null, event);
+  }
 }
 
 export function accumulateTwoPhaseDispatches(events) {
-	forEachAccumulated(events, accumulateTwoPhaseDispatchesSingle);
+  forEachAccumulated(events, accumulateTwoPhaseDispatchesSingle);
 }
 
 export function accumulateTwoPhaseDispatchesSkipTarget(events) {
-	forEachAccumulated(events, accumulateTwoPhaseDispatchesSingleSkipTarget);
+  forEachAccumulated(events, accumulateTwoPhaseDispatchesSingleSkipTarget);
 }
 
 export function accumulateEnterLeaveDispatches(leave, enter, from, to) {
-	traverseEnterLeave(from, to, accumulateDispatches, leave, enter);
+  traverseEnterLeave(from, to, accumulateDispatches, leave, enter);
 }
 
 export function accumulateDirectDispatches(events) {
-	forEachAccumulated(events, accumulateDirectDispatchesSingle);
+  forEachAccumulated(events, accumulateDirectDispatchesSingle);
 }

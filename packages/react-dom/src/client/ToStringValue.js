@@ -19,19 +19,19 @@ export opaque type ToStringValue =
 // around this limitation, we use an opaque type that can only be obtained by
 // passing the value through getToStringValue first.
 export function toString(value: ToStringValue): string {
-	return '' + (value: any);
+  return '' + (value: any);
 }
 
 export function getToStringValue(value: mixed): ToStringValue {
-	switch (typeof value) {
-	case 'boolean':
-	case 'number':
-	case 'object':
-	case 'string':
-	case 'undefined':
-		return value;
-	default:
-		// function, symbol are assigned as empty strings
-		return '';
-	}
+  switch (typeof value) {
+    case 'boolean':
+    case 'number':
+    case 'object':
+    case 'string':
+    case 'undefined':
+      return value;
+    default:
+      // function, symbol are assigned as empty strings
+      return '';
+  }
 }

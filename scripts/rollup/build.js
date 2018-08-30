@@ -423,7 +423,6 @@ async function createBundle(bundle, bundleType) {
     chalk.white.bold(filename) + chalk.dim(` (${bundleType.toLowerCase()})`);
   const format = getFormat(bundleType);
   const packageName = Packaging.getPackageName(bundle.entry);
-
   let resolvedEntry = require.resolve(bundle.entry);
   if (
     bundleType === FB_WWW_DEV ||
@@ -505,6 +504,9 @@ async function createBundle(bundle, bundleType) {
 }
 
 function handleRollupWarning(warning) {
+  if (warning.code === 'CIRCULAR_DEPENDENCY') { // 处理循环引用问题
+    return;
+  }
   if (warning.code === 'UNUSED_EXTERNAL_IMPORT') {
     const match = warning.message.match(/external module '([^']+)'/);
     if (!match || typeof match[1] !== 'string') {

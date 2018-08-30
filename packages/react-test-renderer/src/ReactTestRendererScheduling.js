@@ -15,72 +15,72 @@ export let scheduledCallback: ((deadline: Deadline) => mixed) | null = null;
 export let yieldedValues: Array<mixed> = [];
 
 export function scheduleDeferredCallback(
-	callback: (deadline: Deadline) => mixed,
-	options?: {timeout: number},
+  callback: (deadline: Deadline) => mixed,
+  options?: {timeout: number},
 ): number {
-	scheduledCallback = callback;
-	const fakeCallbackId = 0;
-	return fakeCallbackId;
+  scheduledCallback = callback;
+  const fakeCallbackId = 0;
+  return fakeCallbackId;
 }
 
 export function cancelDeferredCallback(timeoutID: number): void {
-	scheduledCallback = null;
+  scheduledCallback = null;
 }
 
 export function setNowImplementation(implementation: () => number): void {
-	nowImplementation = implementation;
+  nowImplementation = implementation;
 }
 
 export function flushAll(): Array<mixed> {
-	yieldedValues = [];
-	while (scheduledCallback !== null) {
-		const cb = scheduledCallback;
-		scheduledCallback = null;
-		cb({
-			timeRemaining() {
-				// Keep rendering until there's no more work
-				return 999;
-			},
-			// React's scheduler has its own way of keeping track of expired
-			// work and doesn't read this, so don't bother setting it to the
-			// correct value.
-			didTimeout: false,
-		});
-	}
-	return yieldedValues;
+  yieldedValues = [];
+  while (scheduledCallback !== null) {
+    const cb = scheduledCallback;
+    scheduledCallback = null;
+    cb({
+      timeRemaining() {
+        // Keep rendering until there's no more work
+        return 999;
+      },
+      // React's scheduler has its own way of keeping track of expired
+      // work and doesn't read this, so don't bother setting it to the
+      // correct value.
+      didTimeout: false,
+    });
+  }
+  return yieldedValues;
 }
 
 export function flushNumberOfYields(count: number): Array<mixed> {
-	let didStop = false;
-	yieldedValues = [];
-	while (scheduledCallback !== null && !didStop) {
-		const cb = scheduledCallback;
-		scheduledCallback = null;
-		cb({
-			timeRemaining() {
-				if (yieldedValues.length >= count) {
-					// We at least as many values as expected. Stop rendering.
-					didStop = true;
-					return 0;
-				}
-				// Keep rendering.
-				return 999;
-			},
-			// React's scheduler has its own way of keeping track of expired
-			// work and doesn't read this, so don't bother setting it to the
-			// correct value.
-			didTimeout: false,
-		});
-	}
-	return yieldedValues;
+  let didStop = false;
+  yieldedValues = [];
+  while (scheduledCallback !== null && !didStop) {
+    const cb = scheduledCallback;
+    scheduledCallback = null;
+    cb({
+      timeRemaining() {
+        if (yieldedValues.length >= count) {
+          // We at least as many values as expected. Stop rendering.
+          didStop = true;
+          return 0;
+        }
+        // Keep rendering.
+        return 999;
+      },
+      // React's scheduler has its own way of keeping track of expired
+      // work and doesn't read this, so don't bother setting it to the
+      // correct value.
+      didTimeout: false,
+    });
+  }
+  return yieldedValues;
 }
 
 export function yieldValue(value: mixed): void {
-	yieldedValues.push(value);
+  yieldedValues.push(value);
 }
 
 export function clearYields(): Array<mixed> {
-	const values = yieldedValues;
-	yieldedValues = [];
-	return values;
+  const values = yieldedValues;
+  yieldedValues = [];
+  return values;
 }

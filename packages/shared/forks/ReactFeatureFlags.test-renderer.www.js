@@ -25,7 +25,7 @@ export const enableInteractionTracking = false;
 
 // Only used in www builds.
 export function addUserTimingListener() {
-	invariant(false, 'Not implemented.');
+  invariant(false, 'Not implemented.');
 }
 
 // Flow magic to verify the exports of this file match the original version.

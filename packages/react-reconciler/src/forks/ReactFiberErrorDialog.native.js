@@ -17,34 +17,34 @@ import ExceptionsManager from 'ExceptionsManager';
  * trace within the native redbox component.
  */
 export function showErrorDialog(capturedError: CapturedError): boolean {
-	const {componentStack, error} = capturedError;
+  const {componentStack, error} = capturedError;
 
-	let errorToHandle: Error;
+  let errorToHandle: Error;
 
-	// Typically Errors are thrown but eg strings or null can be thrown as well.
-	if (error instanceof Error) {
-		const {message, name} = error;
+  // Typically Errors are thrown but eg strings or null can be thrown as well.
+  if (error instanceof Error) {
+    const {message, name} = error;
 
-		const summary = message ? `${name}: ${message}` : name;
+    const summary = message ? `${name}: ${message}` : name;
 
-		errorToHandle = error;
+    errorToHandle = error;
 
-		try {
-			errorToHandle.message = `${summary}\n\nThis error is located at:${componentStack}`;
-		} catch (e) {}
-	} else if (typeof error === 'string') {
-		errorToHandle = new Error(
-			`${error}\n\nThis error is located at:${componentStack}`,
-		);
-	} else {
-		errorToHandle = new Error(`Unspecified error at:${componentStack}`);
-	}
+    try {
+      errorToHandle.message = `${summary}\n\nThis error is located at:${componentStack}`;
+    } catch (e) {}
+  } else if (typeof error === 'string') {
+    errorToHandle = new Error(
+      `${error}\n\nThis error is located at:${componentStack}`,
+    );
+  } else {
+    errorToHandle = new Error(`Unspecified error at:${componentStack}`);
+  }
 
-	ExceptionsManager.handleException(errorToHandle, false);
+  ExceptionsManager.handleException(errorToHandle, false);
 
-	// Return false here to prevent ReactFiberErrorLogger default behavior of
-	// logging error details to console.error. Calls to console.error are
-	// automatically routed to the native redbox controller, which we've already
-	// done above by calling ExceptionsManager.
-	return false;
+  // Return false here to prevent ReactFiberErrorLogger default behavior of
+  // logging error details to console.error. Calls to console.error are
+  // automatically routed to the native redbox controller, which we've already
+  // done above by calling ExceptionsManager.
+  return false;
 }

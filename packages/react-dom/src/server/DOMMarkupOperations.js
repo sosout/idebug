@@ -8,14 +8,14 @@
  */
 
 import {
-	ID_ATTRIBUTE_NAME,
-	ROOT_ATTRIBUTE_NAME,
-	BOOLEAN,
-	OVERLOADED_BOOLEAN,
-	getPropertyInfo,
-	isAttributeNameSafe,
-	shouldIgnoreAttribute,
-	shouldRemoveAttribute,
+  ID_ATTRIBUTE_NAME,
+  ROOT_ATTRIBUTE_NAME,
+  BOOLEAN,
+  OVERLOADED_BOOLEAN,
+  getPropertyInfo,
+  isAttributeNameSafe,
+  shouldIgnoreAttribute,
+  shouldRemoveAttribute,
 } from '../shared/DOMProperty';
 import quoteAttributeValueForBrowser from './quoteAttributeValueForBrowser';
 
@@ -30,11 +30,11 @@ import quoteAttributeValueForBrowser from './quoteAttributeValueForBrowser';
  * @return {string} Markup string.
  */
 export function createMarkupForID(id: string): string {
-	return ID_ATTRIBUTE_NAME + '=' + quoteAttributeValueForBrowser(id);
+  return ID_ATTRIBUTE_NAME + '=' + quoteAttributeValueForBrowser(id);
 }
 
 export function createMarkupForRoot(): string {
-	return ROOT_ATTRIBUTE_NAME + '=""';
+  return ROOT_ATTRIBUTE_NAME + '=""';
 }
 
 /**
@@ -45,25 +45,25 @@ export function createMarkupForRoot(): string {
  * @return {?string} Markup string, or null if the property was invalid.
  */
 export function createMarkupForProperty(name: string, value: mixed): string {
-	const propertyInfo = getPropertyInfo(name);
-	if (name !== 'style' && shouldIgnoreAttribute(name, propertyInfo, false)) {
-		return '';
-	}
-	if (shouldRemoveAttribute(name, value, propertyInfo, false)) {
-		return '';
-	}
-	if (propertyInfo !== null) {
-		const attributeName = propertyInfo.attributeName;
-		const {type} = propertyInfo;
-		if (type === BOOLEAN || (type === OVERLOADED_BOOLEAN && value === true)) {
-			return attributeName + '=""';
-		} else {
-			return attributeName + '=' + quoteAttributeValueForBrowser(value);
-		}
-	} else if (isAttributeNameSafe(name)) {
-		return name + '=' + quoteAttributeValueForBrowser(value);
-	}
-	return '';
+  const propertyInfo = getPropertyInfo(name);
+  if (name !== 'style' && shouldIgnoreAttribute(name, propertyInfo, false)) {
+    return '';
+  }
+  if (shouldRemoveAttribute(name, value, propertyInfo, false)) {
+    return '';
+  }
+  if (propertyInfo !== null) {
+    const attributeName = propertyInfo.attributeName;
+    const {type} = propertyInfo;
+    if (type === BOOLEAN || (type === OVERLOADED_BOOLEAN && value === true)) {
+      return attributeName + '=""';
+    } else {
+      return attributeName + '=' + quoteAttributeValueForBrowser(value);
+    }
+  } else if (isAttributeNameSafe(name)) {
+    return name + '=' + quoteAttributeValueForBrowser(value);
+  }
+  return '';
 }
 
 /**
@@ -74,11 +74,11 @@ export function createMarkupForProperty(name: string, value: mixed): string {
  * @return {string} Markup string, or empty string if the property was invalid.
  */
 export function createMarkupForCustomAttribute(
-	name: string,
-	value: mixed,
+  name: string,
+  value: mixed,
 ): string {
-	if (!isAttributeNameSafe(name) || value == null) {
-		return '';
-	}
-	return name + '=' + quoteAttributeValueForBrowser(value);
+  if (!isAttributeNameSafe(name) || value == null) {
+    return '';
+  }
+  return name + '=' + quoteAttributeValueForBrowser(value);
 }

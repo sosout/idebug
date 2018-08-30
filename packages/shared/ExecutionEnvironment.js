@@ -8,7 +8,7 @@
  */
 
 export const canUseDOM: boolean = !!(
-	typeof window !== 'undefined' &&
+  typeof window !== 'undefined' &&
   window.document &&
   window.document.createElement
 );

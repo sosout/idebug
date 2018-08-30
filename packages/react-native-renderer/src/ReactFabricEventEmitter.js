@@ -19,19 +19,19 @@ import type {TopLevelType} from 'events/TopLevelEventTypes';
 export {getListener, registrationNameModules as registrationNames};
 
 export function dispatchEvent(
-	target: null | Object,
-	topLevelType: TopLevelType,
-	nativeEvent: AnyNativeEvent,
+  target: null | Object,
+  topLevelType: TopLevelType,
+  nativeEvent: AnyNativeEvent,
 ) {
-	const targetFiber = (target: null | Fiber);
-	batchedUpdates(function() {
-		runExtractedEventsInBatch(
-			topLevelType,
-			targetFiber,
-			nativeEvent,
-			nativeEvent.target,
-		);
-	});
-	// React Native doesn't use ReactControlledComponent but if it did, here's
-	// where it would do it.
+  const targetFiber = (target: null | Fiber);
+  batchedUpdates(function() {
+    runExtractedEventsInBatch(
+      topLevelType,
+      targetFiber,
+      nativeEvent,
+      nativeEvent.target,
+    );
+  });
+  // React Native doesn't use ReactControlledComponent but if it did, here's
+  // where it would do it.
 }

@@ -35,11 +35,11 @@ const EMPTY_NATIVE_EVENT = (({}: any): AnyNativeEvent);
  * @return {Array<Touch>} Subsequence of touch objects.
  */
 const touchSubsequence = function(touches, indices) {
-	const ret = [];
-	for (let i = 0; i < indices.length; i++) {
-		ret.push(touches[indices[i]]);
-	}
-	return ret;
+  const ret = [];
+  for (let i = 0; i < indices.length; i++) {
+    ret.push(touches[indices[i]]);
+  }
+  return ret;
 };
 
 /**
@@ -54,27 +54,27 @@ const touchSubsequence = function(touches, indices) {
  * @return {Array<Touch>} Subsequence of removed touch objects.
  */
 const removeTouchesAtIndices = function(
-	touches: Array<Object>,
-	indices: Array<number>,
+  touches: Array<Object>,
+  indices: Array<number>,
 ): Array<Object> {
-	const rippedOut = [];
-	// use an unsafe downcast to alias to nullable elements,
-	// so we can delete and then compact.
-	const temp: Array<?Object> = (touches: Array<any>);
-	for (let i = 0; i < indices.length; i++) {
-		const index = indices[i];
-		rippedOut.push(touches[index]);
-		temp[index] = null;
-	}
-	let fillAt = 0;
-	for (let j = 0; j < temp.length; j++) {
-		const cur = temp[j];
-		if (cur !== null) {
-			temp[fillAt++] = cur;
-		}
-	}
-	temp.length = fillAt;
-	return rippedOut;
+  const rippedOut = [];
+  // use an unsafe downcast to alias to nullable elements,
+  // so we can delete and then compact.
+  const temp: Array<?Object> = (touches: Array<any>);
+  for (let i = 0; i < indices.length; i++) {
+    const index = indices[i];
+    rippedOut.push(touches[index]);
+    temp[index] = null;
+  }
+  let fillAt = 0;
+  for (let j = 0; j < temp.length; j++) {
+    const cur = temp[j];
+    if (cur !== null) {
+      temp[fillAt++] = cur;
+    }
+  }
+  temp.length = fillAt;
+  return rippedOut;
 };
 
 /**
@@ -88,22 +88,22 @@ const removeTouchesAtIndices = function(
  * @param {?object} nativeEventParam Object passed from native.
  */
 export function _receiveRootNodeIDEvent(
-	rootNodeID: number,
-	topLevelType: TopLevelType,
-	nativeEventParam: ?AnyNativeEvent,
+  rootNodeID: number,
+  topLevelType: TopLevelType,
+  nativeEventParam: ?AnyNativeEvent,
 ) {
-	const nativeEvent = nativeEventParam || EMPTY_NATIVE_EVENT;
-	const inst = getInstanceFromNode(rootNodeID);
-	batchedUpdates(function() {
-		runExtractedEventsInBatch(
-			topLevelType,
-			inst,
-			nativeEvent,
-			nativeEvent.target,
-		);
-	});
-	// React Native doesn't use ReactControlledComponent but if it did, here's
-	// where it would do it.
+  const nativeEvent = nativeEventParam || EMPTY_NATIVE_EVENT;
+  const inst = getInstanceFromNode(rootNodeID);
+  batchedUpdates(function() {
+    runExtractedEventsInBatch(
+      topLevelType,
+      inst,
+      nativeEvent,
+      nativeEvent.target,
+    );
+  });
+  // React Native doesn't use ReactControlledComponent but if it did, here's
+  // where it would do it.
 }
 
 /**
@@ -114,11 +114,11 @@ export function _receiveRootNodeIDEvent(
  * @param {object} nativeEventParam Object passed from native.
  */
 export function receiveEvent(
-	rootNodeID: number,
-	topLevelType: TopLevelType,
-	nativeEventParam: AnyNativeEvent,
+  rootNodeID: number,
+  topLevelType: TopLevelType,
+  nativeEventParam: AnyNativeEvent,
 ) {
-	_receiveRootNodeIDEvent(rootNodeID, topLevelType, nativeEventParam);
+  _receiveRootNodeIDEvent(rootNodeID, topLevelType, nativeEventParam);
 }
 
 /**
@@ -146,38 +146,38 @@ export function receiveEvent(
  * identifier 0, also abandoning traditional click handlers.
  */
 export function receiveTouches(
-	eventTopLevelType: TopLevelType,
-	touches: Array<Object>,
-	changedIndices: Array<number>,
+  eventTopLevelType: TopLevelType,
+  touches: Array<Object>,
+  changedIndices: Array<number>,
 ) {
-	const changedTouches =
+  const changedTouches =
     eventTopLevelType === 'topTouchEnd' ||
     eventTopLevelType === 'topTouchCancel'
-    	? removeTouchesAtIndices(touches, changedIndices)
-    	: touchSubsequence(touches, changedIndices);
+      ? removeTouchesAtIndices(touches, changedIndices)
+      : touchSubsequence(touches, changedIndices);
 
-	for (let jj = 0; jj < changedTouches.length; jj++) {
-		const touch = changedTouches[jj];
-		// Touch objects can fulfill the role of `DOM` `Event` objects if we set
-		// the `changedTouches`/`touches`. This saves allocations.
-		touch.changedTouches = changedTouches;
-		touch.touches = touches;
-		const nativeEvent = touch;
-		let rootNodeID = null;
-		const target = nativeEvent.target;
-		if (target !== null && target !== undefined) {
-			if (target < 1) {
-				if (__DEV__) {
-					warningWithoutStack(
-						false,
-						'A view is reporting that a touch occurred on tag zero.',
-					);
-				}
-			} else {
-				rootNodeID = target;
-			}
-		}
-		// $FlowFixMe Shouldn't we *not* call it if rootNodeID is null?
-		_receiveRootNodeIDEvent(rootNodeID, eventTopLevelType, nativeEvent);
-	}
+  for (let jj = 0; jj < changedTouches.length; jj++) {
+    const touch = changedTouches[jj];
+    // Touch objects can fulfill the role of `DOM` `Event` objects if we set
+    // the `changedTouches`/`touches`. This saves allocations.
+    touch.changedTouches = changedTouches;
+    touch.touches = touches;
+    const nativeEvent = touch;
+    let rootNodeID = null;
+    const target = nativeEvent.target;
+    if (target !== null && target !== undefined) {
+      if (target < 1) {
+        if (__DEV__) {
+          warningWithoutStack(
+            false,
+            'A view is reporting that a touch occurred on tag zero.',
+          );
+        }
+      } else {
+        rootNodeID = target;
+      }
+    }
+    // $FlowFixMe Shouldn't we *not* call it if rootNodeID is null?
+    _receiveRootNodeIDEvent(rootNodeID, eventTopLevelType, nativeEvent);
+  }
 }

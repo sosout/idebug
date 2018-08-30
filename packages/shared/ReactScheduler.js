@@ -9,9 +9,9 @@
 
 'use strict';
 import {
-	now,
-	scheduleWork,
-	cancelScheduledWork,
+  now,
+  scheduleWork,
+  cancelScheduledWork,
 } from 'react-scheduler/src/ReactScheduler';
 
 export {now, scheduleWork, cancelScheduledWork};

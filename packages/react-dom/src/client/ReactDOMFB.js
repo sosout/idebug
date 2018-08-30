@@ -17,18 +17,18 @@ import * as ReactDOMComponentTree from './ReactDOMComponentTree';
 import TapEventPlugin from '../events/TapEventPlugin';
 
 Object.assign(
-	(ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: any),
-	{
-		// These are real internal dependencies that are trickier to remove:
-		ReactBrowserEventEmitter,
-		ReactFiberTreeReflection,
-		ReactDOMComponentTree,
-		ReactInstanceMap,
-		// Used by www msite:
-		TapEventPlugin,
-		// Perf experiment
-		addUserTimingListener,
-	},
+  (ReactDOM.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: any),
+  {
+    // These are real internal dependencies that are trickier to remove:
+    ReactBrowserEventEmitter,
+    ReactFiberTreeReflection,
+    ReactDOMComponentTree,
+    ReactInstanceMap,
+    // Used by www msite:
+    TapEventPlugin,
+    // Perf experiment
+    addUserTimingListener,
+  },
 );
 
 export default ReactDOM;

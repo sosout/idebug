@@ -13,19 +13,19 @@ import typeof * as EventListenerType from '../EventListener';
 import typeof * as EventListenerShimType from './EventListener-www';
 
 export function addEventBubbleListener(
-	element: Element,
-	eventType: string,
-	listener: Function,
+  element: Element,
+  eventType: string,
+  listener: Function,
 ): void {
-	EventListenerWWW.listen(element, eventType, listener);
+  EventListenerWWW.listen(element, eventType, listener);
 }
 
 export function addEventCaptureListener(
-	element: Element,
-	eventType: string,
-	listener: Function,
+  element: Element,
+  eventType: string,
+  listener: Function,
 ): void {
-	EventListenerWWW.capture(element, eventType, listener);
+  EventListenerWWW.capture(element, eventType, listener);
 }
 
 // Flow magic to verify the exports of this file match the original version.

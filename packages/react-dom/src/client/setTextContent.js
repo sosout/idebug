@@ -19,19 +19,19 @@ import {TEXT_NODE} from '../shared/HTMLNodeType';
  * @internal
  */
 let setTextContent = function(node: Element, text: string): void {
-	if (text) {
-		let firstChild = node.firstChild;
+  if (text) {
+    let firstChild = node.firstChild;
 
-		if (
-			firstChild &&
+    if (
+      firstChild &&
       firstChild === node.lastChild &&
       firstChild.nodeType === TEXT_NODE
-		) {
-			firstChild.nodeValue = text;
-			return;
-		}
-	}
-	node.textContent = text;
+    ) {
+      firstChild.nodeValue = text;
+      return;
+    }
+  }
+  node.textContent = text;
 };
 
 export default setTextContent;

@@ -32,6 +32,6 @@ EventPluginHub.injection.injectEventPluginOrder(ReactNativeEventPluginOrder);
  * them).
  */
 EventPluginHub.injection.injectEventPluginsByName({
-	ResponderEventPlugin: ResponderEventPlugin,
-	ReactNativeBridgeEventPlugin: ReactNativeBridgeEventPlugin,
+  ResponderEventPlugin: ResponderEventPlugin,
+  ReactNativeBridgeEventPlugin: ReactNativeBridgeEventPlugin,
 });

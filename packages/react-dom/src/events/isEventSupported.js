@@ -21,20 +21,20 @@ import {canUseDOM} from 'shared/ExecutionEnvironment';
  * @license Modernizr 3.0.0pre (Custom Build) | MIT
  */
 function isEventSupported(eventNameSuffix) {
-	if (!canUseDOM) {
-		return false;
-	}
+  if (!canUseDOM) {
+    return false;
+  }
 
-	const eventName = 'on' + eventNameSuffix;
-	let isSupported = eventName in document;
+  const eventName = 'on' + eventNameSuffix;
+  let isSupported = eventName in document;
 
-	if (!isSupported) {
-		const element = document.createElement('div');
-		element.setAttribute(eventName, 'return;');
-		isSupported = typeof element[eventName] === 'function';
-	}
+  if (!isSupported) {
+    const element = document.createElement('div');
+    element.setAttribute(eventName, 'return;');
+    isSupported = typeof element[eventName] === 'function';
+  }
 
-	return isSupported;
+  return isSupported;
 }
 
 export default isEventSupported;

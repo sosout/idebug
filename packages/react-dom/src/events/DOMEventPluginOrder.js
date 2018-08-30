@@ -15,13 +15,13 @@
  * preventing default on events is convenient in `SimpleEventPlugin` handlers.
  */
 const DOMEventPluginOrder = [
-	'ResponderEventPlugin',
-	'SimpleEventPlugin',
-	'TapEventPlugin',
-	'EnterLeaveEventPlugin',
-	'ChangeEventPlugin',
-	'SelectEventPlugin',
-	'BeforeInputEventPlugin',
+  'ResponderEventPlugin',
+  'SimpleEventPlugin',
+  'TapEventPlugin',
+  'EnterLeaveEventPlugin',
+  'ChangeEventPlugin',
+  'SelectEventPlugin',
+  'BeforeInputEventPlugin',
 ];
 
 export default DOMEventPluginOrder;

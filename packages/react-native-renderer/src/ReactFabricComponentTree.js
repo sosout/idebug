@@ -8,21 +8,21 @@
 import invariant from 'shared/invariant';
 
 function getInstanceFromInstance(instanceHandle) {
-	return instanceHandle;
+  return instanceHandle;
 }
 
 function getTagFromInstance(inst) {
-	let tag = inst.stateNode.canonical._nativeTag;
-	invariant(tag, 'All native instances should have a tag.');
-	return tag;
+  let tag = inst.stateNode.canonical._nativeTag;
+  invariant(tag, 'All native instances should have a tag.');
+  return tag;
 }
 
 export {
-	getInstanceFromInstance as getClosestInstanceFromNode,
-	getInstanceFromInstance as getInstanceFromNode,
-	getTagFromInstance as getNodeFromInstance,
+  getInstanceFromInstance as getClosestInstanceFromNode,
+  getInstanceFromInstance as getInstanceFromNode,
+  getTagFromInstance as getNodeFromInstance,
 };
 
 export function getFiberCurrentPropsFromNode(inst) {
-	return inst.canonical.currentProps;
+  return inst.canonical.currentProps;
 }

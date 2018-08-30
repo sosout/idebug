@@ -19,57 +19,57 @@ let isMovementYSet = false;
  * @see http://www.w3.org/TR/DOM-Level-3-Events/
  */
 const SyntheticMouseEvent = SyntheticUIEvent.extend({
-	screenX: null,
-	screenY: null,
-	clientX: null,
-	clientY: null,
-	pageX: null,
-	pageY: null,
-	ctrlKey: null,
-	shiftKey: null,
-	altKey: null,
-	metaKey: null,
-	getModifierState: getEventModifierState,
-	button: null,
-	buttons: null,
-	relatedTarget: function(event) {
-		return (
-			event.relatedTarget ||
+  screenX: null,
+  screenY: null,
+  clientX: null,
+  clientY: null,
+  pageX: null,
+  pageY: null,
+  ctrlKey: null,
+  shiftKey: null,
+  altKey: null,
+  metaKey: null,
+  getModifierState: getEventModifierState,
+  button: null,
+  buttons: null,
+  relatedTarget: function(event) {
+    return (
+      event.relatedTarget ||
       (event.fromElement === event.srcElement
-      	? event.toElement
-      	: event.fromElement)
-		);
-	},
-	movementX: function(event) {
-		if ('movementX' in event) {
-			return event.movementX;
-		}
+        ? event.toElement
+        : event.fromElement)
+    );
+  },
+  movementX: function(event) {
+    if ('movementX' in event) {
+      return event.movementX;
+    }
 
-		const screenX = previousScreenX;
-		previousScreenX = event.screenX;
+    const screenX = previousScreenX;
+    previousScreenX = event.screenX;
 
-		if (!isMovementXSet) {
-			isMovementXSet = true;
-			return 0;
-		}
+    if (!isMovementXSet) {
+      isMovementXSet = true;
+      return 0;
+    }
 
-		return event.type === 'mousemove' ? event.screenX - screenX : 0;
-	},
-	movementY: function(event) {
-		if ('movementY' in event) {
-			return event.movementY;
-		}
+    return event.type === 'mousemove' ? event.screenX - screenX : 0;
+  },
+  movementY: function(event) {
+    if ('movementY' in event) {
+      return event.movementY;
+    }
 
-		const screenY = previousScreenY;
-		previousScreenY = event.screenY;
+    const screenY = previousScreenY;
+    previousScreenY = event.screenY;
 
-		if (!isMovementYSet) {
-			isMovementYSet = true;
-			return 0;
-		}
+    if (!isMovementYSet) {
+      isMovementYSet = true;
+      return 0;
+    }
 
-		return event.type === 'mousemove' ? event.screenY - screenY : 0;
-	},
+    return event.type === 'mousemove' ? event.screenY - screenY : 0;
+  },
 });
 
 export default SyntheticMouseEvent;

@@ -8,11 +8,11 @@
  */
 
 import type {
-	MeasureInWindowOnSuccessCallback,
-	MeasureLayoutOnSuccessCallback,
-	MeasureOnSuccessCallback,
-	NativeMethodsMixinType,
-	ReactNativeBaseComponentViewConfig,
+  MeasureInWindowOnSuccessCallback,
+  MeasureLayoutOnSuccessCallback,
+  MeasureOnSuccessCallback,
+  NativeMethodsMixinType,
+  ReactNativeBaseComponentViewConfig,
 } from './ReactNativeTypes';
 
 import invariant from 'shared/invariant';
@@ -22,16 +22,16 @@ import UIManager from 'UIManager';
 
 import * as ReactNativeAttributePayload from './ReactNativeAttributePayload';
 import {
-	mountSafeCallback,
-	throwOnStylesProp,
-	warnForStyleProps,
+  mountSafeCallback,
+  throwOnStylesProp,
+  warnForStyleProps,
 } from './NativeMethodsMixinUtils';
 
 export default function(
-	findNodeHandle: any => ?number,
-	findHostInstance: any => any,
+  findNodeHandle: any => ?number,
+  findHostInstance: any => any,
 ) {
-	/**
+  /**
    * `NativeMethodsMixin` provides methods to access the underlying native
    * component directly. This can be useful in cases when you want to focus
    * a view or measure its on-screen dimensions, for example.
@@ -46,8 +46,8 @@ export default function(
    * Note the Flow $Exact<> syntax is required to support mixins.
    * React createClass mixins can only be used with exact types.
    */
-	const NativeMethodsMixin: $Exact<NativeMethodsMixinType> = {
-		/**
+  const NativeMethodsMixin: $Exact<NativeMethodsMixinType> = {
+    /**
      * Determines the location on screen, width, and height of the given view and
      * returns the values via an async callback. If successful, the callback will
      * be called with the following arguments:
@@ -64,14 +64,14 @@ export default function(
      * possible, consider using the [`onLayout`
      * prop](docs/view.html#onlayout) instead.
      */
-		measure: function(callback: MeasureOnSuccessCallback) {
-			UIManager.measure(
-				findNodeHandle(this),
-				mountSafeCallback(this, callback),
-			);
-		},
+    measure: function(callback: MeasureOnSuccessCallback) {
+      UIManager.measure(
+        findNodeHandle(this),
+        mountSafeCallback(this, callback),
+      );
+    },
 
-		/**
+    /**
      * Determines the location of the given view in the window and returns the
      * values via an async callback. If the React root view is embedded in
      * another native view, this will give you the absolute coordinates. If
@@ -86,14 +86,14 @@ export default function(
      * Note that these measurements are not available until after the rendering
      * has been completed in native.
      */
-		measureInWindow: function(callback: MeasureInWindowOnSuccessCallback) {
-			UIManager.measureInWindow(
-				findNodeHandle(this),
-				mountSafeCallback(this, callback),
-			);
-		},
+    measureInWindow: function(callback: MeasureInWindowOnSuccessCallback) {
+      UIManager.measureInWindow(
+        findNodeHandle(this),
+        mountSafeCallback(this, callback),
+      );
+    },
 
-		/**
+    /**
      * Like [`measure()`](#measure), but measures the view relative an ancestor,
      * specified as `relativeToNativeNode`. This means that the returned x, y
      * are relative to the origin x, y of the ancestor view.
@@ -101,122 +101,122 @@ export default function(
      * As always, to obtain a native node handle for a component, you can use
      * `findNodeHandle(component)`.
      */
-		measureLayout: function(
-			relativeToNativeNode: number,
-			onSuccess: MeasureLayoutOnSuccessCallback,
-			onFail: () => void /* currently unused */,
-		) {
-			UIManager.measureLayout(
-				findNodeHandle(this),
-				relativeToNativeNode,
-				mountSafeCallback(this, onFail),
-				mountSafeCallback(this, onSuccess),
-			);
-		},
+    measureLayout: function(
+      relativeToNativeNode: number,
+      onSuccess: MeasureLayoutOnSuccessCallback,
+      onFail: () => void /* currently unused */,
+    ) {
+      UIManager.measureLayout(
+        findNodeHandle(this),
+        relativeToNativeNode,
+        mountSafeCallback(this, onFail),
+        mountSafeCallback(this, onSuccess),
+      );
+    },
 
-		/**
+    /**
      * This function sends props straight to native. They will not participate in
      * future diff process - this means that if you do not include them in the
      * next render, they will remain active (see [Direct
      * Manipulation](docs/direct-manipulation.html)).
      */
-		setNativeProps: function(nativeProps: Object) {
-			// Class components don't have viewConfig -> validateAttributes.
-			// Nor does it make sense to set native props on a non-native component.
-			// Instead, find the nearest host component and set props on it.
-			// Use findNodeHandle() rather than findNodeHandle() because
-			// We want the instance/wrapper (not the native tag).
-			let maybeInstance;
+    setNativeProps: function(nativeProps: Object) {
+      // Class components don't have viewConfig -> validateAttributes.
+      // Nor does it make sense to set native props on a non-native component.
+      // Instead, find the nearest host component and set props on it.
+      // Use findNodeHandle() rather than findNodeHandle() because
+      // We want the instance/wrapper (not the native tag).
+      let maybeInstance;
 
-			// Fiber errors if findNodeHandle is called for an umounted component.
-			// Tests using ReactTestRenderer will trigger this case indirectly.
-			// Mimicking stack behavior, we should silently ignore this case.
-			// TODO Fix ReactTestRenderer so we can remove this try/catch.
-			try {
-				maybeInstance = findHostInstance(this);
-			} catch (error) {}
+      // Fiber errors if findNodeHandle is called for an umounted component.
+      // Tests using ReactTestRenderer will trigger this case indirectly.
+      // Mimicking stack behavior, we should silently ignore this case.
+      // TODO Fix ReactTestRenderer so we can remove this try/catch.
+      try {
+        maybeInstance = findHostInstance(this);
+      } catch (error) {}
 
-			// If there is no host component beneath this we should fail silently.
-			// This is not an error; it could mean a class component rendered null.
-			if (maybeInstance == null) {
-				return;
-			}
+      // If there is no host component beneath this we should fail silently.
+      // This is not an error; it could mean a class component rendered null.
+      if (maybeInstance == null) {
+        return;
+      }
 
-			const viewConfig: ReactNativeBaseComponentViewConfig =
+      const viewConfig: ReactNativeBaseComponentViewConfig =
         maybeInstance.viewConfig;
 
-			if (__DEV__) {
-				warnForStyleProps(nativeProps, viewConfig.validAttributes);
-			}
+      if (__DEV__) {
+        warnForStyleProps(nativeProps, viewConfig.validAttributes);
+      }
 
-			const updatePayload = ReactNativeAttributePayload.create(
-				nativeProps,
-				viewConfig.validAttributes,
-			);
+      const updatePayload = ReactNativeAttributePayload.create(
+        nativeProps,
+        viewConfig.validAttributes,
+      );
 
-			// Avoid the overhead of bridge calls if there's no update.
-			// This is an expensive no-op for Android, and causes an unnecessary
-			// view invalidation for certain components (eg RCTTextInput) on iOS.
-			if (updatePayload != null) {
-				UIManager.updateView(
-					maybeInstance._nativeTag,
-					viewConfig.uiViewClassName,
-					updatePayload,
-				);
-			}
-		},
+      // Avoid the overhead of bridge calls if there's no update.
+      // This is an expensive no-op for Android, and causes an unnecessary
+      // view invalidation for certain components (eg RCTTextInput) on iOS.
+      if (updatePayload != null) {
+        UIManager.updateView(
+          maybeInstance._nativeTag,
+          viewConfig.uiViewClassName,
+          updatePayload,
+        );
+      }
+    },
 
-		/**
+    /**
      * Requests focus for the given input or view. The exact behavior triggered
      * will depend on the platform and type of view.
      */
-		focus: function() {
-			TextInputState.focusTextInput(findNodeHandle(this));
-		},
+    focus: function() {
+      TextInputState.focusTextInput(findNodeHandle(this));
+    },
 
-		/**
+    /**
      * Removes focus from an input or view. This is the opposite of `focus()`.
      */
-		blur: function() {
-			TextInputState.blurTextInput(findNodeHandle(this));
-		},
-	};
+    blur: function() {
+      TextInputState.blurTextInput(findNodeHandle(this));
+    },
+  };
 
-	if (__DEV__) {
-		// hide this from Flow since we can't define these properties outside of
-		// __DEV__ without actually implementing them (setting them to undefined
-		// isn't allowed by ReactClass)
-		const NativeMethodsMixin_DEV = (NativeMethodsMixin: any);
-		invariant(
-			!NativeMethodsMixin_DEV.componentWillMount &&
+  if (__DEV__) {
+    // hide this from Flow since we can't define these properties outside of
+    // __DEV__ without actually implementing them (setting them to undefined
+    // isn't allowed by ReactClass)
+    const NativeMethodsMixin_DEV = (NativeMethodsMixin: any);
+    invariant(
+      !NativeMethodsMixin_DEV.componentWillMount &&
         !NativeMethodsMixin_DEV.componentWillReceiveProps &&
         !NativeMethodsMixin_DEV.UNSAFE_componentWillMount &&
         !NativeMethodsMixin_DEV.UNSAFE_componentWillReceiveProps,
-			'Do not override existing functions.',
-		);
-		// TODO (bvaughn) Remove cWM and cWRP in a future version of React Native,
-		// Once these lifecycles have been remove from the reconciler.
-		NativeMethodsMixin_DEV.componentWillMount = function() {
-			throwOnStylesProp(this, this.props);
-		};
-		NativeMethodsMixin_DEV.componentWillReceiveProps = function(newProps) {
-			throwOnStylesProp(this, newProps);
-		};
-		NativeMethodsMixin_DEV.UNSAFE_componentWillMount = function() {
-			throwOnStylesProp(this, this.props);
-		};
-		NativeMethodsMixin_DEV.UNSAFE_componentWillReceiveProps = function(
-			newProps,
-		) {
-			throwOnStylesProp(this, newProps);
-		};
+      'Do not override existing functions.',
+    );
+    // TODO (bvaughn) Remove cWM and cWRP in a future version of React Native,
+    // Once these lifecycles have been remove from the reconciler.
+    NativeMethodsMixin_DEV.componentWillMount = function() {
+      throwOnStylesProp(this, this.props);
+    };
+    NativeMethodsMixin_DEV.componentWillReceiveProps = function(newProps) {
+      throwOnStylesProp(this, newProps);
+    };
+    NativeMethodsMixin_DEV.UNSAFE_componentWillMount = function() {
+      throwOnStylesProp(this, this.props);
+    };
+    NativeMethodsMixin_DEV.UNSAFE_componentWillReceiveProps = function(
+      newProps,
+    ) {
+      throwOnStylesProp(this, newProps);
+    };
 
-		// React may warn about cWM/cWRP/cWU methods being deprecated.
-		// Add a flag to suppress these warnings for this special case.
-		// TODO (bvaughn) Remove this flag once the above methods have been removed.
-		NativeMethodsMixin_DEV.componentWillMount.__suppressDeprecationWarning = true;
-		NativeMethodsMixin_DEV.componentWillReceiveProps.__suppressDeprecationWarning = true;
-	}
+    // React may warn about cWM/cWRP/cWU methods being deprecated.
+    // Add a flag to suppress these warnings for this special case.
+    // TODO (bvaughn) Remove this flag once the above methods have been removed.
+    NativeMethodsMixin_DEV.componentWillMount.__suppressDeprecationWarning = true;
+    NativeMethodsMixin_DEV.componentWillReceiveProps.__suppressDeprecationWarning = true;
+  }
 
-	return NativeMethodsMixin;
+  return NativeMethodsMixin;
 }

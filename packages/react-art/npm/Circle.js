@@ -32,22 +32,22 @@ var Shape = ReactART.Shape;
  * components, it must be used in a <Surface>.
  */
 var Circle = createReactClass({
-	displayName: 'Circle',
+  displayName: 'Circle',
 
-	propTypes: {
-		radius: PropTypes.number.isRequired,
-	},
+  propTypes: {
+    radius: PropTypes.number.isRequired,
+  },
 
-	render: function render() {
-		var radius = this.props.radius;
+  render: function render() {
+    var radius = this.props.radius;
 
-		var path = Path()
-			.moveTo(0, -radius)
-			.arc(0, radius * 2, radius)
-			.arc(0, radius * -2, radius)
-			.close();
-		return React.createElement(Shape, assign({}, this.props, {d: path}));
-	},
+    var path = Path()
+      .moveTo(0, -radius)
+      .arc(0, radius * 2, radius)
+      .arc(0, radius * -2, radius)
+      .close();
+    return React.createElement(Shape, assign({}, this.props, {d: path}));
+  },
 });
 
 module.exports = Circle;

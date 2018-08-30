@@ -13,7 +13,7 @@ import SyntheticEvent from 'events/SyntheticEvent';
  *      /#events-inputevents
  */
 const SyntheticInputEvent = SyntheticEvent.extend({
-	data: null,
+  data: null,
 });
 
 export default SyntheticInputEvent;

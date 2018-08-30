@@ -21,19 +21,19 @@ export const TOP_MOUSE_MOVE = 'mousemove';
 export const TOP_MOUSE_UP = 'mouseup';
 
 export function isStartish(topLevelType: mixed): boolean {
-	return topLevelType === TOP_TOUCH_START || topLevelType === TOP_MOUSE_DOWN;
+  return topLevelType === TOP_TOUCH_START || topLevelType === TOP_MOUSE_DOWN;
 }
 
 export function isMoveish(topLevelType: mixed): boolean {
-	return topLevelType === TOP_TOUCH_MOVE || topLevelType === TOP_MOUSE_MOVE;
+  return topLevelType === TOP_TOUCH_MOVE || topLevelType === TOP_MOUSE_MOVE;
 }
 
 export function isEndish(topLevelType: mixed): boolean {
-	return (
-		topLevelType === TOP_TOUCH_END ||
+  return (
+    topLevelType === TOP_TOUCH_END ||
     topLevelType === TOP_TOUCH_CANCEL ||
     topLevelType === TOP_MOUSE_UP
-	);
+  );
 }
 
 export const startDependencies = [TOP_TOUCH_START, TOP_MOUSE_DOWN];

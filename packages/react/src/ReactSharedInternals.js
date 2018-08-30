@@ -10,19 +10,19 @@ import ReactCurrentOwner from './ReactCurrentOwner';
 import ReactDebugCurrentFrame from './ReactDebugCurrentFrame';
 
 const ReactSharedInternals = {
-	ReactCurrentOwner,
-	// Used by renderers to avoid bundling object-assign twice in UMD bundles:
-	assign,
+  ReactCurrentOwner,
+  // Used by renderers to avoid bundling object-assign twice in UMD bundles:
+  assign,
 };
 
 if (__DEV__) {
-	Object.assign(ReactSharedInternals, {
-		// These should not be included in production.
-		ReactDebugCurrentFrame,
-		// Shim for React DOM 16.0.0 which still destructured (but not used) this.
-		// TODO: remove in React 17.0.
-		ReactComponentTreeHook: {},
-	});
+  Object.assign(ReactSharedInternals, {
+    // These should not be included in production.
+    ReactDebugCurrentFrame,
+    // Shim for React DOM 16.0.0 which still destructured (but not used) this.
+    // TODO: remove in React 17.0.
+    ReactComponentTreeHook: {},
+  });
 }
 
 export default ReactSharedInternals;

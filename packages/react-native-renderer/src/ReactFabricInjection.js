@@ -15,11 +15,11 @@ import ReactFabricGlobalResponderHandler from './ReactFabricGlobalResponderHandl
 import ResponderEventPlugin from 'events/ResponderEventPlugin';
 
 EventPluginUtils.setComponentTree(
-	ReactFabricComponentTree.getFiberCurrentPropsFromNode,
-	ReactFabricComponentTree.getInstanceFromNode,
-	ReactFabricComponentTree.getNodeFromInstance,
+  ReactFabricComponentTree.getFiberCurrentPropsFromNode,
+  ReactFabricComponentTree.getInstanceFromNode,
+  ReactFabricComponentTree.getNodeFromInstance,
 );
 
 ResponderEventPlugin.injection.injectGlobalResponderHandler(
-	ReactFabricGlobalResponderHandler,
+  ReactFabricGlobalResponderHandler,
 );

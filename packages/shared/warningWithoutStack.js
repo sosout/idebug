@@ -15,30 +15,30 @@
 let warningWithoutStack = () => {};
 
 if (__DEV__) {
-	warningWithoutStack = function(condition, format, ...args) {
-		if (format === undefined) {
-			throw new Error(
-				'`warningWithoutStack(condition, format, ...args)` requires a warning ' +
+  warningWithoutStack = function(condition, format, ...args) {
+    if (format === undefined) {
+      throw new Error(
+        '`warningWithoutStack(condition, format, ...args)` requires a warning ' +
           'message argument',
-			);
-		}
-		if (condition) {
-			return;
-		}
-		if (typeof console !== 'undefined') {
-			const stringArgs = args.map(item => '' + item);
-			console.error('Warning: ' + format, ...stringArgs);
-		}
-		try {
-			// --- Welcome to debugging React ---
-			// This error was thrown as a convenience so that you can use this stack
-			// to find the callsite that caused this warning to fire.
-			let argIndex = 0;
-			const message =
+      );
+    }
+    if (condition) {
+      return;
+    }
+    if (typeof console !== 'undefined') {
+      const stringArgs = args.map(item => '' + item);
+      console.error('Warning: ' + format, ...stringArgs);
+    }
+    try {
+      // --- Welcome to debugging React ---
+      // This error was thrown as a convenience so that you can use this stack
+      // to find the callsite that caused this warning to fire.
+      let argIndex = 0;
+      const message =
         'Warning: ' + format.replace(/%s/g, () => args[argIndex++]);
-			throw new Error(message);
-		} catch (x) {}
-	};
+      throw new Error(message);
+    } catch (x) {}
+  };
 }
 
 export default warningWithoutStack;

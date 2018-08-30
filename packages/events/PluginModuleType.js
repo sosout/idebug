@@ -9,8 +9,8 @@
 
 import type {Fiber} from 'react-reconciler/src/ReactFiber';
 import type {
-	DispatchConfig,
-	ReactSyntheticEvent,
+  DispatchConfig,
+  ReactSyntheticEvent,
 } from './ReactSyntheticEventType';
 import type {TopLevelType} from './TopLevelEventTypes';
 

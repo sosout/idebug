@@ -12,48 +12,48 @@
 const hasSymbol = typeof Symbol === 'function' && Symbol.for;
 
 export const REACT_ELEMENT_TYPE = hasSymbol
-	? Symbol.for('react.element')
-	: 0xeac7;
+  ? Symbol.for('react.element')
+  : 0xeac7;
 export const REACT_PORTAL_TYPE = hasSymbol
-	? Symbol.for('react.portal')
-	: 0xeaca;
+  ? Symbol.for('react.portal')
+  : 0xeaca;
 export const REACT_FRAGMENT_TYPE = hasSymbol
-	? Symbol.for('react.fragment')
-	: 0xeacb;
+  ? Symbol.for('react.fragment')
+  : 0xeacb;
 export const REACT_STRICT_MODE_TYPE = hasSymbol
-	? Symbol.for('react.strict_mode')
-	: 0xeacc;
+  ? Symbol.for('react.strict_mode')
+  : 0xeacc;
 export const REACT_PROFILER_TYPE = hasSymbol
-	? Symbol.for('react.profiler')
-	: 0xead2;
+  ? Symbol.for('react.profiler')
+  : 0xead2;
 export const REACT_PROVIDER_TYPE = hasSymbol
-	? Symbol.for('react.provider')
-	: 0xeacd;
+  ? Symbol.for('react.provider')
+  : 0xeacd;
 export const REACT_CONTEXT_TYPE = hasSymbol
-	? Symbol.for('react.context')
-	: 0xeace;
+  ? Symbol.for('react.context')
+  : 0xeace;
 export const REACT_ASYNC_MODE_TYPE = hasSymbol
-	? Symbol.for('react.async_mode')
-	: 0xeacf;
+  ? Symbol.for('react.async_mode')
+  : 0xeacf;
 export const REACT_FORWARD_REF_TYPE = hasSymbol
-	? Symbol.for('react.forward_ref')
-	: 0xead0;
+  ? Symbol.for('react.forward_ref')
+  : 0xead0;
 export const REACT_PLACEHOLDER_TYPE = hasSymbol
-	? Symbol.for('react.placeholder')
-	: 0xead1;
+  ? Symbol.for('react.placeholder')
+  : 0xead1;
 
 const MAYBE_ITERATOR_SYMBOL = typeof Symbol === 'function' && Symbol.iterator;
 const FAUX_ITERATOR_SYMBOL = '@@iterator';
 
 export function getIteratorFn(maybeIterable: ?any): ?() => ?Iterator<*> {
-	if (maybeIterable === null || typeof maybeIterable !== 'object') {
-		return null;
-	}
-	const maybeIterator =
+  if (maybeIterable === null || typeof maybeIterable !== 'object') {
+    return null;
+  }
+  const maybeIterator =
     (MAYBE_ITERATOR_SYMBOL && maybeIterable[MAYBE_ITERATOR_SYMBOL]) ||
     maybeIterable[FAUX_ITERATOR_SYMBOL];
-	if (typeof maybeIterator === 'function') {
-		return maybeIterator;
-	}
-	return null;
+  if (typeof maybeIterator === 'function') {
+    return maybeIterator;
+  }
+  return null;
 }

@@ -19,24 +19,24 @@ let reusableSVGContainer;
  * @internal
  */
 const setInnerHTML = createMicrosoftUnsafeLocalFunction(function(node, html) {
-	// IE does not have innerHTML for SVG nodes, so instead we inject the
-	// new markup in a temp node and then move the child nodes across into
-	// the target node
+  // IE does not have innerHTML for SVG nodes, so instead we inject the
+  // new markup in a temp node and then move the child nodes across into
+  // the target node
 
-	if (node.namespaceURI === Namespaces.svg && !('innerHTML' in node)) {
-		reusableSVGContainer =
+  if (node.namespaceURI === Namespaces.svg && !('innerHTML' in node)) {
+    reusableSVGContainer =
       reusableSVGContainer || document.createElement('div');
-		reusableSVGContainer.innerHTML = '<svg>' + html + '</svg>';
-		const svgNode = reusableSVGContainer.firstChild;
-		while (node.firstChild) {
-			node.removeChild(node.firstChild);
-		}
-		while (svgNode.firstChild) {
-			node.appendChild(svgNode.firstChild);
-		}
-	} else {
-		node.innerHTML = html;
-	}
+    reusableSVGContainer.innerHTML = '<svg>' + html + '</svg>';
+    const svgNode = reusableSVGContainer.firstChild;
+    while (node.firstChild) {
+      node.removeChild(node.firstChild);
+    }
+    while (svgNode.firstChild) {
+      node.appendChild(svgNode.firstChild);
+    }
+  } else {
+    node.innerHTML = html;
+  }
 });
 
 export default setInnerHTML;

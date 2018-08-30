@@ -14,154 +14,154 @@ import {__subscriberRef} from 'interaction-tracking';
 
 let subscribers: Set<Subscriber> = (null: any);
 if (enableInteractionTracking) {
-	subscribers = new Set();
+  subscribers = new Set();
 }
 
 export function subscribe(subscriber: Subscriber): void {
-	if (enableInteractionTracking) {
-		subscribers.add(subscriber);
-	}
+  if (enableInteractionTracking) {
+    subscribers.add(subscriber);
+  }
 }
 
 export function unsubscribe(subscriber: Subscriber): void {
-	if (enableInteractionTracking) {
-		subscribers.delete(subscriber);
-	}
+  if (enableInteractionTracking) {
+    subscribers.delete(subscriber);
+  }
 }
 
 function onInteractionTracked(interaction: Interaction): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onInteractionTracked(interaction);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onInteractionTracked(interaction);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 function onInteractionScheduledWorkCompleted(interaction: Interaction): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onInteractionScheduledWorkCompleted(interaction);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onInteractionScheduledWorkCompleted(interaction);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 function onWorkScheduled(
-	interactions: Set<Interaction>,
-	threadID: number,
+  interactions: Set<Interaction>,
+  threadID: number,
 ): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onWorkScheduled(interactions, threadID);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onWorkScheduled(interactions, threadID);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 function onWorkStarted(interactions: Set<Interaction>, threadID: number): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onWorkStarted(interactions, threadID);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onWorkStarted(interactions, threadID);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 function onWorkStopped(interactions: Set<Interaction>, threadID: number): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onWorkStopped(interactions, threadID);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onWorkStopped(interactions, threadID);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 function onWorkCanceled(
-	interactions: Set<Interaction>,
-	threadID: number,
+  interactions: Set<Interaction>,
+  threadID: number,
 ): void {
-	let didCatchError = false;
-	let caughtError = null;
+  let didCatchError = false;
+  let caughtError = null;
 
-	subscribers.forEach(subscriber => {
-		try {
-			subscriber.onWorkCanceled(interactions, threadID);
-		} catch (error) {
-			if (!didCatchError) {
-				didCatchError = true;
-				caughtError = error;
-			}
-		}
-	});
+  subscribers.forEach(subscriber => {
+    try {
+      subscriber.onWorkCanceled(interactions, threadID);
+    } catch (error) {
+      if (!didCatchError) {
+        didCatchError = true;
+        caughtError = error;
+      }
+    }
+  });
 
-	if (didCatchError) {
-		throw caughtError;
-	}
+  if (didCatchError) {
+    throw caughtError;
+  }
 }
 
 if (enableInteractionTracking) {
-	__subscriberRef.current = {
-		onInteractionScheduledWorkCompleted,
-		onInteractionTracked,
-		onWorkCanceled,
-		onWorkScheduled,
-		onWorkStarted,
-		onWorkStopped,
-	};
+  __subscriberRef.current = {
+    onInteractionScheduledWorkCompleted,
+    onInteractionTracked,
+    onWorkCanceled,
+    onWorkScheduled,
+    onWorkStarted,
+    onWorkStopped,
+  };
 }

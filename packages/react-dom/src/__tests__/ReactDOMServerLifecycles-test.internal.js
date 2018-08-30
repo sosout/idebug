@@ -14,107 +14,107 @@ let ReactFeatureFlags;
 let ReactDOMServer;
 
 describe('ReactDOMServerLifecycles', () => {
-	beforeEach(() => {
-		ReactFeatureFlags = require('shared/ReactFeatureFlags');
-		ReactFeatureFlags.warnAboutDeprecatedLifecycles = true;
+  beforeEach(() => {
+    ReactFeatureFlags = require('shared/ReactFeatureFlags');
+    ReactFeatureFlags.warnAboutDeprecatedLifecycles = true;
 
-		React = require('react');
-		ReactDOMServer = require('react-dom/server');
-	});
+    React = require('react');
+    ReactDOMServer = require('react-dom/server');
+  });
 
-	afterEach(() => {
-		jest.resetModules();
-	});
+  afterEach(() => {
+    jest.resetModules();
+  });
 
-	it('should not invoke cWM if static gDSFP is present', () => {
-		class Component extends React.Component {
+  it('should not invoke cWM if static gDSFP is present', () => {
+    class Component extends React.Component {
       state = {};
       static getDerivedStateFromProps() {
-      	return null;
+        return null;
       }
       componentWillMount() {
-      	throw Error('unexpected');
+        throw Error('unexpected');
       }
       render() {
-      	return null;
+        return null;
       }
-		}
+    }
 
-		expect(() =>
-			ReactDOMServer.renderToString(<Component />),
-		).toLowPriorityWarnDev(
-			'Component: componentWillMount() is deprecated and will be removed in the next major version.',
-			{withoutStack: true},
-		);
-	});
+    expect(() =>
+      ReactDOMServer.renderToString(<Component />),
+    ).toLowPriorityWarnDev(
+      'Component: componentWillMount() is deprecated and will be removed in the next major version.',
+      {withoutStack: true},
+    );
+  });
 
-	// TODO (RFC #6) Merge this back into ReactDOMServerLifecycles-test once
-	// the 'warnAboutDeprecatedLifecycles' feature flag has been removed.
-	it('should warn about deprecated lifecycle hooks', () => {
-		class Component extends React.Component {
-			componentWillMount() {}
-			render() {
-				return null;
-			}
-		}
+  // TODO (RFC #6) Merge this back into ReactDOMServerLifecycles-test once
+  // the 'warnAboutDeprecatedLifecycles' feature flag has been removed.
+  it('should warn about deprecated lifecycle hooks', () => {
+    class Component extends React.Component {
+      componentWillMount() {}
+      render() {
+        return null;
+      }
+    }
 
-		expect(() =>
-			ReactDOMServer.renderToString(<Component />),
-		).toLowPriorityWarnDev(
-			'Warning: Component: componentWillMount() is deprecated and will be removed ' +
+    expect(() =>
+      ReactDOMServer.renderToString(<Component />),
+    ).toLowPriorityWarnDev(
+      'Warning: Component: componentWillMount() is deprecated and will be removed ' +
         'in the next major version.',
-			{withoutStack: true},
-		);
+      {withoutStack: true},
+    );
 
-		// De-duped
-		ReactDOMServer.renderToString(<Component />);
-	});
+    // De-duped
+    ReactDOMServer.renderToString(<Component />);
+  });
 
-	describe('react-lifecycles-compat', () => {
-		const {polyfill} = require('react-lifecycles-compat');
+  describe('react-lifecycles-compat', () => {
+    const {polyfill} = require('react-lifecycles-compat');
 
-		it('should not warn for components with polyfilled getDerivedStateFromProps', () => {
-			class PolyfilledComponent extends React.Component {
+    it('should not warn for components with polyfilled getDerivedStateFromProps', () => {
+      class PolyfilledComponent extends React.Component {
         state = {};
         static getDerivedStateFromProps() {
-        	return null;
+          return null;
         }
         render() {
-        	return null;
+          return null;
         }
-			}
+      }
 
-			polyfill(PolyfilledComponent);
+      polyfill(PolyfilledComponent);
 
-			const container = document.createElement('div');
-			ReactDOMServer.renderToString(
-				<React.StrictMode>
-					<PolyfilledComponent />
-				</React.StrictMode>,
-				container,
-			);
-		});
+      const container = document.createElement('div');
+      ReactDOMServer.renderToString(
+        <React.StrictMode>
+          <PolyfilledComponent />
+        </React.StrictMode>,
+        container,
+      );
+    });
 
-		it('should not warn for components with polyfilled getSnapshotBeforeUpdate', () => {
-			class PolyfilledComponent extends React.Component {
-				getSnapshotBeforeUpdate() {
-					return null;
-				}
-				componentDidUpdate() {}
-				render() {
-					return null;
-				}
-			}
+    it('should not warn for components with polyfilled getSnapshotBeforeUpdate', () => {
+      class PolyfilledComponent extends React.Component {
+        getSnapshotBeforeUpdate() {
+          return null;
+        }
+        componentDidUpdate() {}
+        render() {
+          return null;
+        }
+      }
 
-			polyfill(PolyfilledComponent);
+      polyfill(PolyfilledComponent);
 
-			const container = document.createElement('div');
-			ReactDOMServer.renderToString(
-				<React.StrictMode>
-					<PolyfilledComponent />
-				</React.StrictMode>,
-				container,
-			);
-		});
-	});
+      const container = document.createElement('div');
+      ReactDOMServer.renderToString(
+        <React.StrictMode>
+          <PolyfilledComponent />
+        </React.StrictMode>,
+        container,
+      );
+    });
+  });
 });

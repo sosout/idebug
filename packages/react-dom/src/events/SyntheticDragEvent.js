@@ -12,7 +12,7 @@ import SyntheticMouseEvent from './SyntheticMouseEvent';
  * @see http://www.w3.org/TR/DOM-Level-3-Events/
  */
 const SyntheticDragEvent = SyntheticMouseEvent.extend({
-	dataTransfer: null,
+  dataTransfer: null,
 });
 
 export default SyntheticDragEvent;

@@ -14,12 +14,12 @@ import typeof * as FeatureFlagsShimType from './ReactFeatureFlags.native-fb';
 
 // Re-export dynamic flags from the fbsource version.
 export const {
-	enableGetDerivedStateFromCatch,
-	enableSuspense,
-	debugRenderPhaseSideEffects,
-	debugRenderPhaseSideEffectsForStrictMode,
-	warnAboutDeprecatedLifecycles,
-	replayFailedUnitOfWorkWithInvokeGuardedCallback,
+  enableGetDerivedStateFromCatch,
+  enableSuspense,
+  debugRenderPhaseSideEffects,
+  debugRenderPhaseSideEffectsForStrictMode,
+  warnAboutDeprecatedLifecycles,
+  replayFailedUnitOfWorkWithInvokeGuardedCallback,
 } = require('ReactFeatureFlags');
 
 // The rest of the flags are static for better dead code elimination.
@@ -30,7 +30,7 @@ export const enableInteractionTracking = false;
 
 // Only used in www builds.
 export function addUserTimingListener() {
-	invariant(false, 'Not implemented.');
+  invariant(false, 'Not implemented.');
 }
 
 // Flow magic to verify the exports of this file match the original version.

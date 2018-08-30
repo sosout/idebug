@@ -10,18 +10,18 @@ type Thenable<T, R> = {
 };
 
 export function lazy<T, R>(ctor: () => Thenable<T, R>) {
-	let thenable = null;
-	return {
-		then(resolve, reject) {
-			if (thenable === null) {
-				// Lazily create thenable by wrapping in an extra thenable.
-				thenable = ctor();
-				ctor = null;
-			}
-			return thenable.then(resolve, reject);
-		},
-		// React uses these fields to store the result.
-		_reactStatus: -1,
-		_reactResult: null,
-	};
+  let thenable = null;
+  return {
+    then(resolve, reject) {
+      if (thenable === null) {
+        // Lazily create thenable by wrapping in an extra thenable.
+        thenable = ctor();
+        ctor = null;
+      }
+      return thenable.then(resolve, reject);
+    },
+    // React uses these fields to store the result.
+    _reactStatus: -1,
+    _reactResult: null,
+  };
 }

@@ -13,48 +13,48 @@ let React;
 let ReactTestRenderer;
 
 describe('ReactCreateRef', () => {
-	beforeEach(() => {
-		jest.resetModules();
+  beforeEach(() => {
+    jest.resetModules();
 
-		React = require('react');
-		ReactTestRenderer = require('react-test-renderer');
-	});
+    React = require('react');
+    ReactTestRenderer = require('react-test-renderer');
+  });
 
-	it('should warn in dev if an invalid ref object is provided', () => {
-		function Wrapper({children}) {
-			return children;
-		}
+  it('should warn in dev if an invalid ref object is provided', () => {
+    function Wrapper({children}) {
+      return children;
+    }
 
-		class ExampleComponent extends React.Component {
-			render() {
-				return null;
-			}
-		}
+    class ExampleComponent extends React.Component {
+      render() {
+        return null;
+      }
+    }
 
-		expect(() =>
-			ReactTestRenderer.create(
-				<Wrapper>
-					<div ref={{}} />
-				</Wrapper>,
-			),
-		).toWarnDev(
-			'Unexpected ref object provided for div. ' +
+    expect(() =>
+      ReactTestRenderer.create(
+        <Wrapper>
+          <div ref={{}} />
+        </Wrapper>,
+      ),
+    ).toWarnDev(
+      'Unexpected ref object provided for div. ' +
         'Use either a ref-setter function or React.createRef().\n' +
         '    in div (at **)\n' +
         '    in Wrapper (at **)',
-		);
+    );
 
-		expect(() =>
-			ReactTestRenderer.create(
-				<Wrapper>
-					<ExampleComponent ref={{}} />
-				</Wrapper>,
-			),
-		).toWarnDev(
-			'Unexpected ref object provided for ExampleComponent. ' +
+    expect(() =>
+      ReactTestRenderer.create(
+        <Wrapper>
+          <ExampleComponent ref={{}} />
+        </Wrapper>,
+      ),
+    ).toWarnDev(
+      'Unexpected ref object provided for ExampleComponent. ' +
         'Use either a ref-setter function or React.createRef().\n' +
         '    in ExampleComponent (at **)\n' +
         '    in Wrapper (at **)',
-		);
-	});
+    );
+  });
 });

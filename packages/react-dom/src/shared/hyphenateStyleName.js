@@ -24,8 +24,8 @@ const msPattern = /^ms-/;
  * is converted to `-ms-`.
  */
 export default function hyphenateStyleName(name: string): string {
-	return name
-		.replace(uppercasePattern, '-$1')
-		.toLowerCase()
-		.replace(msPattern, '-ms-');
+  return name
+    .replace(uppercasePattern, '-$1')
+    .toLowerCase()
+    .replace(msPattern, '-ms-');
 }

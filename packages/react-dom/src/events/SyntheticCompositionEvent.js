@@ -12,7 +12,7 @@ import SyntheticEvent from 'events/SyntheticEvent';
  * @see http://www.w3.org/TR/DOM-Level-3-Events/#events-compositionevents
  */
 const SyntheticCompositionEvent = SyntheticEvent.extend({
-	data: null,
+  data: null,
 });
 
 export default SyntheticCompositionEvent;

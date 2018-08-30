@@ -8,7 +8,7 @@
 'use strict';
 
 const RCTEventEmitter = {
-	register: jest.fn(),
+  register: jest.fn(),
 };
 
 module.exports = RCTEventEmitter;

@@ -11,14 +11,14 @@
 import UIManager from 'UIManager';
 
 const ReactNativeGlobalResponderHandler = {
-	onChange: function(from: any, to: any, blockNativeResponder: boolean) {
-		if (to !== null) {
-			const tag = to.stateNode._nativeTag;
-			UIManager.setJSResponder(tag, blockNativeResponder);
-		} else {
-			UIManager.clearJSResponder();
-		}
-	},
+  onChange: function(from: any, to: any, blockNativeResponder: boolean) {
+    if (to !== null) {
+      const tag = to.stateNode._nativeTag;
+      UIManager.setJSResponder(tag, blockNativeResponder);
+    } else {
+      UIManager.clearJSResponder();
+    }
+  },
 };
 
 export default ReactNativeGlobalResponderHandler;

@@ -20,28 +20,28 @@ import warnValidStyle from './warnValidStyle';
  * comparison. It is only used in DEV for SSR validation.
  */
 export function createDangerousStringForStyles(styles) {
-	if (__DEV__) {
-		let serialized = '';
-		let delimiter = '';
-		for (const styleName in styles) {
-			if (!styles.hasOwnProperty(styleName)) {
-				continue;
-			}
-			const styleValue = styles[styleName];
-			if (styleValue != null) {
-				const isCustomProperty = styleName.indexOf('--') === 0;
-				serialized += delimiter + hyphenateStyleName(styleName) + ':';
-				serialized += dangerousStyleValue(
-					styleName,
-					styleValue,
-					isCustomProperty,
-				);
+  if (__DEV__) {
+    let serialized = '';
+    let delimiter = '';
+    for (const styleName in styles) {
+      if (!styles.hasOwnProperty(styleName)) {
+        continue;
+      }
+      const styleValue = styles[styleName];
+      if (styleValue != null) {
+        const isCustomProperty = styleName.indexOf('--') === 0;
+        serialized += delimiter + hyphenateStyleName(styleName) + ':';
+        serialized += dangerousStyleValue(
+          styleName,
+          styleValue,
+          isCustomProperty,
+        );
 
-				delimiter = ';';
-			}
-		}
-		return serialized || null;
-	}
+        delimiter = ';';
+      }
+    }
+    return serialized || null;
+  }
 }
 
 /**
@@ -52,29 +52,29 @@ export function createDangerousStringForStyles(styles) {
  * @param {object} styles
  */
 export function setValueForStyles(node, styles) {
-	const style = node.style;
-	for (let styleName in styles) {
-		if (!styles.hasOwnProperty(styleName)) {
-			continue;
-		}
-		const isCustomProperty = styleName.indexOf('--') === 0;
-		if (__DEV__) {
-			if (!isCustomProperty) {
-				warnValidStyle(styleName, styles[styleName]);
-			}
-		}
-		const styleValue = dangerousStyleValue(
-			styleName,
-			styles[styleName],
-			isCustomProperty,
-		);
-		if (styleName === 'float') {
-			styleName = 'cssFloat';
-		}
-		if (isCustomProperty) {
-			style.setProperty(styleName, styleValue);
-		} else {
-			style[styleName] = styleValue;
-		}
-	}
+  const style = node.style;
+  for (let styleName in styles) {
+    if (!styles.hasOwnProperty(styleName)) {
+      continue;
+    }
+    const isCustomProperty = styleName.indexOf('--') === 0;
+    if (__DEV__) {
+      if (!isCustomProperty) {
+        warnValidStyle(styleName, styles[styleName]);
+      }
+    }
+    const styleValue = dangerousStyleValue(
+      styleName,
+      styles[styleName],
+      isCustomProperty,
+    );
+    if (styleName === 'float') {
+      styleName = 'cssFloat';
+    }
+    if (isCustomProperty) {
+      style.setProperty(styleName, styleValue);
+    } else {
+      style[styleName] = styleValue;
+    }
+  }
 }

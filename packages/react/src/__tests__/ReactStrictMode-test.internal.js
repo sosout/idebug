@@ -15,348 +15,348 @@ let ReactTestRenderer;
 let PropTypes;
 
 describe('ReactStrictMode', () => {
-	describe('debugRenderPhaseSideEffects', () => {
-		beforeEach(() => {
-			jest.resetModules();
-			ReactFeatureFlags = require('shared/ReactFeatureFlags');
-			ReactFeatureFlags.debugRenderPhaseSideEffects = true;
-			React = require('react');
-			ReactTestRenderer = require('react-test-renderer');
-		});
+  describe('debugRenderPhaseSideEffects', () => {
+    beforeEach(() => {
+      jest.resetModules();
+      ReactFeatureFlags = require('shared/ReactFeatureFlags');
+      ReactFeatureFlags.debugRenderPhaseSideEffects = true;
+      React = require('react');
+      ReactTestRenderer = require('react-test-renderer');
+    });
 
-		it('should invoke precommit lifecycle methods twice', () => {
-			let log = [];
-			let shouldComponentUpdate = false;
-			class ClassComponent extends React.Component {
+    it('should invoke precommit lifecycle methods twice', () => {
+      let log = [];
+      let shouldComponentUpdate = false;
+      class ClassComponent extends React.Component {
         state = {};
         static getDerivedStateFromProps() {
-        	log.push('getDerivedStateFromProps');
-        	return null;
+          log.push('getDerivedStateFromProps');
+          return null;
         }
         constructor(props) {
-        	super(props);
-        	log.push('constructor');
+          super(props);
+          log.push('constructor');
         }
         componentDidMount() {
-        	log.push('componentDidMount');
+          log.push('componentDidMount');
         }
         componentDidUpdate() {
-        	log.push('componentDidUpdate');
+          log.push('componentDidUpdate');
         }
         componentWillUnmount() {
-        	log.push('componentWillUnmount');
+          log.push('componentWillUnmount');
         }
         shouldComponentUpdate() {
-        	log.push('shouldComponentUpdate');
-        	return shouldComponentUpdate;
+          log.push('shouldComponentUpdate');
+          return shouldComponentUpdate;
         }
         render() {
-        	log.push('render');
-        	return null;
+          log.push('render');
+          return null;
         }
-			}
+      }
 
-			const component = ReactTestRenderer.create(<ClassComponent />);
+      const component = ReactTestRenderer.create(<ClassComponent />);
 
-			if (__DEV__) {
-				expect(log).toEqual([
-					'constructor',
-					'constructor',
-					'getDerivedStateFromProps',
-					'getDerivedStateFromProps',
-					'render',
-					'render',
-					'componentDidMount',
-				]);
-			} else {
-				expect(log).toEqual([
-					'constructor',
-					'getDerivedStateFromProps',
-					'render',
-					'componentDidMount',
-				]);
-			}
+      if (__DEV__) {
+        expect(log).toEqual([
+          'constructor',
+          'constructor',
+          'getDerivedStateFromProps',
+          'getDerivedStateFromProps',
+          'render',
+          'render',
+          'componentDidMount',
+        ]);
+      } else {
+        expect(log).toEqual([
+          'constructor',
+          'getDerivedStateFromProps',
+          'render',
+          'componentDidMount',
+        ]);
+      }
 
-			log = [];
-			shouldComponentUpdate = true;
+      log = [];
+      shouldComponentUpdate = true;
 
-			component.update(<ClassComponent />);
-			if (__DEV__) {
-				expect(log).toEqual([
-					'getDerivedStateFromProps',
-					'getDerivedStateFromProps',
-					'shouldComponentUpdate',
-					'render',
-					'render',
-					'componentDidUpdate',
-				]);
-			} else {
-				expect(log).toEqual([
-					'getDerivedStateFromProps',
-					'shouldComponentUpdate',
-					'render',
-					'componentDidUpdate',
-				]);
-			}
+      component.update(<ClassComponent />);
+      if (__DEV__) {
+        expect(log).toEqual([
+          'getDerivedStateFromProps',
+          'getDerivedStateFromProps',
+          'shouldComponentUpdate',
+          'render',
+          'render',
+          'componentDidUpdate',
+        ]);
+      } else {
+        expect(log).toEqual([
+          'getDerivedStateFromProps',
+          'shouldComponentUpdate',
+          'render',
+          'componentDidUpdate',
+        ]);
+      }
 
-			log = [];
-			shouldComponentUpdate = false;
+      log = [];
+      shouldComponentUpdate = false;
 
-			component.update(<ClassComponent />);
+      component.update(<ClassComponent />);
 
-			if (__DEV__) {
-				expect(log).toEqual([
-					'getDerivedStateFromProps',
-					'getDerivedStateFromProps',
-					'shouldComponentUpdate',
-				]);
-			} else {
-				expect(log).toEqual([
-					'getDerivedStateFromProps',
-					'shouldComponentUpdate',
-				]);
-			}
-		});
+      if (__DEV__) {
+        expect(log).toEqual([
+          'getDerivedStateFromProps',
+          'getDerivedStateFromProps',
+          'shouldComponentUpdate',
+        ]);
+      } else {
+        expect(log).toEqual([
+          'getDerivedStateFromProps',
+          'shouldComponentUpdate',
+        ]);
+      }
+    });
 
-		it('should invoke setState callbacks twice', () => {
-			class ClassComponent extends React.Component {
+    it('should invoke setState callbacks twice', () => {
+      class ClassComponent extends React.Component {
         state = {
-        	count: 1,
+          count: 1,
         };
         render() {
-        	return null;
+          return null;
         }
-			}
+      }
 
-			let setStateCount = 0;
+      let setStateCount = 0;
 
-			const rendered = ReactTestRenderer.create(<ClassComponent />);
-			const instance = rendered.getInstance();
-			instance.setState(state => {
-				setStateCount++;
-				return {
-					count: state.count + 1,
-				};
-			});
+      const rendered = ReactTestRenderer.create(<ClassComponent />);
+      const instance = rendered.getInstance();
+      instance.setState(state => {
+        setStateCount++;
+        return {
+          count: state.count + 1,
+        };
+      });
 
-			// Callback should be invoked twice in DEV
-			expect(setStateCount).toBe(__DEV__ ? 2 : 1);
-			// But each time `state` should be the previous value
-			expect(instance.state.count).toBe(2);
-		});
-	});
+      // Callback should be invoked twice in DEV
+      expect(setStateCount).toBe(__DEV__ ? 2 : 1);
+      // But each time `state` should be the previous value
+      expect(instance.state.count).toBe(2);
+    });
+  });
 
-	[true, false].forEach(debugRenderPhaseSideEffectsForStrictMode => {
-		describe(`StrictMode (${debugRenderPhaseSideEffectsForStrictMode})`, () => {
-			beforeEach(() => {
-				jest.resetModules();
-				ReactFeatureFlags = require('shared/ReactFeatureFlags');
-				ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = debugRenderPhaseSideEffectsForStrictMode;
-				React = require('react');
-				ReactTestRenderer = require('react-test-renderer');
-			});
+  [true, false].forEach(debugRenderPhaseSideEffectsForStrictMode => {
+    describe(`StrictMode (${debugRenderPhaseSideEffectsForStrictMode})`, () => {
+      beforeEach(() => {
+        jest.resetModules();
+        ReactFeatureFlags = require('shared/ReactFeatureFlags');
+        ReactFeatureFlags.debugRenderPhaseSideEffectsForStrictMode = debugRenderPhaseSideEffectsForStrictMode;
+        React = require('react');
+        ReactTestRenderer = require('react-test-renderer');
+      });
 
-			it('should invoke precommit lifecycle methods twice in DEV', () => {
-				const {StrictMode} = React;
+      it('should invoke precommit lifecycle methods twice in DEV', () => {
+        const {StrictMode} = React;
 
-				let log = [];
-				let shouldComponentUpdate = false;
+        let log = [];
+        let shouldComponentUpdate = false;
 
-				function Root() {
-					return (
-						<StrictMode>
-							<ClassComponent />
-						</StrictMode>
-					);
-				}
+        function Root() {
+          return (
+            <StrictMode>
+              <ClassComponent />
+            </StrictMode>
+          );
+        }
 
-				class ClassComponent extends React.Component {
+        class ClassComponent extends React.Component {
           state = {};
           static getDerivedStateFromProps() {
-          	log.push('getDerivedStateFromProps');
-          	return null;
+            log.push('getDerivedStateFromProps');
+            return null;
           }
           constructor(props) {
-          	super(props);
-          	log.push('constructor');
+            super(props);
+            log.push('constructor');
           }
           componentDidMount() {
-          	log.push('componentDidMount');
+            log.push('componentDidMount');
           }
           componentDidUpdate() {
-          	log.push('componentDidUpdate');
+            log.push('componentDidUpdate');
           }
           componentWillUnmount() {
-          	log.push('componentWillUnmount');
+            log.push('componentWillUnmount');
           }
           shouldComponentUpdate() {
-          	log.push('shouldComponentUpdate');
-          	return shouldComponentUpdate;
+            log.push('shouldComponentUpdate');
+            return shouldComponentUpdate;
           }
           render() {
-          	log.push('render');
-          	return null;
+            log.push('render');
+            return null;
           }
-				}
+        }
 
-				const component = ReactTestRenderer.create(<Root />);
+        const component = ReactTestRenderer.create(<Root />);
 
-				if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
-					expect(log).toEqual([
-						'constructor',
-						'constructor',
-						'getDerivedStateFromProps',
-						'getDerivedStateFromProps',
-						'render',
-						'render',
-						'componentDidMount',
-					]);
-				} else {
-					expect(log).toEqual([
-						'constructor',
-						'getDerivedStateFromProps',
-						'render',
-						'componentDidMount',
-					]);
-				}
+        if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
+          expect(log).toEqual([
+            'constructor',
+            'constructor',
+            'getDerivedStateFromProps',
+            'getDerivedStateFromProps',
+            'render',
+            'render',
+            'componentDidMount',
+          ]);
+        } else {
+          expect(log).toEqual([
+            'constructor',
+            'getDerivedStateFromProps',
+            'render',
+            'componentDidMount',
+          ]);
+        }
 
-				log = [];
-				shouldComponentUpdate = true;
+        log = [];
+        shouldComponentUpdate = true;
 
-				component.update(<Root />);
-				if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
-					expect(log).toEqual([
-						'getDerivedStateFromProps',
-						'getDerivedStateFromProps',
-						'shouldComponentUpdate',
-						'render',
-						'render',
-						'componentDidUpdate',
-					]);
-				} else {
-					expect(log).toEqual([
-						'getDerivedStateFromProps',
-						'shouldComponentUpdate',
-						'render',
-						'componentDidUpdate',
-					]);
-				}
+        component.update(<Root />);
+        if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
+          expect(log).toEqual([
+            'getDerivedStateFromProps',
+            'getDerivedStateFromProps',
+            'shouldComponentUpdate',
+            'render',
+            'render',
+            'componentDidUpdate',
+          ]);
+        } else {
+          expect(log).toEqual([
+            'getDerivedStateFromProps',
+            'shouldComponentUpdate',
+            'render',
+            'componentDidUpdate',
+          ]);
+        }
 
-				log = [];
-				shouldComponentUpdate = false;
+        log = [];
+        shouldComponentUpdate = false;
 
-				component.update(<Root />);
-				if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
-					expect(log).toEqual([
-						'getDerivedStateFromProps',
-						'getDerivedStateFromProps',
-						'shouldComponentUpdate',
-					]);
-				} else {
-					expect(log).toEqual([
-						'getDerivedStateFromProps',
-						'shouldComponentUpdate',
-					]);
-				}
-			});
+        component.update(<Root />);
+        if (__DEV__ && debugRenderPhaseSideEffectsForStrictMode) {
+          expect(log).toEqual([
+            'getDerivedStateFromProps',
+            'getDerivedStateFromProps',
+            'shouldComponentUpdate',
+          ]);
+        } else {
+          expect(log).toEqual([
+            'getDerivedStateFromProps',
+            'shouldComponentUpdate',
+          ]);
+        }
+      });
 
-			it('should invoke setState callbacks twice in DEV', () => {
-				const {StrictMode} = React;
+      it('should invoke setState callbacks twice in DEV', () => {
+        const {StrictMode} = React;
 
-				let instance;
-				class ClassComponent extends React.Component {
+        let instance;
+        class ClassComponent extends React.Component {
           state = {
-          	count: 1,
+            count: 1,
           };
           render() {
-          	instance = this;
-          	return null;
+            instance = this;
+            return null;
           }
-				}
+        }
 
-				let setStateCount = 0;
+        let setStateCount = 0;
 
-				ReactTestRenderer.create(
-					<StrictMode>
-						<ClassComponent />
-					</StrictMode>,
-				);
-				instance.setState(state => {
-					setStateCount++;
-					return {
-						count: state.count + 1,
-					};
-				});
+        ReactTestRenderer.create(
+          <StrictMode>
+            <ClassComponent />
+          </StrictMode>,
+        );
+        instance.setState(state => {
+          setStateCount++;
+          return {
+            count: state.count + 1,
+          };
+        });
 
-				// Callback should be invoked twice (in DEV)
-				expect(setStateCount).toBe(
-					__DEV__ && debugRenderPhaseSideEffectsForStrictMode ? 2 : 1,
-				);
-				// But each time `state` should be the previous value
-				expect(instance.state.count).toBe(2);
-			});
-		});
-	});
+        // Callback should be invoked twice (in DEV)
+        expect(setStateCount).toBe(
+          __DEV__ && debugRenderPhaseSideEffectsForStrictMode ? 2 : 1,
+        );
+        // But each time `state` should be the previous value
+        expect(instance.state.count).toBe(2);
+      });
+    });
+  });
 
-	describe('async subtree', () => {
-		beforeEach(() => {
-			jest.resetModules();
+  describe('async subtree', () => {
+    beforeEach(() => {
+      jest.resetModules();
 
-			React = require('react');
-			ReactTestRenderer = require('react-test-renderer');
-		});
+      React = require('react');
+      ReactTestRenderer = require('react-test-renderer');
+    });
 
-		it('should warn about unsafe legacy lifecycle methods within the tree', () => {
-			class SyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return (
-						<React.unstable_AsyncMode>
-							<AsyncRoot />
-						</React.unstable_AsyncMode>
-					);
-				}
-			}
-			class AsyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				render() {
-					return (
-						<div>
-							<Wrapper>
-								<Foo />
-							</Wrapper>
-							<div>
-								<Bar />
-								<Foo />
-							</div>
-						</div>
-					);
-				}
-			}
-			function Wrapper({children}) {
-				return <div>{children}</div>;
-			}
-			class Foo extends React.Component {
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return null;
-				}
-			}
-			class Bar extends React.Component {
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return null;
-				}
-			}
+    it('should warn about unsafe legacy lifecycle methods within the tree', () => {
+      class SyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return (
+            <React.unstable_AsyncMode>
+              <AsyncRoot />
+            </React.unstable_AsyncMode>
+          );
+        }
+      }
+      class AsyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        render() {
+          return (
+            <div>
+              <Wrapper>
+                <Foo />
+              </Wrapper>
+              <div>
+                <Bar />
+                <Foo />
+              </div>
+            </div>
+          );
+        }
+      }
+      function Wrapper({children}) {
+        return <div>{children}</div>;
+      }
+      class Foo extends React.Component {
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return null;
+        }
+      }
+      class Bar extends React.Component {
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return null;
+        }
+      }
 
-			let rendered;
-			expect(() => {
-				rendered = ReactTestRenderer.create(<SyncRoot />);
-			}).toWarnDev(
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      let rendered;
+      expect(() => {
+        rendered = ReactTestRenderer.create(<SyncRoot />);
+      }).toWarnDev(
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in SyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
@@ -367,54 +367,54 @@ describe('ReactStrictMode', () => {
           'to use componentDidUpdate instead: AsyncRoot' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			// Dedupe
-			rendered = ReactTestRenderer.create(<SyncRoot />);
-			rendered.update(<SyncRoot />);
-		});
+      // Dedupe
+      rendered = ReactTestRenderer.create(<SyncRoot />);
+      rendered.update(<SyncRoot />);
+    });
 
-		it('should coalesce warnings by lifecycle name', () => {
-			class SyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return (
-						<React.unstable_AsyncMode>
-							<AsyncRoot />
-						</React.unstable_AsyncMode>
-					);
-				}
-			}
-			class AsyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				render() {
-					return <Parent />;
-				}
-			}
-			class Parent extends React.Component {
-				componentWillMount() {}
-				componentWillUpdate() {}
-				componentWillReceiveProps() {}
-				render() {
-					return <Child />;
-				}
-			}
-			class Child extends React.Component {
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return null;
-				}
-			}
+    it('should coalesce warnings by lifecycle name', () => {
+      class SyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return (
+            <React.unstable_AsyncMode>
+              <AsyncRoot />
+            </React.unstable_AsyncMode>
+          );
+        }
+      }
+      class AsyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        render() {
+          return <Parent />;
+        }
+      }
+      class Parent extends React.Component {
+        componentWillMount() {}
+        componentWillUpdate() {}
+        componentWillReceiveProps() {}
+        render() {
+          return <Child />;
+        }
+      }
+      class Child extends React.Component {
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return null;
+        }
+      }
 
-			let rendered;
+      let rendered;
 
-			expect(
-				() => (rendered = ReactTestRenderer.create(<SyncRoot />)),
-			).toWarnDev(
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      expect(
+        () => (rendered = ReactTestRenderer.create(<SyncRoot />)),
+      ).toWarnDev(
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in SyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
@@ -425,383 +425,383 @@ describe('ReactStrictMode', () => {
           'to use componentDidUpdate instead: AsyncRoot, Parent' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			// Dedupe
-			rendered = ReactTestRenderer.create(<SyncRoot />);
-			rendered.update(<SyncRoot />);
-		});
+      // Dedupe
+      rendered = ReactTestRenderer.create(<SyncRoot />);
+      rendered.update(<SyncRoot />);
+    });
 
-		it('should group warnings by async root', () => {
-			class SyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return (
-						<div>
-							<AsyncRootOne />
-							<AsyncRootTwo />
-						</div>
-					);
-				}
-			}
-			class AsyncRootOne extends React.Component {
-				render() {
-					return (
-						<React.unstable_AsyncMode>
-							<Foo>
-								<Bar />
-							</Foo>
-						</React.unstable_AsyncMode>
-					);
-				}
-			}
-			class AsyncRootTwo extends React.Component {
-				render() {
-					return (
-						<React.unstable_AsyncMode>
-							<Foo>
-								<Baz />
-							</Foo>
-						</React.unstable_AsyncMode>
-					);
-				}
-			}
-			class Foo extends React.Component {
-				componentWillMount() {}
-				render() {
-					return this.props.children;
-				}
-			}
-			class Bar extends React.Component {
-				componentWillMount() {}
-				render() {
-					return null;
-				}
-			}
-			class Baz extends React.Component {
-				componentWillMount() {}
-				render() {
-					return null;
-				}
-			}
+    it('should group warnings by async root', () => {
+      class SyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return (
+            <div>
+              <AsyncRootOne />
+              <AsyncRootTwo />
+            </div>
+          );
+        }
+      }
+      class AsyncRootOne extends React.Component {
+        render() {
+          return (
+            <React.unstable_AsyncMode>
+              <Foo>
+                <Bar />
+              </Foo>
+            </React.unstable_AsyncMode>
+          );
+        }
+      }
+      class AsyncRootTwo extends React.Component {
+        render() {
+          return (
+            <React.unstable_AsyncMode>
+              <Foo>
+                <Baz />
+              </Foo>
+            </React.unstable_AsyncMode>
+          );
+        }
+      }
+      class Foo extends React.Component {
+        componentWillMount() {}
+        render() {
+          return this.props.children;
+        }
+      }
+      class Bar extends React.Component {
+        componentWillMount() {}
+        render() {
+          return null;
+        }
+      }
+      class Baz extends React.Component {
+        componentWillMount() {}
+        render() {
+          return null;
+        }
+      }
 
-			let rendered;
+      let rendered;
 
-			expect(
-				() => (rendered = ReactTestRenderer.create(<SyncRoot />)),
-			).toWarnDev([
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      expect(
+        () => (rendered = ReactTestRenderer.create(<SyncRoot />)),
+      ).toWarnDev([
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in AsyncRootOne (at **)' +
           '\n    in div (at **)' +
           '\n    in SyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
           'to use componentDidMount instead: Bar, Foo',
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in AsyncRootTwo (at **)' +
           '\n    in div (at **)' +
           '\n    in SyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
           'to use componentDidMount instead: Baz',
-			]);
+      ]);
 
-			// Dedupe
-			rendered = ReactTestRenderer.create(<SyncRoot />);
-			rendered.update(<SyncRoot />);
-		});
+      // Dedupe
+      rendered = ReactTestRenderer.create(<SyncRoot />);
+      rendered.update(<SyncRoot />);
+    });
 
-		it('should warn about components not present during the initial render', () => {
-			class AsyncRoot extends React.Component {
-				render() {
-					return (
-						<React.unstable_AsyncMode>
-							{this.props.foo ? <Foo /> : <Bar />}
-						</React.unstable_AsyncMode>
-					);
-				}
-			}
-			class Foo extends React.Component {
-				UNSAFE_componentWillMount() {}
-				render() {
-					return null;
-				}
-			}
-			class Bar extends React.Component {
-				UNSAFE_componentWillMount() {}
-				render() {
-					return null;
-				}
-			}
+    it('should warn about components not present during the initial render', () => {
+      class AsyncRoot extends React.Component {
+        render() {
+          return (
+            <React.unstable_AsyncMode>
+              {this.props.foo ? <Foo /> : <Bar />}
+            </React.unstable_AsyncMode>
+          );
+        }
+      }
+      class Foo extends React.Component {
+        UNSAFE_componentWillMount() {}
+        render() {
+          return null;
+        }
+      }
+      class Bar extends React.Component {
+        UNSAFE_componentWillMount() {}
+        render() {
+          return null;
+        }
+      }
 
-			let rendered;
-			expect(() => {
-				rendered = ReactTestRenderer.create(<AsyncRoot foo={true} />);
-			}).toWarnDev(
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      let rendered;
+      expect(() => {
+        rendered = ReactTestRenderer.create(<AsyncRoot foo={true} />);
+      }).toWarnDev(
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in AsyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
           'to use componentDidMount instead: Foo' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			expect(() => rendered.update(<AsyncRoot foo={false} />)).toWarnDev(
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      expect(() => rendered.update(<AsyncRoot foo={false} />)).toWarnDev(
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in AsyncMode (at **)' +
           '\n    in AsyncRoot (at **)' +
           '\n\ncomponentWillMount: Please update the following components ' +
           'to use componentDidMount instead: Bar' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			// Dedupe
-			rendered.update(<AsyncRoot foo={true} />);
-			rendered.update(<AsyncRoot foo={false} />);
-		});
+      // Dedupe
+      rendered.update(<AsyncRoot foo={true} />);
+      rendered.update(<AsyncRoot foo={false} />);
+    });
 
-		it('should also warn inside of "strict" mode trees', () => {
-			const {StrictMode} = React;
+    it('should also warn inside of "strict" mode trees', () => {
+      const {StrictMode} = React;
 
-			class SyncRoot extends React.Component {
-				UNSAFE_componentWillMount() {}
-				UNSAFE_componentWillUpdate() {}
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return (
-						<StrictMode>
-							<Wrapper />
-						</StrictMode>
-					);
-				}
-			}
-			function Wrapper({children}) {
-				return (
-					<div>
-						<Bar />
-						<Foo />
-					</div>
-				);
-			}
-			class Foo extends React.Component {
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return null;
-				}
-			}
-			class Bar extends React.Component {
-				UNSAFE_componentWillReceiveProps() {}
-				render() {
-					return null;
-				}
-			}
+      class SyncRoot extends React.Component {
+        UNSAFE_componentWillMount() {}
+        UNSAFE_componentWillUpdate() {}
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return (
+            <StrictMode>
+              <Wrapper />
+            </StrictMode>
+          );
+        }
+      }
+      function Wrapper({children}) {
+        return (
+          <div>
+            <Bar />
+            <Foo />
+          </div>
+        );
+      }
+      class Foo extends React.Component {
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return null;
+        }
+      }
+      class Bar extends React.Component {
+        UNSAFE_componentWillReceiveProps() {}
+        render() {
+          return null;
+        }
+      }
 
-			expect(() => ReactTestRenderer.create(<SyncRoot />)).toWarnDev(
-				'Unsafe lifecycle methods were found within a strict-mode tree:' +
+      expect(() => ReactTestRenderer.create(<SyncRoot />)).toWarnDev(
+        'Unsafe lifecycle methods were found within a strict-mode tree:' +
           '\n    in StrictMode (at **)' +
           '\n    in SyncRoot (at **)' +
           '\n\ncomponentWillReceiveProps: Please update the following components ' +
           'to use static getDerivedStateFromProps instead: Bar, Foo' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			// Dedupe
-			const rendered = ReactTestRenderer.create(<SyncRoot />);
-			rendered.update(<SyncRoot />);
-		});
-	});
+      // Dedupe
+      const rendered = ReactTestRenderer.create(<SyncRoot />);
+      rendered.update(<SyncRoot />);
+    });
+  });
 
-	describe('symbol checks', () => {
-		beforeEach(() => {
-			jest.resetModules();
-			React = require('react');
-			ReactTestRenderer = require('react-test-renderer');
-		});
+  describe('symbol checks', () => {
+    beforeEach(() => {
+      jest.resetModules();
+      React = require('react');
+      ReactTestRenderer = require('react-test-renderer');
+    });
 
-		it('should switch from StrictMode to a Fragment and reset state', () => {
-			const {Fragment, StrictMode} = React;
+    it('should switch from StrictMode to a Fragment and reset state', () => {
+      const {Fragment, StrictMode} = React;
 
-			function ParentComponent({useFragment}) {
-				return useFragment ? (
-					<Fragment>
-						<ChildComponent />
-					</Fragment>
-				) : (
-					<StrictMode>
-						<ChildComponent />
-					</StrictMode>
-				);
-			}
+      function ParentComponent({useFragment}) {
+        return useFragment ? (
+          <Fragment>
+            <ChildComponent />
+          </Fragment>
+        ) : (
+          <StrictMode>
+            <ChildComponent />
+          </StrictMode>
+        );
+      }
 
-			class ChildComponent extends React.Component {
+      class ChildComponent extends React.Component {
         state = {
-        	count: 0,
+          count: 0,
         };
         static getDerivedStateFromProps(nextProps, prevState) {
-        	return {
-        		count: prevState.count + 1,
-        	};
+          return {
+            count: prevState.count + 1,
+          };
         }
         render() {
-        	return `count:${this.state.count}`;
+          return `count:${this.state.count}`;
         }
-			}
+      }
 
-			const rendered = ReactTestRenderer.create(
-				<ParentComponent useFragment={false} />,
-			);
-			expect(rendered.toJSON()).toBe('count:1');
-			rendered.update(<ParentComponent useFragment={true} />);
-			expect(rendered.toJSON()).toBe('count:1');
-		});
+      const rendered = ReactTestRenderer.create(
+        <ParentComponent useFragment={false} />,
+      );
+      expect(rendered.toJSON()).toBe('count:1');
+      rendered.update(<ParentComponent useFragment={true} />);
+      expect(rendered.toJSON()).toBe('count:1');
+    });
 
-		it('should switch from a Fragment to StrictMode and reset state', () => {
-			const {Fragment, StrictMode} = React;
+    it('should switch from a Fragment to StrictMode and reset state', () => {
+      const {Fragment, StrictMode} = React;
 
-			function ParentComponent({useFragment}) {
-				return useFragment ? (
-					<Fragment>
-						<ChildComponent />
-					</Fragment>
-				) : (
-					<StrictMode>
-						<ChildComponent />
-					</StrictMode>
-				);
-			}
+      function ParentComponent({useFragment}) {
+        return useFragment ? (
+          <Fragment>
+            <ChildComponent />
+          </Fragment>
+        ) : (
+          <StrictMode>
+            <ChildComponent />
+          </StrictMode>
+        );
+      }
 
-			class ChildComponent extends React.Component {
+      class ChildComponent extends React.Component {
         state = {
-        	count: 0,
+          count: 0,
         };
         static getDerivedStateFromProps(nextProps, prevState) {
-        	return {
-        		count: prevState.count + 1,
-        	};
+          return {
+            count: prevState.count + 1,
+          };
         }
         render() {
-        	return `count:${this.state.count}`;
+          return `count:${this.state.count}`;
         }
-			}
+      }
 
-			const rendered = ReactTestRenderer.create(
-				<ParentComponent useFragment={true} />,
-			);
-			expect(rendered.toJSON()).toBe('count:1');
-			rendered.update(<ParentComponent useFragment={false} />);
-			expect(rendered.toJSON()).toBe('count:1');
-		});
+      const rendered = ReactTestRenderer.create(
+        <ParentComponent useFragment={true} />,
+      );
+      expect(rendered.toJSON()).toBe('count:1');
+      rendered.update(<ParentComponent useFragment={false} />);
+      expect(rendered.toJSON()).toBe('count:1');
+    });
 
-		it('should update with StrictMode without losing state', () => {
-			const {StrictMode} = React;
+    it('should update with StrictMode without losing state', () => {
+      const {StrictMode} = React;
 
-			function ParentComponent() {
-				return (
-					<StrictMode>
-						<ChildComponent />
-					</StrictMode>
-				);
-			}
+      function ParentComponent() {
+        return (
+          <StrictMode>
+            <ChildComponent />
+          </StrictMode>
+        );
+      }
 
-			class ChildComponent extends React.Component {
+      class ChildComponent extends React.Component {
         state = {
-        	count: 0,
+          count: 0,
         };
         static getDerivedStateFromProps(nextProps, prevState) {
-        	return {
-        		count: prevState.count + 1,
-        	};
+          return {
+            count: prevState.count + 1,
+          };
         }
         render() {
-        	return `count:${this.state.count}`;
+          return `count:${this.state.count}`;
         }
-			}
+      }
 
-			const rendered = ReactTestRenderer.create(<ParentComponent />);
-			expect(rendered.toJSON()).toBe('count:1');
-			rendered.update(<ParentComponent />);
-			expect(rendered.toJSON()).toBe('count:2');
-		});
-	});
+      const rendered = ReactTestRenderer.create(<ParentComponent />);
+      expect(rendered.toJSON()).toBe('count:1');
+      rendered.update(<ParentComponent />);
+      expect(rendered.toJSON()).toBe('count:2');
+    });
+  });
 
-	describe('string refs', () => {
-		beforeEach(() => {
-			jest.resetModules();
-			React = require('react');
-			ReactTestRenderer = require('react-test-renderer');
-		});
+  describe('string refs', () => {
+    beforeEach(() => {
+      jest.resetModules();
+      React = require('react');
+      ReactTestRenderer = require('react-test-renderer');
+    });
 
-		it('should warn within a strict tree', () => {
-			const {StrictMode} = React;
+    it('should warn within a strict tree', () => {
+      const {StrictMode} = React;
 
-			class OuterComponent extends React.Component {
-				render() {
-					return (
-						<StrictMode>
-							<InnerComponent ref="somestring" />
-						</StrictMode>
-					);
-				}
-			}
+      class OuterComponent extends React.Component {
+        render() {
+          return (
+            <StrictMode>
+              <InnerComponent ref="somestring" />
+            </StrictMode>
+          );
+        }
+      }
 
-			class InnerComponent extends React.Component {
-				render() {
-					return null;
-				}
-			}
+      class InnerComponent extends React.Component {
+        render() {
+          return null;
+        }
+      }
 
-			let renderer;
-			expect(() => {
-				renderer = ReactTestRenderer.create(<OuterComponent />);
-			}).toWarnDev(
-				'Warning: A string ref, "somestring", has been found within a strict mode tree. ' +
+      let renderer;
+      expect(() => {
+        renderer = ReactTestRenderer.create(<OuterComponent />);
+      }).toWarnDev(
+        'Warning: A string ref, "somestring", has been found within a strict mode tree. ' +
           'String refs are a source of potential bugs and should be avoided. ' +
           'We recommend using createRef() instead.\n\n' +
           '    in StrictMode (at **)\n' +
           '    in OuterComponent (at **)\n\n' +
           'Learn more about using refs safely here:\n' +
           'https://fb.me/react-strict-mode-string-ref',
-			);
+      );
 
-			// Dedup
-			renderer.update(<OuterComponent />);
-		});
+      // Dedup
+      renderer.update(<OuterComponent />);
+    });
 
-		it('should warn within a strict tree', () => {
-			const {StrictMode} = React;
+    it('should warn within a strict tree', () => {
+      const {StrictMode} = React;
 
-			class OuterComponent extends React.Component {
-				render() {
-					return (
-						<StrictMode>
-							<InnerComponent />
-						</StrictMode>
-					);
-				}
-			}
+      class OuterComponent extends React.Component {
+        render() {
+          return (
+            <StrictMode>
+              <InnerComponent />
+            </StrictMode>
+          );
+        }
+      }
 
-			class InnerComponent extends React.Component {
-				render() {
-					return <MiddleComponent ref="somestring" />;
-				}
-			}
+      class InnerComponent extends React.Component {
+        render() {
+          return <MiddleComponent ref="somestring" />;
+        }
+      }
 
-			class MiddleComponent extends React.Component {
-				render() {
-					return null;
-				}
-			}
+      class MiddleComponent extends React.Component {
+        render() {
+          return null;
+        }
+      }
 
-			let renderer;
-			expect(() => {
-				renderer = ReactTestRenderer.create(<OuterComponent />);
-			}).toWarnDev(
-				'Warning: A string ref, "somestring", has been found within a strict mode tree. ' +
+      let renderer;
+      expect(() => {
+        renderer = ReactTestRenderer.create(<OuterComponent />);
+      }).toWarnDev(
+        'Warning: A string ref, "somestring", has been found within a strict mode tree. ' +
           'String refs are a source of potential bugs and should be avoided. ' +
           'We recommend using createRef() instead.\n\n' +
           '    in InnerComponent (at **)\n' +
@@ -809,94 +809,94 @@ describe('ReactStrictMode', () => {
           '    in OuterComponent (at **)\n\n' +
           'Learn more about using refs safely here:\n' +
           'https://fb.me/react-strict-mode-string-ref',
-			);
+      );
 
-			// Dedup
-			renderer.update(<OuterComponent />);
-		});
-	});
+      // Dedup
+      renderer.update(<OuterComponent />);
+    });
+  });
 
-	describe('context legacy', () => {
-		beforeEach(() => {
-			jest.resetModules();
-			React = require('react');
-			ReactTestRenderer = require('react-test-renderer');
-			PropTypes = require('prop-types');
-			ReactFeatureFlags = require('shared/ReactFeatureFlags');
-			ReactFeatureFlags.warnAboutLegacyContextAPI = true;
-		});
+  describe('context legacy', () => {
+    beforeEach(() => {
+      jest.resetModules();
+      React = require('react');
+      ReactTestRenderer = require('react-test-renderer');
+      PropTypes = require('prop-types');
+      ReactFeatureFlags = require('shared/ReactFeatureFlags');
+      ReactFeatureFlags.warnAboutLegacyContextAPI = true;
+    });
 
-		it('should warn if the legacy context API have been used in strict mode', () => {
-			class LegacyContextProvider extends React.Component {
-				getChildContext() {
-					return {color: 'purple'};
-				}
+    it('should warn if the legacy context API have been used in strict mode', () => {
+      class LegacyContextProvider extends React.Component {
+        getChildContext() {
+          return {color: 'purple'};
+        }
 
-				render() {
-					return (
-						<div>
-							<LegacyContextConsumer />
-							<FunctionalLegacyContextConsumer />
-							<FactoryLegacyContextConsumer />
-						</div>
-					);
-				}
-			}
+        render() {
+          return (
+            <div>
+              <LegacyContextConsumer />
+              <FunctionalLegacyContextConsumer />
+              <FactoryLegacyContextConsumer />
+            </div>
+          );
+        }
+      }
 
-			function FunctionalLegacyContextConsumer() {
-				return null;
-			}
+      function FunctionalLegacyContextConsumer() {
+        return null;
+      }
 
-			function FactoryLegacyContextConsumer() {
-				return {
-					render() {
-						return null;
-					},
-				};
-			}
+      function FactoryLegacyContextConsumer() {
+        return {
+          render() {
+            return null;
+          },
+        };
+      }
 
-			LegacyContextProvider.childContextTypes = {
-				color: PropTypes.string,
-			};
+      LegacyContextProvider.childContextTypes = {
+        color: PropTypes.string,
+      };
 
-			class LegacyContextConsumer extends React.Component {
-				render() {
-					return null;
-				}
-			}
+      class LegacyContextConsumer extends React.Component {
+        render() {
+          return null;
+        }
+      }
 
-			const {StrictMode} = React;
+      const {StrictMode} = React;
 
-			class Root extends React.Component {
-				render() {
-					return (
-						<div>
-							<StrictMode>
-								<LegacyContextProvider />
-							</StrictMode>
-						</div>
-					);
-				}
-			}
+      class Root extends React.Component {
+        render() {
+          return (
+            <div>
+              <StrictMode>
+                <LegacyContextProvider />
+              </StrictMode>
+            </div>
+          );
+        }
+      }
 
-			LegacyContextConsumer.contextTypes = {
-				color: PropTypes.string,
-			};
+      LegacyContextConsumer.contextTypes = {
+        color: PropTypes.string,
+      };
 
-			FunctionalLegacyContextConsumer.contextTypes = {
-				color: PropTypes.string,
-			};
+      FunctionalLegacyContextConsumer.contextTypes = {
+        color: PropTypes.string,
+      };
 
-			FactoryLegacyContextConsumer.contextTypes = {
-				color: PropTypes.string,
-			};
+      FactoryLegacyContextConsumer.contextTypes = {
+        color: PropTypes.string,
+      };
 
-			let rendered;
+      let rendered;
 
-			expect(() => {
-				rendered = ReactTestRenderer.create(<Root />);
-			}).toWarnDev(
-				'Warning: Legacy context API has been detected within a strict-mode tree: ' +
+      expect(() => {
+        rendered = ReactTestRenderer.create(<Root />);
+      }).toWarnDev(
+        'Warning: Legacy context API has been detected within a strict-mode tree: ' +
           '\n    in StrictMode (at **)' +
           '\n    in div (at **)' +
           '\n    in Root (at **)' +
@@ -904,11 +904,11 @@ describe('ReactStrictMode', () => {
           'FunctionalLegacyContextConsumer, LegacyContextConsumer, LegacyContextProvider' +
           '\n\nLearn more about this warning here:' +
           '\nhttps://fb.me/react-strict-mode-warnings',
-			);
+      );
 
-			// Dedupe
-			rendered = ReactTestRenderer.create(<Root />);
-			rendered.update(<Root />);
-		});
-	});
+      // Dedupe
+      rendered = ReactTestRenderer.create(<Root />);
+      rendered.update(<Root />);
+    });
+  });
 });
