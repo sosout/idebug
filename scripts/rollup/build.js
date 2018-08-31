@@ -1,6 +1,6 @@
 'use strict';
 
-const {rollup} = require('rollup');
+const { rollup } = require('rollup');
 const babel = require('rollup-plugin-babel');
 const closure = require('./plugins/closure-plugin');
 const commonjs = require('rollup-plugin-commonjs');
